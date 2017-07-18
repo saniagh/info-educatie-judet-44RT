@@ -85,7 +85,9 @@ class ReadAll extends Component {
                     context={this.props.context}
                     admin={this.props.admin}
                     userId={this.props.userId}
-                    searchQuery={this.props.searchQuery}/>
+                    searchQuery={this.props.searchQuery}
+                    router={this.props.router}
+                />
         }
         else if (this.props.fetchingCollections === false && this.props.fetchedCollections === false) {
             modeComponent = <NoCollectionsFound/>

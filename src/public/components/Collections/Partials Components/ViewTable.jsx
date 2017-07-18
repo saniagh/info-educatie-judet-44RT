@@ -15,6 +15,7 @@ class ViewTable extends Component {
                                  onLike={this.props.onLike}
                                  onUnlike={this.props.onUnlike}
                                  onClickCollection={this.props.onClickCollection}
+                                 router={this.props.router}
                         />
                         {this.props.collections[i + 1] ?
                             <ViewRow collection={this.props.collections[i + 1]}
@@ -22,6 +23,7 @@ class ViewTable extends Component {
                                      onLike={this.props.onLike}
                                      onUnlike={this.props.onUnlike}
                                      onClickCollection={this.props.onClickCollection}
+                                     router={this.props.router}
                             />
                             :
                             null

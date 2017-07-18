@@ -19,6 +19,7 @@ class ViewTable extends Component {
                                  admin={this.props.admin}
                                  userId={this.props.userId}
                                  searchQuery={this.props.searchQuery}
+                                 router={this.props.router}
                         />
                         {this.props.collections[i + 1] ?
                             <ViewRow guest={this.props.guest}
@@ -31,6 +32,7 @@ class ViewTable extends Component {
                                      admin={this.props.admin}
                                      userId={this.props.userId}
                                      searchQuery={this.props.searchQuery}
+                                     router={this.props.router}
                             />
                             :
                             null

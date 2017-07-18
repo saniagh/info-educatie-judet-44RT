@@ -148,14 +148,15 @@ class HomeView extends Component {
                         <li key={key} style={{display: "flex", justifyContent: "center"}}
                         >
                             <Card style={{maxHeight: "auto", width: 800}}>
-                                <Link to="/#">
-                                    <CardMedia overlay={<CardTitle title={news[key].newsTitle}
-                                                                   subtitle={"by " + news[key].userName}/>}
-                                               onTouchTap={() => this.onClickNews(news[key]._id)}
-                                               style={{cursor: "pointer"}}>
-                                        <img onError={this.addDefaultPicture} src={news[key].newsCoverLink}/>
-                                    </CardMedia>
-                                </Link>
+                                <CardMedia overlay={<CardTitle title={news[key].newsTitle}
+                                                               subtitle={"by " + news[key].userName}/>}
+                                           onTouchTap={() => {
+                                               this.onClickNews(news[key]._id);
+                                               this.props.router.push("/#")
+                                           }}
+                                           style={{cursor: "pointer"}}>
+                                    <img onError={this.addDefaultPicture} src={news[key].newsCoverLink}/>
+                                </CardMedia>
                             </Card>
                         </li>
                     )
@@ -173,18 +174,19 @@ class HomeView extends Component {
                 if (key < 3)
                     return (
                         <li className="left-news"
-                            onTouchTap={() => this.onClickCollection(collections[key]._id)}
+                            onTouchTap={() => {
+                                this.onClickCollection(collections[key]._id);
+                                this.props.router.push("/#")
+                            }}
                             key={key}>
                             <Card>
-                                <Link to="/#">
-                                    <CardMedia
-                                        overlay={<CardTitle title={collections[key].collectionName}
-                                                            subtitle={"by " + collections[key].userName}/>}
-                                        style={{minHeight: 300, cursor: "pointer"}}>
-                                        <img onError={this.addDefaultPicture}
-                                             src={collections[key].picturesArray[0].pictureLink}/>
-                                    </CardMedia>
-                                </Link>
+                                <CardMedia
+                                    overlay={<CardTitle title={collections[key].collectionName}
+                                                        subtitle={"by " + collections[key].userName}/>}
+                                    style={{minHeight: 300, cursor: "pointer"}}>
+                                    <img onError={this.addDefaultPicture}
+                                         src={collections[key].picturesArray[0].pictureLink}/>
+                                </CardMedia>
                             </Card>
                         </li>
                     )
@@ -195,16 +197,17 @@ class HomeView extends Component {
                 if (key < 3)
                     return (
                         <li key={key}
-                            onTouchTap={() => this.onClickCollection(collections[key]._id)}>
+                            onTouchTap={() => {
+                                this.onClickCollection(collections[key]._id);
+                                this.props.router.push("/#")
+                            }}>
                             <Card>
-                                <Link to="/#">
-                                    <CardMedia overlay={<CardTitle title={collections[key].collectionName}
-                                                                   subtitle={"by " + collections[key].userName}/>}
-                                               style={{cursor: "pointer"}}>
-                                        <img onError={this.addDefaultPicture}
-                                             src={collections[key].picturesArray[0].pictureLink}/>
-                                    </CardMedia>
-                                </Link>
+                                <CardMedia overlay={<CardTitle title={collections[key].collectionName}
+                                                               subtitle={"by " + collections[key].userName}/>}
+                                           style={{cursor: "pointer"}}>
+                                    <img onError={this.addDefaultPicture}
+                                         src={collections[key].picturesArray[0].pictureLink}/>
+                                </CardMedia>
                             </Card>
                         </li>
                     )

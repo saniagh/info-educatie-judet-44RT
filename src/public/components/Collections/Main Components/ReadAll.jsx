@@ -86,6 +86,7 @@ class ReadAll extends Component {
                     onLoadMoreCollections={this.props.onLoadMoreCollections}
                     finished={this.props.finished}
                     requesting={this.props.requesting}
+                    router={this.props.router}
                 />
         }
         else if ((this.props.fetchingCollections === false && this.props.fetchedCollections === false) || this.props.message === "You have not added anything yet") {

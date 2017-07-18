@@ -35,16 +35,17 @@ class ViewRow extends Component {
         return (
             <Card className="picture-separator"
                   style={{minWidth: "50%", boxShadow: "transparent"}}>
-                <Link to="/collections#">
                     <CardMedia
                         style={{cursor: 'pointer'}}
-                        onTouchTap={() => this.props.onClickCollection(this.props.collection._id)}
+                        onTouchTap={() => {
+                            this.props.onClickCollection(this.props.collection._id);
+                            this.props.router.push("/collections#")
+                        }}
                         overlay={<CardTitle title={this.props.collection.collectionName}
                                             subtitle={"by " + this.props.collection.userName}/>}
                     >
                         <img onError={this.addDefaultPicture} src={this.props.collection.picturesArray[0].pictureLink}/>
                     </CardMedia>
-                </Link>
                 <div className="heart-and-tags-container">
                     <div className="heart-red-color">
                         {Auth.isUserAuthenticated() ?

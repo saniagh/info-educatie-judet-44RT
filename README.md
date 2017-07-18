@@ -527,19 +527,11 @@ npm install bcrypt
 <h5>Cristiana Lazar</h5>
 
 notes on bugs or issues met in live test version ( mostly for mobile ):
+- when user updates his/her profile we should sign another jwt and not ask them to relog - Canceled until further security investigation Reason:
 
-- wordBreak: break-all was making long descriptions look strange by separating words - FIXED all
-- added functionality to press the Back browser or phone button to close the modal by adding a # to the /collections = /collections# and some transition, scroll and router rules - FIXED - now on /manage , /news , /search and / aswell
-- modals from the current material-ui are broken and update to the @next material ui might break the site, will look into it these days - Canceled note:
+We would have to pass the password as metadata in the JWT and I am, honestly, not sure that is safe. Will keep looking into it or remove the ideea for the feature.
 
-The new material ui is in alpha and some features like Stepper are not fully supported meaning we would have to rething the Create and Update layout = modify the layout of 6 pages which is not worth it.
-
-- loading indicator on modals is not shown as it should be on mobile but if we implement the @next modals, it shouldn't be a problem anymore - To be tested since modals have fullWidth now
-- when user updates his/her profile we should sign another jwt and not ask them to relog - in progress Notes:
-
-Concept might be wrong. There might be a few unauthorized warnings fired if we do that but we will look into it.
-
-- change colours for buttons on logs - FIXED
 - we must see if we can fix the text editor for the mobile version. the problem is not on us but DraftJS itself. We must manually modify the dependency
+- usage of Link from react router didn't do the job for changing the link on mobile when navigating to, for example, "/collections#" so we replaced it with direct call to router.push(route) - FIXED
 
 Other issues will be available here, at the bottom of the docs.

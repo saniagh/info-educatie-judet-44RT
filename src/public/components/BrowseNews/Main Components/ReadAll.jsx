@@ -85,6 +85,7 @@ class ReadAll extends Component {
                     onLoadMoreNews={this.props.onLoadMoreNews}
                     finished={this.props.finished}
                     requesting={this.props.requesting}
+                    router={this.props.router}
                 />
         }
         else if (this.props.fetchingNews === false && this.props.fetchedNews === false) {

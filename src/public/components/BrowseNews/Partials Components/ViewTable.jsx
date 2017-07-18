@@ -13,6 +13,7 @@ class ViewTable extends Component {
                         admin={this.props.admin}
                         userId={this.props.userId}
                         onClickNews={this.props.onClickNews}
+                        router={this.props.router}
                     />
                 )
             }.bind(this));

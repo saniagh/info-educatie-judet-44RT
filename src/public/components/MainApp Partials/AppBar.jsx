@@ -16,7 +16,6 @@ import {
     Drawer
 } from 'material-ui';
 import ImageCollections from 'material-ui/svg-icons/image/collections';
-import ActionSupervisorAccount from 'material-ui/svg-icons/action/supervisor-account';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import AVLibraryBooks from 'material-ui/svg-icons/av/library-books';
@@ -374,12 +373,6 @@ class AppBarPersonal extends Component {
                             {this.props.isAdmin === true ?
                                 <span>
                                 <List>
-                                    <Link to={`/admin/${this.props.userId}`}
-                                          activeClassName="active-link-classname">
-                                        <ListItem primaryText="Control Panel"
-                                                  leftIcon={<ActionSupervisorAccount/>}/>
-                                    </Link>
-
                                     <Link to={`/admin/${this.props.userId}/collections`}
                                           activeClassName="active-link-classname">
                                         <ListItem primaryText="Manage collections"
