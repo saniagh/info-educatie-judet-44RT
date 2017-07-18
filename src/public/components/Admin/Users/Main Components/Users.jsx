@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import * as usersActions from '../../../../actions/Admin/Users/manageUsersActionsAdmin.js';
 import {
     Card,
@@ -43,6 +41,7 @@ class Users extends Component {
         this.handlers.onCloseSnackBar();
     };
 
+    // For some reason, onTouchTap doesn't work on these two tabs so we use onClick
     render() {
         return (
             <div>
@@ -53,8 +52,8 @@ class Users extends Component {
                           tabItemContainerStyle={{backgroundColor: "#000000"}}
                           style={{opacity: 0.8}}>
                         <Tab icon={<ActionPermContactCalendar/>}
-                             onTouchTap={() => this.props.changeAppMode('Moderators')}/>
-                        <Tab icon={<ContentRemoveCircle/>} onTouchTap={() => this.props.changeAppMode('Ban')}/>
+                             onClick={() => this.props.changeAppMode('Moderators')}/>
+                        <Tab icon={<ContentRemoveCircle/>} onClick={() => this.props.changeAppMode('Ban')}/>
                     </Tabs>
                     <div className="top-actions">
                         <div className="capsules">

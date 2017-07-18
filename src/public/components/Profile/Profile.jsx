@@ -180,6 +180,9 @@ class Profile extends Component {
                                                      style={{borderRadius: "50%"}}
                                                      src={this.props.profile.profilePictureLink ? this.props.profile.profilePictureLink : "/images/img9.jpg"}/>
                                                 <Dialog
+                                                    autoDetectWindowHeight={false}
+                                                    repositionOnUpdate={false}
+                                                    style={{paddingTop: 0}}
                                                     title="Change profile picture"
                                                     actions={actions1}
                                                     modal={false}
@@ -210,6 +213,9 @@ class Profile extends Component {
                                      alt=""/>
                                 <Dialog
                                     title="Change cover picture"
+                                    autoDetectWindowHeight={false}
+                                    repositionOnUpdate={false}
+                                    style={{paddingTop: 0}}
                                     actions={actions2}
                                     modal={false}
                                     open={this.props.openCoverPicture}
@@ -223,7 +229,7 @@ class Profile extends Component {
                                     </CardMedia>
                                     <TextField
                                         type="text"
-                                        floatingLabelText="Cover pictue link"
+                                        floatingLabelText="Cover picture link"
                                         value={this.props.profile.profileCover}
                                         onChange={this.props.profile.ownUser ? this.props.onProfileCoverChange : null}
                                         style={{width: "100%"}}
@@ -444,7 +450,7 @@ class Profile extends Component {
                     : null
                 }
                 {this.props.profile.fetchingProfile === false && this.props.profile.fetchedProfile === true && this.props.profile.successStatus === true ?
-                    <Snackbar message="Profile successfully updated! Please relog before posting anything!"
+                    <Snackbar message="Success! Please relog!"
                               open={this.props.openSnackBar}
                               autoHideDuration={6000}
                               onRequestClose={() => this.handlers.closeSnackBar()}/>

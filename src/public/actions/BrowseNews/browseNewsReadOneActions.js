@@ -201,3 +201,9 @@ export function onDeleteComment(commentId) {
         })
     }
 }
+
+export function onResetReducer() {
+    return function (dispatch) {
+        dispatch({type: types.ON_RESET_REDUCER_BROWSE_NEWS})
+    }
+}

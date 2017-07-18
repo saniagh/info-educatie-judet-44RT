@@ -13,8 +13,13 @@ let createHandler = function (dispatch) {
         dispatch(readOneActions.getCollection(collectionId))
     };
 
+    let onResetReducer = function () {
+        dispatch(readOneActions.onResetReducer())
+    };
+
     return {
-        getCollection
+        getCollection,
+        onResetReducer
     }
 };
 
@@ -25,12 +30,34 @@ class ReadAll extends Component {
         this.handlers = createHandler(this.props.dispatch);
         this.state = {
             open: false,
-            collectionId: ""
+            collectionId: "",
+            prevPathname: ""
         }
     }
 
-    handleClose = () => {
-        this.setState({open: false});
+    componentDidMount() {
+        // to avoid having /manage# as a true navigation route
+        this.props.router.replace("/manage");
+        window.addEventListener("hashchange", this.onLinkChange)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("hashchange", this.onLinkChange);
+    }
+
+    onLinkChange = () => {
+        if (this.props.location.pathname === '/manage') {
+            this.setState({open: false});
+            this.handleClose(true);
+        }
+    };
+
+    handleClose = (backButton) => {
+        this.handlers.onResetReducer();
+        if (backButton === false) {
+            this.setState({open: false});
+            this.props.router.goBack()
+        }
     };
 
     onClickCollection = (collectionId) => {
@@ -80,17 +107,17 @@ class ReadAll extends Component {
                     <TopActions/>
                     {modeComponent}
                     <Dialog
-
+                        repositionOnUpdate={false}
                         actions={<RaisedButton
-                            onTouchTap={this.handleClose}
-                            label="Close me"
+                            onTouchTap={() => this.handleClose(false)}
+                            label="Return"
                             primary={true}
                             buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
-
-                        contentStyle={{width: "90%", height: "90%", maxWidth: 'none', maxHeight: 'none'}}
+                        contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                        bodyStyle={{padding: 0, borderBottom: 0}}
                         modal={false}
                         open={this.state.open}
-                        onRequestClose={this.handleClose}
+                        onRequestClose={() => this.handleClose(false)}
                         autoScrollBodyContent={true}
                     >
                         <ReadOneView collectionId={this.state.collectionId}

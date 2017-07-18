@@ -31,13 +31,13 @@ class ReadAll extends Component {
         this.state = {
             open: false,
             collectionId: "",
-            prevPathname: ''
+            prevPathname: ""
         }
     }
 
     componentDidMount() {
         // to avoid having /collections# as a true navigation route
-        this.props.router.push("/collections");
+        this.props.router.replace("/collections");
         window.addEventListener("hashchange", this.onLinkChange);
     }
 

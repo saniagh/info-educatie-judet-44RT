@@ -47,6 +47,7 @@ class PictureRow extends Component {
                 <Dialog
                     autoDetectWindowHeight={false}
                     repositionOnUpdate={false}
+                    style={{paddingTop: 0}}
                     actions={<RaisedButton
                         onTouchTap={this.handleCloseModal}
                         label="Close me"

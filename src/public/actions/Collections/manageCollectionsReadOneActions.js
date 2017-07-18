@@ -161,12 +161,6 @@ export function getCommentsCount(collectionId) {
     }
 }
 
-export function resetReducer() {
-    return function (dispatch) {
-        dispatch({type: types.RESET_READ_ONE_REDUCER_COLLECTIONS})
-    }
-}
-
 export function onDeleteCommentInitiate() {
     return {type: types.ON_DELETE_COMMENT_INITIATE}
 }
@@ -201,3 +195,8 @@ export function onDeleteComment(commentId) {
     }
 }
 
+export function onResetReducer() {
+    return function (dispatch) {
+        dispatch({type: types.ON_RESET_REDUCER_MANAGE_COLLECTIONS})
+    }
+}

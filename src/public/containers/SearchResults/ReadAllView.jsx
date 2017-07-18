@@ -47,7 +47,7 @@ class ReadAllView extends Component {
     }
 
     render() {
-        document.title = this.props.params._searchQuery;
+        document.title = "Search results: " + this.props.params._searchQuery;
         if (this.props.credentials.fetched === true)
         return <ReadAll
             collections={this.props.collections.collections}
@@ -62,6 +62,9 @@ class ReadAllView extends Component {
             context={this.context}
             admin={this.props.credentials.admin}
             userId={this.props.credentials.userId}
+            searchQuery={this.props.params._searchQuery}
+            router={this.props.router}
+            location={this.props.location}
         />;
         else if (this.props.credentials.fetching === true) return <LoadingIndicator/>
     }

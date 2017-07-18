@@ -91,3 +91,9 @@ export function onSave(comment, collectionId, key) {
         })
     }
 }
+
+export function onResetReducer() {
+    return function (dispatch) {
+        dispatch({type: types.ON_RESET_REDUCER_HOME_VIEW_READ_ONE})
+    }
+}

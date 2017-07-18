@@ -11,14 +11,16 @@ class ViewRow extends Component {
     render() {
         return (
             <Card className="picture-separator" style={{boxShadow: "transparent"}}>
-                <CardMedia
-                    style={{cursor: 'pointer'}}
-                    onTouchTap={() => this.props.onClickNews(this.props.news._id)}
-                    overlay={<CardTitle title={this.props.news.newsTitle}
-                                        subtitle={"by " + this.props.news.userName}/>}
-                >
-                    <img onError={this.addDefaultPicture} src={this.props.news.newsCoverLink}/>
-                </CardMedia>
+                <Link to="/news#">
+                    <CardMedia
+                        style={{cursor: 'pointer'}}
+                        onTouchTap={() => this.props.onClickNews(this.props.news._id)}
+                        overlay={<CardTitle title={this.props.news.newsTitle}
+                                            subtitle={"by " + this.props.news.userName}/>}
+                    >
+                        <img onError={this.addDefaultPicture} src={this.props.news.newsCoverLink}/>
+                    </CardMedia>
+                </Link>
                 {this.props.admin === true ?
                     <CardActions>
                         <Link to={`/admin/${this.props.userId}/news/update/${this.props.news._id}`}>

@@ -187,16 +187,17 @@ class Home extends Component {
                         null
                 }
 
-
                 <Dialog
+                    repositionOnUpdate={false}
                     actions={<RaisedButton
-                        onTouchTap={this.props.handleCloseCollections}
-                        label="Close me" primary={true}
+                        onTouchTap={() => this.props.handleCloseCollections(false)}
+                        label="Return" primary={true}
                         buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
-                    contentStyle={{width: "90%", height: "90%", maxWidth: 'none', maxHeight: 'none'}}
+                    contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                    bodyStyle={{padding: 0, borderBottom: 0}}
                     modal={false}
                     open={this.props.openCollections}
-                    onRequestClose={this.props.handleCloseCollections}
+                    onRequestClose={() => this.props.handleCloseCollections(false)}
                     autoScrollBodyContent={true}
                 >
                     <ReadOneView collectionId={this.props.collectionId}
@@ -205,14 +206,16 @@ class Home extends Component {
                 </Dialog>
 
                 <Dialog
+                    repositionOnUpdate={false}
                     actions={<RaisedButton
-                        onTouchTap={this.props.handleCloseNews}
-                        label="Close me" primary={true}
+                        onTouchTap={() => this.props.handleCloseNews(false)}
+                        label="Return" primary={true}
                         buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
-                    contentStyle={{width: "90%", height: "90%", maxWidth: 'none', maxHeight: 'none'}}
+                    contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                    bodyStyle={{padding: 0, borderBottom: 0}}
                     modal={false}
                     open={this.props.openNews}
-                    onRequestClose={this.props.handleCloseNews}
+                    onRequestClose={() => this.props.handleCloseNews(false)}
                     autoScrollBodyContent={true}
                 >
                     <ReadOneViewNews newsId={this.props.newsId}

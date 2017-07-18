@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import PropTypes from 'prop-types';
 import Home from '../../components/Home/Home.jsx';
 import {Card, CardMedia, CardTitle} from 'material-ui';
@@ -42,13 +43,18 @@ let createHandler = function (dispatch) {
         dispatch(readOneActionsNews.getNews(newsId))
     };
 
+    let onResetReducer = function () {
+        dispatch(readOneActionsCollections.onResetReducer())
+    };
+
     return {
         updateCollectionsStore,
         updateNewsStore,
         removeShouldUpdateNews,
         removeShouldUpdate,
         getCollection,
-        getNews
+        getNews,
+        onResetReducer
     }
 };
 
@@ -60,11 +66,15 @@ class HomeView extends Component {
             openCollections: false,
             openNews: false,
             collectionId: "",
-            newsId: ""
+            newsId: "",
+            prevPathname: ""
         }
     }
 
     componentDidMount() {
+        // to avoid having /# as a true navigation route
+        this.props.router.replace("/");
+        window.addEventListener("hashchange", this.onLinkChange);
         if (this.props.shouldUpdateCollections && this.props.shouldUpdateCollections.shouldUpdateCollections) {
             this.handlers.updateCollectionsStore();
             this.handlers.removeShouldUpdate();
@@ -75,8 +85,24 @@ class HomeView extends Component {
         }
     };
 
-    handleCloseCollections = () => {
-        this.setState({openCollections: false});
+    componentWillUnmount() {
+        window.removeEventListener("hashchange", this.onLinkChange);
+    }
+
+    onLinkChange = () => {
+        if (this.props.location.pathname === '/') {
+            this.setState({openCollections: false, openNews: false});
+            this.handleCloseCollections(true);
+            this.handleCloseNews(true);
+        }
+    };
+
+    handleCloseCollections = (backButton) => {
+        this.handlers.onResetReducer();
+        if (backButton === false) {
+            this.setState({openCollections: false});
+            this.props.router.goBack()
+        }
     };
 
     onClickCollection = (collectionId) => {
@@ -87,8 +113,12 @@ class HomeView extends Component {
         })
     };
 
-    handleCloseNews = () => {
-        this.setState({openNews: false});
+    handleCloseNews = (backButton) => {
+        this.handlers.onResetReducer();
+        if (backButton === false) {
+            this.setState({openNews: false});
+            this.props.router.goBack()
+        }
     };
 
     onClickNews = (newsId) => {
@@ -118,12 +148,14 @@ class HomeView extends Component {
                         <li key={key} style={{display: "flex", justifyContent: "center"}}
                         >
                             <Card style={{maxHeight: "auto", width: 800}}>
-                                <CardMedia overlay={<CardTitle title={news[key].newsTitle}
-                                                               subtitle={"by " + news[key].userName}/>}
-                                           onTouchTap={() => this.onClickNews(news[key]._id)}
-                                           style={{cursor: "pointer"}}>
-                                    <img onError={this.addDefaultPicture} src={news[key].newsCoverLink}/>
-                                </CardMedia>
+                                <Link to="/#">
+                                    <CardMedia overlay={<CardTitle title={news[key].newsTitle}
+                                                                   subtitle={"by " + news[key].userName}/>}
+                                               onTouchTap={() => this.onClickNews(news[key]._id)}
+                                               style={{cursor: "pointer"}}>
+                                        <img onError={this.addDefaultPicture} src={news[key].newsCoverLink}/>
+                                    </CardMedia>
+                                </Link>
                             </Card>
                         </li>
                     )
@@ -144,12 +176,15 @@ class HomeView extends Component {
                             onTouchTap={() => this.onClickCollection(collections[key]._id)}
                             key={key}>
                             <Card>
-                                <CardMedia
-                                    overlay={<CardTitle title={collections[key].collectionName}
-                                                        subtitle={"by " + collections[key].userName}/>}
-                                    style={{minHeight: 300, cursor: "pointer"}}>
-                                    <img onError={this.addDefaultPicture} src={collections[key].picturesArray[0].pictureLink}/>
-                                </CardMedia>
+                                <Link to="/#">
+                                    <CardMedia
+                                        overlay={<CardTitle title={collections[key].collectionName}
+                                                            subtitle={"by " + collections[key].userName}/>}
+                                        style={{minHeight: 300, cursor: "pointer"}}>
+                                        <img onError={this.addDefaultPicture}
+                                             src={collections[key].picturesArray[0].pictureLink}/>
+                                    </CardMedia>
+                                </Link>
                             </Card>
                         </li>
                     )
@@ -162,11 +197,14 @@ class HomeView extends Component {
                         <li key={key}
                             onTouchTap={() => this.onClickCollection(collections[key]._id)}>
                             <Card>
-                                <CardMedia overlay={<CardTitle title={collections[key].collectionName}
-                                                               subtitle={"by " + collections[key].userName}/>}
-                                           style={{cursor: "pointer"}}>
-                                    <img onError={this.addDefaultPicture} src={collections[key].picturesArray[0].pictureLink}/>
-                                </CardMedia>
+                                <Link to="/#">
+                                    <CardMedia overlay={<CardTitle title={collections[key].collectionName}
+                                                                   subtitle={"by " + collections[key].userName}/>}
+                                               style={{cursor: "pointer"}}>
+                                        <img onError={this.addDefaultPicture}
+                                             src={collections[key].picturesArray[0].pictureLink}/>
+                                    </CardMedia>
+                                </Link>
                             </Card>
                         </li>
                     )

@@ -45,13 +45,32 @@ export default function browseNewsReadOneReducer(state = {
                 fetching: true
             };
 
-        case types.GET_COMMENTS_NEWS_BROWSE_SUCCESS:
+        case types.GET_COMMENTS_NEWS_BROWSE_SUCCESS: {
+            if (action.comments.data.comments && action.comments.data.length % 10 === 0)
             return {
                 ...state,
                 fetched: true,
-                fetching:false,
-                comments: action.comments
+                fetching: false,
+                comments: action.comments,
+                finished: false
             };
+            else if (action.comments.data.comments && action.comments.data.comments.length % 10 !== 0) {
+                return {
+                    ...state,
+                    fetched: true,
+                    fetching: false,
+                    comments: action.comments,
+                    finished: true
+                }
+            }
+            else return {
+                    ...state,
+                    fetched: true,
+                    fetching: false,
+                    comments: action.comments,
+                    finished: false
+                }
+        }
 
         case types.GET_COMMENTS_NEWS_BROWSE_FAILURE:
             return {
@@ -153,6 +172,35 @@ export default function browseNewsReadOneReducer(state = {
                 commentsCount: action.count
             };
 
+        case types.ON_RESET_REDUCER_BROWSE_NEWS:
+            return {
+                loadAfter: 10,
+                finished: false,
+                requesting: false,
+                comment: "",
+                commentAdded: null,
+                commentsCount: 0,
+                newsId: -1,
+                fetchedNews: false,
+                fetchingNews: false,
+                fetchedComments: false,
+                news: {}
+            };
+
+        case types.ON_RESET_REDUCER_HOME_VIEW_READ_ONE:
+            return {
+                loadAfter: 10,
+                finished: false,
+                requesting: false,
+                comment: "",
+                commentAdded: null,
+                commentsCount: 0,
+                newsId: -1,
+                fetchedNews: false,
+                fetchingNews: false,
+                fetchedComments: false,
+                news: {}
+            };
 
         default:
             return state;

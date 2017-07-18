@@ -132,12 +132,8 @@ export default function manageCollectionsReadOneReducer(state = {
                 commentsCount: action.count
             };
 
-        case types.RESET_READ_ONE_REDUCER_COLLECTIONS:
+        case types.ON_RESET_REDUCER_MANAGE_COLLECTIONS:
             return {
-                message: "",
-                comments: {},
-                fetched: null,
-                fetching: null,
                 loadAfter: 10,
                 finished: false,
                 requesting: false,

@@ -35,10 +35,6 @@ let createHandler = function (dispatch) {
         dispatch(readOneActions.onSaveComment(collectionId, comment))
     };
 
-    let resetReducer = function () {
-        dispatch(readOneActions.resetReducer())
-    };
-
     let onDeleteComment = function (commentId) {
         dispatch(readOneActions.onDeleteComment(commentId));
     };
@@ -50,7 +46,6 @@ let createHandler = function (dispatch) {
         onCommentInputChange,
         getCommentsCount,
         onSaveComment,
-        resetReducer,
         onDeleteComment
     }
 };
@@ -77,10 +72,6 @@ class ReadOneView extends Component {
             }, 500)
         });
     };
-
-    componentWillUnmount() {
-        this.handlers.resetReducer();
-    }
 
     onCommentChange = (e) => {
         this.handlers.onCommentInputChange(e.target.value);

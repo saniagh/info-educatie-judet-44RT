@@ -12,8 +12,13 @@ let createHandler = function (dispatch) {
         dispatch(readOneActions.getCollection(collectionId))
     };
 
+    let onResetReducer = function () {
+        dispatch(readOneActions.onResetReducer())
+    };
+
     return {
-        getCollection
+        getCollection,
+        onResetReducer
     }
 };
 
@@ -24,12 +29,34 @@ class ReadAll extends Component {
         this.handlers = createHandler(this.props.dispatch);
         this.state = {
             open: false,
-            collectionId: ""
+            collectionId: "",
+            prevPathname: ""
         }
     }
 
-    handleClose = () => {
-        this.setState({open: false});
+    componentDidMount() {
+        // to avoid having /search/params.searchQuery$ as a true navigation route
+        this.props.router.replace(`/search/${this.props.searchQuery}`);
+        window.addEventListener("hashchange", this.onLinkChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("hashchange", this.onLinkChange);
+    }
+
+    onLinkChange = () => {
+        if (this.props.location.pathname === `/search/${this.props.searchQuery}`) {
+            this.setState({open: false});
+            this.handleClose(true);
+        }
+    };
+
+    handleClose = (backButton) => {
+        this.handlers.onResetReducer();
+        if (backButton === false) {
+            this.setState({open: false});
+            this.props.router.goBack()
+        }
     };
 
     onClickCollection = (collectionId) => {
@@ -57,7 +84,8 @@ class ReadAll extends Component {
                     onUnlike={this.props.onUnlike}
                     context={this.props.context}
                     admin={this.props.admin}
-                    userId={this.props.userId}/>
+                    userId={this.props.userId}
+                    searchQuery={this.props.searchQuery}/>
         }
         else if (this.props.fetchingCollections === false && this.props.fetchedCollections === false) {
             modeComponent = <NoCollectionsFound/>
@@ -73,20 +101,22 @@ class ReadAll extends Component {
         return (
             <div className="parallax-collections">
                 <div className="top-bar-spacing"/>
-                <div className="section-title">Manage collections</div>
+                <div className="section-title">Search results</div>
                 <Card className="container-collections" style={{backgroundColor: 'none'}}>
                     {modeComponent}
 
                     <Dialog
+                        repositionOnUpdate={false}
                         actions={<RaisedButton
-                            onTouchTap={this.handleClose}
-                            label="Close me"
+                            onTouchTap={() => this.handleClose(false)}
+                            label="Return"
                             primary={true}
                             buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
-                        contentStyle={{width: "90%", height: "90%", maxWidth: 'none', maxHeight: 'none'}}
+                        contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                        bodyStyle={{padding: 0, borderBottom: 0}}
                         modal={false}
                         open={this.state.open}
-                        onRequestClose={this.handleClose}
+                        onRequestClose={() => this.handleClose(false)}
                         autoScrollBodyContent={true}
                     >
                         <ReadOneView collectionId={this.state.collectionId}

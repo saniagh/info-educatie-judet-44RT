@@ -57,6 +57,8 @@ class ReadAllView extends Component {
             onLoadMoreNews={this.onLoadMoreNews}
             finished={this.props.news.finished}
             requesting={this.props.news.requesting}
+            router={this.props.router}
+            location={this.props.location}
         />;
     }
 }

@@ -165,6 +165,17 @@ export default function browseCollectionsReadOneReducer(state = {
                 commentsCount: 0
             };
 
+        // from HomeView
+        case types.ON_RESET_REDUCER_HOME_VIEW_READ_ONE:
+            return {
+                loadAfter: 10,
+                finished: false,
+                requesting: false,
+                comment: "",
+                commentAdded: null,
+                commentsCount: 0
+            };
+
         default:
             return state;
     }

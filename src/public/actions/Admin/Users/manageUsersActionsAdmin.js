@@ -1,5 +1,4 @@
 import React from 'react';
-import UsersRowsMobile from '../../../components/Admin/Users/Partials Components/UsersRowsMobile.jsx';
 import * as types from '../../actionTypes.js';
 import axios from 'axios';
 import Auth from '../../../modules/Auth.js';

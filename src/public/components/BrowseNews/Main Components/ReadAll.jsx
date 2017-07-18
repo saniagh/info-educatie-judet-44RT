@@ -13,8 +13,13 @@ let createHandler = function (dispatch) {
         dispatch(readOneActionsNews.getNews(newsId))
     };
 
+    let onResetReducer = function () {
+        dispatch(readOneActionsNews.onResetReducer())
+    };
+
     return {
-        getNews
+        getNews,
+        onResetReducer
     }
 };
 
@@ -25,12 +30,34 @@ class ReadAll extends Component {
         this.handlers = createHandler(this.props.dispatch);
         this.state = {
             open: false,
-            newsId: ""
+            newsId: "",
+            prevPathname: ""
         }
     }
 
-    handleClose = () => {
-        this.setState({open: false});
+    componentDidMount() {
+        // to avoid having /news# as a true navigation route
+        this.props.router.replace("/news");
+        window.addEventListener("hashchange", this.onLinkChange)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("hashchange", this.onLinkChange);
+    }
+
+    onLinkChange = () => {
+        if (this.props.location.pathname === '/news') {
+            this.setState({open: false});
+            this.handleClose(true);
+        }
+    };
+
+    handleClose = (backButton) => {
+        this.handlers.onResetReducer();
+        if (backButton === false) {
+            this.setState({open: false});
+            this.props.router.goBack()
+        }
     };
 
     onClickNews = (newsId) => {
@@ -77,14 +104,16 @@ class ReadAll extends Component {
                     }
                     {modeComponent}
                     <Dialog
+                        repositionOnUpdate={false}
                         actions={<RaisedButton
-                            onTouchTap={this.handleClose}
-                            label="Close me" primary={true}
+                            onTouchTap={() => this.handleClose(false)}
+                            label="Return" primary={true}
                             buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
-                        contentStyle={{width: "90%", height: "90%", maxWidth: 'none', maxHeight: 'none'}}
+                        contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                        bodyStyle={{padding: 0, borderBottom: 0}}
                         modal={false}
                         open={this.state.open}
-                        onRequestClose={this.handleClose}
+                        onRequestClose={() => this.handleClose(false)}
                         autoScrollBodyContent={true}
                     >
                         <ReadOneView newsId={this.state.newsId}

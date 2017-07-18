@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
-import {Card, CardText, CardHeader, CardActions, Checkbox, RaisedButton, TextField} from 'material-ui';
+import {Card, CardText, CardHeader, CardActions, Checkbox, RaisedButton} from 'material-ui';
 import NoCommentsFound from '../Partials Components/NoCommentsFound.jsx';
 import CommentForm from '../Partials Components/CommentForm.jsx';
 import CommentList from '../Partials Components/CommentList.jsx';
@@ -143,12 +143,9 @@ class ReadOne extends Component {
                                 </div>
                             </div>
                             <CardActions>
-                                <TextField name="Share"
-                                           disabled={true}
-                                           value={`localhost/collections/${this.props.collection._id}`}/>
                                 <CopyToClipboard text={`localhost/collections/${this.props.collection._id}`}
                                                  onCopy={() => this.setState({copied: true})}>
-                                    <RaisedButton label={this.state.copied === false ? "Copy link" : "Success !"}
+                                    <RaisedButton label={this.state.copied === false ? "Copy share link" : "Success !"}
                                                   labelPosition="before"
                                                   icon={this.state.copied === false ? <SocialShare/> :
                                                       <NavigationCheck/>}

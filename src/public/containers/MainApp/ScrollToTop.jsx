@@ -11,7 +11,7 @@ class ScrollToTop extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.location !== nextProps.location) {
-            if ((nextProps.location.pathname !== '/collections' || this.props.location.pathname !== '/collections')) {
+            if ((nextProps.location.pathname !== '/collections' || this.props.location.pathname !== '/collections') && (nextProps.location.pathname !== '/news' || this.props.location.pathname !== '/news') && (nextProps.location.pathname !== '/manage' || this.props.location.pathname !== '/manage') && (nextProps.location.pathname !== '/' || this.props.location.pathname !== '/') && !(nextProps.location.pathname.includes("/search") || this.props.location.pathname.includes("/search"))) {
                 smoothScroll();
             }
         }
