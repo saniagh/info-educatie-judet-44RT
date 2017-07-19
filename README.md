@@ -534,4 +534,4 @@ We would have to pass the password as metadata in the JWT and I am, honestly, no
 - we must see if we can fix the text editor for the mobile version. the problem is not on us but DraftJS itself. We must manually modify the dependency
 - usage of Link from react router didn't do the job for changing the link on mobile when navigating to, for example, "/collections#" so we replaced it with direct call to router.push(route) - FIXED
 
-Other issues will be available here, at the bottom of the docs.
+Other issues will be available here, at the bottom of the docs
