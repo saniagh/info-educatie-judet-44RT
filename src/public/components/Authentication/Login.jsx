@@ -33,7 +33,7 @@ class Login extends Component {
                                         value={this.props.user.email}
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors ? this.props.errors.email : null}
-                                        autoFocus={true}
+
                                         style={{minWidth: "100%"}}
                                         inputStyle={{color: "#000000", opacity: 0.8}}
                                         floatingLabelStyle={{color: "#000000", opacity: 0.8}}

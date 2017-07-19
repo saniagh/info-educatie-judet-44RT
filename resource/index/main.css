@@ -961,6 +961,9 @@ body, html, main {
     .collections-break-flex-mobile {
       display: block; } }
 
+.mobile-warning {
+  color: red; }
+
 .grid-list-wrap {
   display: flex;
   flex: 0;

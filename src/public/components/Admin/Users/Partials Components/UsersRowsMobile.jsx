@@ -13,16 +13,31 @@ class UsersRowsMobile extends Component {
         }
     }
 
+    componentDidMount() {
+        window.addEventListener("hashchange", this.onLinkChange)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("hashchange", this.onLinkChange);
+    }
+
+    onLinkChange = () => {
+        this.handleClose(true)
+    };
+
     handleOpen = () => {
         this.setState({
             open: true
         })
     };
 
-    handleClose = () => {
+    handleClose = (backButton) => {
         this.setState({
             open: false
-        })
+        });
+        if (backButton === false) {
+            this.props.router.goBack();
+        }
     };
 
     render() {
@@ -92,7 +107,10 @@ class UsersRowsMobile extends Component {
                     <RaisedButton primary={true}
                                   style={{backgroundColor: "transparent", boxShadow: "none"}}
                                   label="Details"
-                                  onTouchTap={this.handleOpen}
+                                  onTouchTap={() => {
+                                      this.handleOpen();
+                                      this.props.router.push(this.props.router.location.pathname + "#")
+                                  }}
                                   className="action-buttons-users"
                                   buttonStyle={{backgroundColor: "#9b9b9b"}}
                                   labelStyle={{color: "#ffffff"}}
@@ -107,7 +125,9 @@ class UsersRowsMobile extends Component {
                     modal={false}
                     repositionOnUpdate={false}
                     open={this.state.open}
-                    onRequestClose={this.handleClose}
+                    onRequestClose={() => {
+                        this.handleClose(false);
+                    }}
                     autoScrollBodyContent={true}
                 >
                     <List>

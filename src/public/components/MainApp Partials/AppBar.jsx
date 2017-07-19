@@ -292,7 +292,9 @@ class AppBarPersonal extends Component {
                 </Toolbar>
 
                 <Drawer open={this.state.openSearch}
+                        swipeAreaWidth={0}
                         openSecondary={true}
+                        disableSwipeToOpen={true}
                         docked={false}
                         onRequestChange={() => this.handleCloseSearch()}>
                     {this.state.openSearch ?
@@ -324,6 +326,8 @@ class AppBarPersonal extends Component {
 
                 <Drawer open={this.state.openMenu}
                         docked={false}
+                        swipeAreaWidth={0}
+                        disableSwipeToOpen={true}
                         onRequestChange={() => this.handleCloseMenu()}>
                     {Auth.isUserAuthenticated() ?
                         <span onTouchTap={this.handleCloseMenu}>
@@ -438,7 +442,7 @@ class AppBarPersonal extends Component {
                                 <ListItem primaryText="Login"/>
                             </Link>
 
-                            <Link to={`/Sign Up`}>
+                            <Link to={`/signup`}>
                                 <ListItem primaryText="Sign Up"/>
                             </Link>
 

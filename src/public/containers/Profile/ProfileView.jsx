@@ -236,6 +236,7 @@ class ProfileView extends Component {
                     onProfileCoverChange={this.onProfileCoverChange}
                     onCancelEdit={this.onCancelEdit}
                     onSave={this.onSave}
+                    router={this.props.router}
                 />
             )
         }

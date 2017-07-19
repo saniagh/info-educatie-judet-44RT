@@ -41,6 +41,19 @@ class Update extends Component {
     constructor(props) {
         super(props);
         this.handlers = createHandler(this.props.dispatch);
+
+        this.state = {
+            mobile: false
+        }
+
+    }
+
+    componentDidMount() {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            this.setState({
+                mobile: true
+            })
+        }
     }
 
     handleNext = () => {
@@ -119,6 +132,15 @@ class Update extends Component {
                 return (
                     <div>
                         <div>
+
+                            {this.state.mobile === true ?
+                                <div className="mobile-warning">
+                                    WARNING: If you wish to edit the description of your collection or of your photos, please use a PC or laptop. You can still edit the collection with all the other details. We're sorry for the inconvenience
+                                </div>
+                                :
+                                null
+                            }
+
                             {this.props.collectionName.length > 100 ?
                                 <div>
                                     Please use a name that is shorter than 100 characters
@@ -129,7 +151,7 @@ class Update extends Component {
                                 onChange={this.props.onCollectionNameChange}
                                 errorText={this.props.errors.collectionName}
                                 onKeyDown={this.handleKeyPress}
-                                autoFocus={true}
+
                                 multiLine={true}
                                 className="step-textfields"
                                 inputStyle={{color: "#000000", opacity: 0.8}}

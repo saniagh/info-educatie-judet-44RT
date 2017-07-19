@@ -36,6 +36,19 @@ class Create extends Component {
     constructor(props) {
         super(props);
         this.handlers = createHandler(this.props.dispatch);
+
+        this.state = {
+            mobile: false
+        }
+
+    }
+
+    componentDidMount() {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            this.setState({
+                mobile: true
+            })
+        }
     }
 
     handleNext = () => {
@@ -91,6 +104,15 @@ class Create extends Component {
                 return (
                     <div>
                         <div>
+
+                            {this.state.mobile === true ?
+                                <div className="mobile-warning">
+                                    WARNING: If you wish to add a description to your article, please use a PC or laptop. You can still add the article with all the other details. We're sorry for the inconvenience
+                                </div>
+                                :
+                                null
+                            }
+
                             {this.props.newsTitle.length > 100 ?
                                 <div>
                                     Please use a name that is shorter than 100 characters
@@ -101,7 +123,7 @@ class Create extends Component {
                                 onChange={this.props.onNewsTitleChange}
                                 errorText={this.props.errors.newsTitle}
                                 onKeyDown={this.handleKeyPress}
-                                autoFocus={true}
+
                                 multiLine={true}
                                 className="step-textfields"
                                 inputStyle={{color: "#000000", opacity: 0.8}}

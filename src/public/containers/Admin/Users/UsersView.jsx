@@ -69,12 +69,14 @@ class UsersView extends Component {
                     let rowsModerators = Object.keys(users).map((i) => {
                         return <UsersRowsMobile key={i}
                                                 user={users[i]}
+                                                router={this.props.router}
                                                 onAddModerator={this.onAddModerator}/>
                     });
 
                     let rowsBan = Object.keys(users).map((i) => {
                         return <UsersRowsMobile key={i}
                                                 user={users[i]}
+                                                router={this.props.router}
                                                 onBanUser={this.onBanUser}/>
                     });
 
@@ -97,12 +99,14 @@ class UsersView extends Component {
                     let rowsModerators = Object.keys(users).map((i) => {
                         return <UsersRowsMobile key={i}
                                                 user={users[i]}
+                                                router={this.props.router}
                                                 onAddModerator={this.onAddModerator}/>
                     });
 
                     let rowsBan = Object.keys(users).map((i) => {
                         return <UsersRowsMobile key={i}
                                                 user={users[i]}
+                                                router={this.props.router}
                                                 onBanUser={this.onBanUser}/>
                     });
 
@@ -122,12 +126,14 @@ class UsersView extends Component {
                 let rowsModerators = Object.keys(users).map((i) => {
                     return <UsersRowsMobile key={i}
                                             user={users[i]}
+                                            router={this.props.router}
                                             onAddModerator={this.onAddModerator}/>
                 });
 
                 let rowsBan = Object.keys(users).map((i) => {
                     return <UsersRowsMobile key={i}
                                             user={users[i]}
+                                            router={this.props.router}
                                             onBanUser={this.onBanUser}/>
                 });
 
@@ -158,6 +164,7 @@ class UsersView extends Component {
                     if (users[i] && (users[i].email.includes(this.props.users.searchQuery) || users[i].name.includes(this.props.users.searchQuery) || users[i]._id === this.props.users.searchQuery)) {
                         return <UsersRowsMobile key={i}
                                                 user={users[i]}
+                                                router={this.props.router}
                                                 onAddModerator={this.onAddModerator}/>
                     }
                 });
@@ -166,6 +173,7 @@ class UsersView extends Component {
                     if (users[i] && (users[i].email.includes(this.props.users.searchQuery) || users[i].name.includes(this.props.users.searchQuery) || users[i]._id === this.props.users.searchQuery)) {
                         return <UsersRowsMobile key={i}
                                                 user={users[i]}
+                                                router={this.props.router}
                                                 onBanUser={this.onBanUser}/>
                     }
                 });

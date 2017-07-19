@@ -67,27 +67,45 @@ class Profile extends Component {
         this.handlers = createHandler(this.props.dispatch);
     }
 
+    componentDidMount() {
+        window.addEventListener("hashchange", this.onLinkChange)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("hashchange", this.onLinkChange);
+    }
+
+    onLinkChange = () => {
+        this.closeProfilePictureModal(true);
+        this.closeProfileCoverModal(true);
+    };
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.openSnackBar === true) {
             setTimeout(() => this.handlers.closeSnackBar(), 4000)
         }
     }
 
-    openProfilePictureModal = (e) => {
-        e.stopPropagation();
+    openProfilePictureModal = () => {
         this.handlers.openProfilePictureModal();
     };
 
-    closeProfilePictureModal = () => {
+    closeProfilePictureModal = (backButton) => {
         this.handlers.closeProfilePictureModal();
+        if (backButton === false) {
+            this.props.router.goBack();
+        }
     };
 
     openProfileCoverModal = () => {
         this.handlers.openProfileCoverModal();
     };
 
-    closeProfileCoverModal = () => {
+    closeProfileCoverModal = (backButton) => {
         this.handlers.closeProfileCoverModal();
+        if (backButton === false) {
+            this.props.router.goBack();
+        }
     };
 
     onSlideIndexChange = (value) => {
@@ -96,12 +114,12 @@ class Profile extends Component {
 
     combineFunctionsProfilePicture = () => {
         this.props.onCancelEdit();
-        this.closeProfilePictureModal();
+        this.closeProfilePictureModal(false);
     };
 
     combineFunctionsProfileCover = () => {
         this.props.onCancelEdit();
-        this.closeProfileCoverModal();
+        this.closeProfileCoverModal(false);
     };
 
     addDefaultPicture = (e) => {
@@ -115,14 +133,14 @@ class Profile extends Component {
                 buttonStyle={{backgroundColor: "#eb7077"}}
                 labelStyle={{color: "#ffffff"}}
                 onTouchTap={() => {
-                    this.closeProfilePictureModal();
+                    this.closeProfilePictureModal(false);
                     this.props.onCancelEdit();
                 }}
             />,
             <RaisedButton
                 label="Save"
                 onTouchTap={() => {
-                    this.closeProfilePictureModal();
+                    this.closeProfilePictureModal(false);
                     this.props.onSave();
                 }}
                 buttonStyle={{backgroundColor: "#9b9b9b"}}
@@ -136,7 +154,7 @@ class Profile extends Component {
                 buttonStyle={{backgroundColor: "#eb7077"}}
                 labelStyle={{color: "#ffffff"}}
                 onTouchTap={() => {
-                    this.closeProfileCoverModal();
+                    this.closeProfileCoverModal(false);
                     this.props.onCancelEdit();
                 }}
             />,
@@ -145,7 +163,7 @@ class Profile extends Component {
                 buttonStyle={{backgroundColor: "#9b9b9b"}}
                 labelStyle={{color: "#ffffff"}}
                 onTouchTap={() => {
-                    this.closeProfileCoverModal();
+                    this.closeProfileCoverModal(false);
                     this.props.onSave();
                 }}
             />
@@ -169,14 +187,12 @@ class Profile extends Component {
                         <Card className="cover-container"
                               style={{backgroundColor: 'whitesmoke', boxShadow: 'transparent'}}>
                             <CardMedia
-                                onTouchTap={this.props.profile.ownUser ? this.openProfileCoverModal : null}
                                 className="force-no-overlay-background"
                                 overlay=
                                     {
                                         <Card style={{backgroundColor: 'whitesmoke', boxShadow: 'transparent'}}>
                                             <CardMedia className="force-profile-picture-width">
                                                 <img onError={this.addDefaultPicture}
-                                                     onTouchTap={this.props.profile.ownUser ? this.openProfilePictureModal : null}
                                                      style={{borderRadius: "50%"}}
                                                      src={this.props.profile.profilePictureLink ? this.props.profile.profilePictureLink : "/images/img9.jpg"}/>
                                                 <Dialog
@@ -187,7 +203,7 @@ class Profile extends Component {
                                                     actions={actions1}
                                                     modal={false}
                                                     open={this.props.openProfilePicture}
-                                                    onRequestClose={this.combineFunctionsProfilePicture}
+                                                    onRequestClose={() => this.combineFunctionsProfilePicture(false)}
                                                     autoScrollBodyContent={true}
                                                 >
                                                     <CardMedia>
@@ -219,7 +235,7 @@ class Profile extends Component {
                                     actions={actions2}
                                     modal={false}
                                     open={this.props.openCoverPicture}
-                                    onRequestClose={this.combineFunctionsProfileCover}
+                                    onRequestClose={() => this.combineFunctionsProfileCover(false)}
                                     autoScrollBodyContent={true}
                                 >
                                     <CardMedia>
@@ -302,6 +318,31 @@ class Profile extends Component {
                                             </div>
                                             <div>
                                                 <List>
+
+                                                    <ListItem disabled={true}
+                                                              primaryText={<RaisedButton label="Edit profile picture"
+                                                                                         onTouchTap={ () => {
+                                                                                             this.openProfilePictureModal(false);
+                                                                                             this.props.router.push(`/profile/${this.props.profile.userName}#`);
+                                                                                         }}
+                                                                                         style={{opacity: 0.8}}
+                                                                                         buttonStyle={{backgroundColor: "#000000"}}
+                                                                                         labelStyle={{color: "#ffffff"}}
+                                                              />}
+                                                    />
+
+                                                    <ListItem disabled={true}
+                                                              primaryText={<RaisedButton label="Edit profile cover"
+                                                                                         onTouchTap={() => {
+                                                                                             this.openProfileCoverModal(false);
+                                                                                             this.props.router.push(`/profile/${this.props.profile.userName}#`);
+                                                                                         }}
+                                                                                         style={{opacity: 0.8}}
+                                                                                         buttonStyle={{backgroundColor: "#000000"}}
+                                                                                         labelStyle={{color: "#ffffff"}}
+                                                              />}
+                                                    />
+
                                                     <ListItem disabled={true}
                                                               primaryText={
                                                                   <TextField floatingLabelText="First name"

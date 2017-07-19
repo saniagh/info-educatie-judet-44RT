@@ -6,7 +6,7 @@ class LoadingIndicator extends Component {
     render() {
         return (
             <div className="loading-style">
-                <Spinner name="wave" color="#42ab9e"/>
+                <Spinner name="wave" color="#000000"/>
             </div>
         )
     }
