@@ -438,7 +438,7 @@ class AppBarPersonal extends Component {
                                 <ListItem primaryText="Login"/>
                             </Link>
 
-                            <Link to={`/Sign Up`}>
+                            <Link to={`/signup`}>
                                 <ListItem primaryText="Sign Up"/>
                             </Link>
 
