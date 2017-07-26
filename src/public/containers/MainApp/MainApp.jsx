@@ -32,7 +32,7 @@ class MainApp extends Component {
                                 <li>
                                     <Link to={`/collections`}>
 
-                                        Browse all collections
+                                        Browse all lessons
                                     </Link>
                                 </li>
                                 <li>

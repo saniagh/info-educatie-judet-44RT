@@ -107,7 +107,7 @@ class ReadAll extends Component {
         return (
             <div>
                 <div className="top-bar-spacing"/>
-                <div className="section-title">Browse collections</div>
+                <div className="section-title">Browse lessons</div>
                 <Card className="container-collections" style={{backgroundColor: 'none'}}>
                     {this.props.admin === true ?
                         <TopActions userId={this.props.userId}/>

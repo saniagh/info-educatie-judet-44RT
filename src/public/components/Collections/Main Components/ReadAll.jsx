@@ -103,7 +103,7 @@ class ReadAll extends Component {
         return (
             <div>
                 <div className="top-bar-spacing"/>
-                <div className="section-title">Manage collections</div>
+                <div className="section-title">Manage lessons</div>
                 <Card className="container-collections" style={{backgroundColor: 'none'}}>
                     <TopActions/>
                     {modeComponent}

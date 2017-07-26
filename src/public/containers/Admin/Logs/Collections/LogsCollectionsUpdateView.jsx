@@ -27,7 +27,7 @@ class LogsCollectionsUpdateView extends Component {
     }
 
     render() {
-        document.title = "Logs - Update collections";
+        document.title = "Logs - Update lessons";
         if (this.props.logs && this.props.credentials.admin === true && this.props.logs.fetchedLogs === true)
             return <LogsCollectionsUpdate logs={this.props.logs.logs}
                                           userId={this.props.params._id}/>;

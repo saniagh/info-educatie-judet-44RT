@@ -28,7 +28,7 @@ class LogsCollections extends Component {
                     <div className="cancel-padding-cardHeader">
                         <CardHeader
                             style={styles.cardHeader}
-                            title={<div className="logs-header">Logs collections</div>}/>
+                            title={<div className="logs-header">Logs lessons</div>}/>
                     </div>
                     <CardActions>
                         <div className="card-action-logs">

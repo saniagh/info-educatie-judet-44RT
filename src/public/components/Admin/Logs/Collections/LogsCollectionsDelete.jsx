@@ -44,13 +44,13 @@ class LogsCollectionsDelete extends Component {
                                   secondaryText="Creator's user id"
                                   disabled={true}/>
                         <ListItem primaryText={this.props.logs[i].collectionId}
-                                  secondaryText="Collection's id"
+                                  secondaryText="Lesson's id"
                                   disabled={true}/>
                         <ListItem primaryText={this.props.logs[i].collectionName}
-                                  secondaryText="Collection's name"
+                                  secondaryText="Lesson's name"
                                   disabled={true}/>
                         <ListItem primaryText={<div dangerouslySetInnerHTML={{__html: html}}/>}
-                                  secondaryText="Collection's description"
+                                  secondaryText="Lesson's description"
                                   disabled={true}/>
                         {Object.keys(this.props.logs[i].picturesArray).map((j) => {
                             counter++;
@@ -99,7 +99,7 @@ class LogsCollectionsDelete extends Component {
                     <div className="cancel-padding-cardHeader">
                         <CardHeader
                             style={styles.cardHeader}
-                            title={<div className="logs-header">Logs delete collections</div>}/>
+                            title={<div className="logs-header">Logs delete lessons</div>}/>
                     </div>
                     <CardActions>
                         <div className="card-action-logs">

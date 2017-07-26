@@ -27,11 +27,11 @@ class LogsCollectionsCreateView extends Component {
     }
 
     render() {
-        document.title = "Logs - Create collections";
+        document.title = "Logs - Create lessons";
         if (this.props.logs && this.props.credentials.admin === true && this.props.logs.fetchedLogs === true)
-        return <LogsCollectionsCreate logs={this.props.logs.logs}
-                                      userId={this.props.params._id}/>;
-        else if (this.props.credentials.fetching === true ||(this.props.logs && this.props.logs.fetchingLogs)) return <LoadingIndicator/>;
+            return <LogsCollectionsCreate logs={this.props.logs.logs}
+                                          userId={this.props.params._id}/>;
+        else if (this.props.credentials.fetching === true || (this.props.logs && this.props.logs.fetchingLogs)) return <LoadingIndicator/>;
         else if (this.props.credentials.admin === false) return <NotAuthorizedView/>;
         else if (!this.props.logs) return <LoadingIndicator/>;
     }

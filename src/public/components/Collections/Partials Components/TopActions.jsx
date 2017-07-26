@@ -13,7 +13,7 @@ class TopActions extends Component {
                         <RaisedButton
                             type="button"
                             primary={true}
-                            label="Add a new collection"
+                            label="Add a new lesson"
                             buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
                         />
                     </Link>

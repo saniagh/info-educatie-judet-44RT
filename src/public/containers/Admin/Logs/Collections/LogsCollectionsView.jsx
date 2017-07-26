@@ -11,7 +11,7 @@ class LogsCollectionsView extends Component {
     }
 
     render() {
-        document.title = "Logs - Collections Overview";
+        document.title = "Logs - Lessons Overview";
         if (this.props.admin === true)
             return <LogsCollections userId={this.props.params._id}/>;
         else if (this.props.fetching === true) return <LoadingIndicator/>;

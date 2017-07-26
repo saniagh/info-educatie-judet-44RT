@@ -37,7 +37,7 @@ class LogsCollectionsCreate extends Component {
                                   secondaryText="Creator's user id"
                                   disabled={true}/>
                         <ListItem primaryText={this.props.logs[i].collectionName}
-                                  secondaryText="Collection's name"
+                                  secondaryText="Lessons's name"
                                   disabled={true}/>
                         <ListItem primaryText={this.props.logs[i].createdByAdmin.toString()}
                                   secondaryText="Created by admin ?"
@@ -59,7 +59,7 @@ class LogsCollectionsCreate extends Component {
                     <div className="cancel-padding-cardHeader">
                         <CardHeader
                             style={styles.cardHeader}
-                            title={<div className="logs-header">Logs create collections</div>}/>
+                            title={<div className="logs-header">Logs create lessons</div>}/>
                     </div>
                     <CardActions>
                         <div className="card-action-logs">

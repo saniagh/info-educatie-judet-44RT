@@ -23,7 +23,7 @@ class Delete extends Component {
                                   style={{backgroundColor: 'none', boxShadow: "transparent"}}>
                                 <Card style={{boxShadow: "transparent"}}>
                                     <CardHeader>
-                                        <div className="delete-header">{this.props.message}</div>
+                                        <div className="delete-header">Lesson was successfully deleted</div>
                                     </CardHeader>
                                     <CardActions>
                                         <div className="delete-actions">
@@ -41,7 +41,7 @@ class Delete extends Component {
                                   style={{backgroundColor: 'none', boxShadow: "transparent"}}>
                                 <Card>
                                     <CardHeader>
-                                        <div className="delete-header">Delete this collection?</div>
+                                        <div className="delete-header">Delete this lesson?</div>
                                     </CardHeader>
                                     <CardActions>
                                         <div className="delete-actions">

@@ -67,7 +67,7 @@ class ReadAllView extends Component {
     };
 
     render() {
-        document.title = "Browse collections";
+        document.title = "Browse lessons";
         if (this.props.credentials.fetched === true)
             return <ReadAll
                 fetchedCollections={this.props.collections.fetchedCollections}

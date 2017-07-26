@@ -62,7 +62,7 @@ class Logs extends Component {
                             <Link to={`/admin/${this.props.userId}/logs/collections`}>
                                 <RaisedButton
                                     primary={true}
-                                    label="Logs collections"
+                                    label="Logs lessons"
                                     style={styles.buttons}
                                     buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
                                 />

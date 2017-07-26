@@ -41,14 +41,14 @@ class ViewTable extends Component {
                 else return null;
             }.bind(this));
 
-        let buttonLabel = "Load more collections...";
+        let buttonLabel = "Load more lessons...";
 
         if (this.props.requesting)
             buttonLabel = <CircularProgress size={30} color="red"/>;
         else if (this.props.requesting === false && this.props.finished === false)
-            buttonLabel = "Load more collections...";
+            buttonLabel = "Load more lessons...";
         else if (this.props.requesting === false && this.props.finished === true)
-            buttonLabel = "No more collections :(";
+            buttonLabel = "No more lessons :(";
 
         return (
             <div className="view-table">

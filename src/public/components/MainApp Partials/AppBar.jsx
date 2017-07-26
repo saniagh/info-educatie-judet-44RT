@@ -123,7 +123,7 @@ class AppBarPersonal extends Component {
                         <Link to={`/collections`}
                               className="top-bar-actions-button-style"
                               activeClassName="active-link-classname">
-                            <ListItem primaryText="Collections"
+                            <ListItem primaryText="Lessons"
                                       disabled={true}
                                       style={{
                                           fontSize: 24,
@@ -266,7 +266,7 @@ class AppBarPersonal extends Component {
                 </div>
                 <Toolbar className="top-bar-actions-mobile"
                          style={{
-                             backgroundColor: "#f4f7f6",
+                             backgroundColor: "#ffffff",
                              width: "100%",
                              zIndex: 99,
                              height: 50
@@ -362,7 +362,7 @@ class AppBarPersonal extends Component {
                         <List>
                             <Link to={`/collections`}
                                   activeClassName="active-link-classname">
-                                <ListItem primaryText="Collections"
+                                <ListItem primaryText="Lessons"
                                           leftIcon={<ImageCollections/>}/>
                             </Link>
 
@@ -379,7 +379,7 @@ class AppBarPersonal extends Component {
                                 <List>
                                     <Link to={`/admin/${this.props.userId}/collections`}
                                           activeClassName="active-link-classname">
-                                        <ListItem primaryText="Manage collections"
+                                        <ListItem primaryText="Manage lessons"
                                                   leftIcon={<ImageCollections/>}/>
                                     </Link>
 
@@ -426,7 +426,7 @@ class AppBarPersonal extends Component {
 
                             <Link to={`/collections`}
                                   activeClassName="active-link-classname">
-                                <ListItem primaryText="Collections"
+                                <ListItem primaryText="Lessons"
                                           leftIcon={<ImageCollections/>}/>
                             </Link>
 

@@ -43,20 +43,20 @@ class LogsCollectionsUpdate extends Component {
                 return (
                     <div key={i}>
                         <ListItem primaryText={this.props.logs[i].collectionId}
-                                  secondaryText="Collection's id"
+                                  secondaryText="Lessons's id"
                                   disabled={true}/>
                         <Divider/>
-                        <ListItem primaryText="Collection's new information"
+                        <ListItem primaryText="Lesson's new information"
                                   disabled={true}/>
                         <Divider/>
                         <ListItem primaryText={this.props.logs[i].userId}
                                   secondaryText="Owner's user id"
                                   disabled={true}/>
                         <ListItem primaryText={this.props.logs[i].collectionName}
-                                  secondaryText="Collection's name"
+                                  secondaryText="Lesson's name"
                                   disabled={true}/>
                         <ListItem primaryText={<div dangerouslySetInnerHTML={{__html: html}}/>}
-                                  secondaryText="Collection's description"
+                                  secondaryText="Lesson's description"
                                   disabled={true}/>
                         {Object.keys(this.props.logs[i].picturesArray).map((j) => {
                             counter1++;
@@ -90,17 +90,17 @@ class LogsCollectionsUpdate extends Component {
                             null
                         }
                         <Divider/>
-                        <ListItem primaryText="Collection's old information"
+                        <ListItem primaryText="Lesson's old information"
                                   disabled={true}/>
                         <Divider/>
                         <ListItem primaryText={this.props.logs[i].userIdOld}
                                   secondaryText="Owner's user id"
                                   disabled={true}/>
                         <ListItem primaryText={this.props.logs[i].collectionNameOld}
-                                  secondaryText="Collection's name"
+                                  secondaryText="Lesson's name"
                                   disabled={true}/>
                         <ListItem primaryText={<div dangerouslySetInnerHTML={{__html: htmlOld}}/>}
-                                  secondaryText="Collection's description"
+                                  secondaryText="Lesson's description"
                                   disabled={true}/>
                         {Object.keys(this.props.logs[i].picturesArrayOld).map((j) => {
                             counter2++;
@@ -150,7 +150,7 @@ class LogsCollectionsUpdate extends Component {
                     <div className="cancel-padding-cardHeader">
                         <CardHeader
                             style={styles.cardHeader}
-                            title={<div className="logs-header">Logs update collections</div>}/>
+                            title={<div className="logs-header">Logs update lessons</div>}/>
                     </div>
                     <CardActions>
                         <div className="card-action-logs">

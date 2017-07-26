@@ -220,7 +220,7 @@ class CreateView extends Component {
     };
 
     render() {
-        document.title = "Create collections - Admin Controlled";
+        document.title = "Create lesson - Admin Controlled";
         if (this.props.credentials.admin === true)
             return (
                 <Create

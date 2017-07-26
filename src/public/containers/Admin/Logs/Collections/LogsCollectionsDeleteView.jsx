@@ -27,11 +27,11 @@ class LogsCollectionsDeleteView extends Component {
     }
 
     render() {
-        document.title = "Logs - Delete collections";
+        document.title = "Logs - Delete lessons";
         if (this.props.logs && this.props.credentials.admin === true && this.props.logs.fetchedLogs === true)
             return <LogsCollectionsDelete logs={this.props.logs.logs}
                                           userId={this.props.params._id}/>;
-        else if (this.props.credentials.fetching === true ||(this.props.logs && this.props.logs.fetchingLogs)) return <LoadingIndicator/>;
+        else if (this.props.credentials.fetching === true || (this.props.logs && this.props.logs.fetchingLogs)) return <LoadingIndicator/>;
         else if (this.props.credentials.admin === false) return <NotAuthorizedView/>;
         else if (!this.props.logs) return <LoadingIndicator/>;
     }

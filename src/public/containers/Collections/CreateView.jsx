@@ -275,7 +275,7 @@ class CreateView extends Component {
 
     render() {
 
-        document.title = "Add collection";
+        document.title = "Add lesson";
 
         //Verify if the Redux Store has filled up initial state
         if (typeof this.props.UIState.collectionName === 'string')

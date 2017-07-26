@@ -44,7 +44,7 @@ class Home extends Component {
 
                 <div className="welcome-picture">
                     <div className="welcome-message">
-                        Your favourite artists are here
+                        Your favourite lessons are here
                     </div>
                     <CardMedia>
                         <img src="/images/home-login-cover.jpg"/>
@@ -54,7 +54,7 @@ class Home extends Component {
                         {Auth.isUserAuthenticated() ?
                             <Link
                                 to={`/manage`}>
-                                <FlatButton label="My collections"
+                                <FlatButton label="My lessons"
                                             labelStyle={{fontSize: 24, color: "white"}}
                                             style={{
                                                 height: 64,
@@ -86,7 +86,7 @@ class Home extends Component {
                 </div>
 
                 <div className={Auth.isUserAuthenticated() ? "section-title-authenticated" : "section-title"}>Latest
-                    collections
+                    lessons
                 </div>
                 {this.props.fetchedCollections === true ?
 
@@ -106,7 +106,7 @@ class Home extends Component {
                             <div className="buttons-home-view">
                                 <Link
                                     to={`/collections`}>
-                                    <FlatButton label="All collections"
+                                    <FlatButton label="All lessons"
                                                 labelStyle={{fontSize: 24, color: "black"}}
                                                 style={{
                                                     height: 64,
@@ -133,7 +133,7 @@ class Home extends Component {
                 {
                     this.props.fetchingCollections === false && this.props.fetchedCollections === false ?
                         <div>
-                            No collections so far
+                            No lessons so far
                         </div>
                         :
                         null

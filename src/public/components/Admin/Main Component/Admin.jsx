@@ -52,7 +52,7 @@ class AdminPage extends Component {
                                 </div>
                             </Link>
                             <Link to={`/collections`}>
-                                <div className="action-header">Collections management</div>
+                                <div className="action-header">Lessons management</div>
                             </Link>
                         </CardMedia>
                         <CardMedia style={styles.cardMedia}>
