@@ -88,7 +88,9 @@ class UpdateView extends Component {
 
             const mappedChips = nextProps.collection.tagsOld.map((data, i) => {
                 return <Chip key={i}
-                             onRequestDelete={() => this.onDeleteTag(data.value)}>
+                             onRequestDelete={() => this.onDeleteTag(data.value)}
+                             style={{cursor: "pointer", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis"}}
+                             labelStyle={{maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis"}}>
                     {data.value}
                 </Chip>
             });

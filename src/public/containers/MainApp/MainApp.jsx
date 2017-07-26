@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import AppBarPersonal from '../../components/MainApp Partials/AppBar.jsx';
-import {RouteTransition} from 'react-router-transition';
 import ScrollButton from './ScrollToTopButton.jsx'
 
 class MainApp extends Component {
@@ -11,12 +10,7 @@ class MainApp extends Component {
 
         if (this.props.location.pathname !== '/collections#') {
             return (
-                <RouteTransition
-                    pathname={this.props.location.pathname}
-                    atEnter={{opacity: 0.3}}
-                    atLeave={{opacity: 0.3}}
-                    atActive={{opacity: 1}}
-                >
+
                     <div>
                         <AppBarPersonal
                             profilePictureLink={this.props.profilePictureLink}
@@ -62,7 +56,6 @@ class MainApp extends Component {
                             </ul>
                         </div>
                     </div>
-                </RouteTransition>
             )
         }
         else return (

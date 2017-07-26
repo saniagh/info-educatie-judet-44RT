@@ -123,6 +123,8 @@ class CreateView extends Component {
 
             const mappedChips = localTags.map((data, i) => {
                 return <Chip key={i}
+                             style={{cursor: "pointer", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis"}}
+                             labelStyle={{maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis"}}
                              onRequestDelete={() => this.onDeleteTag(data.value)}>
                     {data.value}
                 </Chip>
