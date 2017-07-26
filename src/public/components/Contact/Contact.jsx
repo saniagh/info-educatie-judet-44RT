@@ -44,10 +44,14 @@ class Contact extends Component {
                                            rows={1}
                                            rowsMax={20}
                                            style={styles.textField}
+                                           inputStyle={{color: "#000000", opacity: 0.8}}
+                                           floatingLabelStyle={{color: "#000000", opacity: 0.8}}
+                                           underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
                                 />
                                 <CardActions>
                                     <RaisedButton label="Send feedback"
                                                   primary={true}
+                                                  buttonStyle={{backgroundColor: "#9b9b9b"}}
                                                   onTouchTap={this.props.onSave}/>
                                 </CardActions>
                             </Card>

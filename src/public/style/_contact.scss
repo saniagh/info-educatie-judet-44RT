@@ -24,7 +24,7 @@
   font-size: 3em;
   font-weight: bold;
   color: #ffffff;
-  @include background-color(rgba(0,0,255, 0.8));
+  background-color: #000000;
 }
 
 .success-message-contact {
