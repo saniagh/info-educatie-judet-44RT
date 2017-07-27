@@ -431,7 +431,7 @@ class Update extends Component {
                                     label={stepIndex === 2 ? "Save" : "Next"}
                                     primary={true}
                                     onTouchTap={stepIndex === 2 ? this.props.onSave : this.handleNext}
-                                    buttonStyle={{backgroundColor: "#9b9b9b"}}/>
+                                    buttonStyle={stepIndex === 2 ? {backgroundColor: "green"} : {backgroundColor: "#9b9b9b"}}/>
                             </CardActions>
                         </Card>
                     </Card>

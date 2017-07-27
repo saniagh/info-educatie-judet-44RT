@@ -47,6 +47,7 @@ class PictureRow extends Component {
                 {this.state.modalIsOpen &&
                 <Lightbox mainSrc={this.props.pictureLink}
                           onCloseRequest={this.handleCloseModal}
+                          imageTitle={this.props.pictureName}
                           imageCaption={<div dangerouslySetInnerHTML={this.getHTML()}
                                              style={{wordWrap: "break-word", wordBreak: 'break-word', overflowWrap: 'break-word'}}/>}
                           reactModalStyle={{
@@ -55,7 +56,6 @@ class PictureRow extends Component {
                           }}
                 />
                 }
-
             </div>
         )
     }
