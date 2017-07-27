@@ -1,5 +1,5 @@
 <h1><i>4ed</i></h1>
-<p>v0.0.4</p>
+<p>v0.0.6</p>
 
 <h5>If you are not currently on our GitHub page and are reading a printed version of this documentation, please visit the link below or scan the QR code to access our GitHub page.</h5>
 
@@ -9,23 +9,25 @@ https://github.com/saniagh/info-educatie-judet-44RT
 
 <h1><i>The ideea behind the project</i></h1>
 
-<p>4ed is a website dedicated to artists of all ages, genders and ethnicities. We offer a platform to share your own drawings, paintings, photographs etc.</p>
-<p>We think that the experience of the one that views your work of art should be the highest possible. If you see something you like, that exact visual stimuli might, make you feel better.</p>
-<p>But what about music? We all listen to music, in one form of another, the chirp of birds and whatnot. Combining both visual and auditorily stimuli determinates, in many cases, more efficiency.</p>
-<p>How do those two above ideas tie though? We combine auditory and visual stimuli here on 4ed, but also portability and quick access to information.</p>
-<p>When you add a new collection on our website, you have the ability to embed a link to a melody of your choice in a QR code, and not only. You can embed anything you want in that QR code, a backstory about yourself, a link to your Facebook page, etc</p>
-<p>This way we combine the surprise of what you can find in that QR code with the overall experience of the users.</p>
+<p>4ed is a website dedicated to posting lessons online for everybody to learn. The type of lessons you choose to post is absolutely up to you. What we do want to focus on though is teaching by seeing, this is why we give you the opportunity to teach by posting pictures. :)</p>
 
-<h1><i>System requirements</i></h1>
+<h1><i>System requirements - For usage</i></h1>
 
 <ul>
+<li>Internet connection</li>
+<li>Any browser that supports JavaScript and localStorage</li>
+</ul>
+
+<h1><i>System requirements - For development</i></h1>
+
+<ul>
+<li>Stable internet connection</li>
 <li>Terminal (Ubuntu's Command Line or Windows equivalent)</li>
 <li>NodeJS v7.8.0 (minimum)</li>
 <li>npm (minimum 4.2.0)</li>
 <li>Browser that uses JavaScript</li>
 <li>Browser that supports LocalStorage (Chrome, Firefox etc)</li>
 <li>MongoDB installed (for development we used port 27017)</li>
-<li>Stable internet connection</li>
 </ul>
 
 <p>To check for a current installed version of NodeJS or npm, run the following commands:</p>
@@ -36,7 +38,8 @@ npm -v
 ```
 
 <p>The website was developed on Chrome and tested on Chrome and Firefox.</p>
-<p>Project is not distributed with a database</p>
+<p>Support for the Create and Update functions on Android, iOS or Windows Phone is not guaranteed due to DraftJS's current issues.</p>
+<p>Project is not distributed with a database. Project IS distributed with schemas for MongoDB, on the other hand.</p>
 
 <h1><i>File structure</i></h1>
 <pre>
@@ -49,15 +52,8 @@ npm -v
 |    |    | -- signup.js
 |    | -- index 
 |    |    | -- images 
-|    |    |    | -- img1.jpg
-|    |    |    | -- img2.jpg
-|    |    |    | -- img3.jpg
-|    |    |    | -- img4.jpg
-|    |    |    | -- img5.jpg
-|    |    |    | -- img6.jpg
-|    |    |    | -- img7.jpg
-|    |    |    | -- img8.jpg
-|    |    |    | -- img9.jpg
+|    |    |    | -- home-login-cover.jpg
+|    |    |    | -- logo.png
 |    |    |    | -- qr-code-github.png
 |    |    | -- favicon.ico
 |    |    | -- index.html
@@ -103,25 +99,72 @@ npm -v
 |    |    | -- socket.js
 | -- src
 |    | -- build
-|    |    | -- index.js
+|    |    | -- index.js <-- entry file
 |    | -- public
+|    |    | -- actions
+|    |    |    | -- Admin
+|    |    |    |    | -- Collections
+|    |    |    |    |    | -- manageCollectionsCreateActionsAdmin.js
+|    |    |    |    |    | -- manageCollectionsDeleteActionsAdmin.js
+|    |    |    |    |    | -- manageCollectionsReadAllActionsAdmin.js
+|    |    |    |    |    | -- manageCollectionsUpdateActionsAdmin.js
+|    |    |    |    | -- Logs
+|    |    |    |    |    | -- Collections
+|    |    |    |    |    |    | -- logsCreateCollectionsActions.js
+|    |    |    |    |    |    | -- logsDeleteCollectionsActions.js
+|    |    |    |    |    |    | -- logsUpdateCollectionsActions.js
+|    |    |    |    |    | -- Login
+|    |    |    |    |    |    | -- logsLoginActions.js
+|    |    |    |    |    | -- News
+|    |    |    |    |    |    | -- logsCreateNewsActions.js
+|    |    |    |    |    |    | -- logsDeleteNewsActions.js
+|    |    |    |    |    |    | -- logsUpdateNewsActions.js
+|    |    |    |    |    | -- Profile
+|    |    |    |    |    |    | -- logsProfileActions.js
+|    |    |    |    |    | -- Signup
+|    |    |    |    |    |    | -- logsSignUpActions.js
+|    |    |    |    | -- News
+|    |    |    |    |    | -- manageNewsCreateActionsAdmin.js
+|    |    |    |    |    | -- manageNewsDeleteActionsAdmin.js
+|    |    |    |    |    | -- manageNewsUpdateActionsAdmin.js
+|    |    |    |    | -- Users
+|    |    |    |    |    | -- manageUsersActionsAdmin.js
+|    |    |    | -- AppBar
+|    |    |    |    | -- collectionNamesActions.js
+|    |    |    |    | -- searchActions.js
+|    |    |    | -- Authentication
+|    |    |    |    | -- loginActions.js
+|    |    |    |    | -- signUpActions.js
+|    |    |    | -- BrowseCollections
+|    |    |    |    | -- browseCollectionsReadAllActions.js
+|    |    |    |    | -- browseCollectionsReadOneActions.js
+|    |    |    | -- BrowseNews
+|    |    |    |    | -- browseNewsReadAllActions.js
+|    |    |    |    | -- browseNewsReadOneActions.js
+|    |    |    | -- Collections
+|    |    |    |    | -- manageCollectionsCreateActions.js
+|    |    |    |    | -- manageCollectionsDeleteActions.js
+|    |    |    |    | -- manageCollectionsReadAllActions.js
+|    |    |    |    | -- manageCollectionsReadOneActions.js
+|    |    |    |    | -- manageCollectionsUpdateActions.js
+|    |    |    | -- Contact
+|    |    |    |    | -- contactActions.js
+|    |    |    | -- Profile
+|    |    |    |    | -- profileActions.js
+|    |    |    | -- actionTypes.js
+|    |    |    | -- collectionsHomeViewActions.js
+|    |    |    | -- newsHomeViewActions.js
+|    |    |    | -- shouldUpdateActions.js
+|    |    |    | -- userCredentialsActions.js
 |    |    | -- components
 |    |    |    | -- Admin
 |    |    |    |    | -- Collections
 |    |    |    |    |    | -- Main Components
 |    |    |    |    |    |    | -- Create.jsx
 |    |    |    |    |    |    | -- Delete.jsx
-|    |    |    |    |    |    | -- ReadAll.jsx
-|    |    |    |    |    |    | -- ReadOne.jsx
 |    |    |    |    |    |    | -- Update.jsx
 |    |    |    |    |    | -- Partials Components
-|    |    |    |    |    |    | -- Comment.jsx
-|    |    |    |    |    |    | -- CommentForm.jsx
-|    |    |    |    |    |    | -- CommentList.jsx
 |    |    |    |    |    |    | -- PictureRow.jsx
-|    |    |    |    |    |    | -- TopActions.jsx
-|    |    |    |    |    |    | -- ViewRow.jsx
-|    |    |    |    |    |    | -- ViewTable.jsx
 |    |    |    |    | -- Logs
 |    |    |    |    |    | -- Collections
 |    |    |    |    |    |    | -- LogsCollections.jsx
@@ -147,17 +190,7 @@ npm -v
 |    |    |    |    |    | -- Main Components
 |    |    |    |    |    |    | -- Create.jsx
 |    |    |    |    |    |    | -- Delete.jsx
-|    |    |    |    |    |    | -- ReadAll.jsx
-|    |    |    |    |    |    | -- ReadOne.jsx
 |    |    |    |    |    |    | -- Update.jsx
-|    |    |    |    |    | -- Partials Components
-|    |    |    |    |    |    | -- Comment.jsx
-|    |    |    |    |    |    | -- CommentForm.jsx
-|    |    |    |    |    |    | -- CommentList.jsx
-|    |    |    |    |    |    | -- PictureRow.jsx
-|    |    |    |    |    |    | -- TopActions.jsx
-|    |    |    |    |    |    | -- ViewRow.jsx
-|    |    |    |    |    |    | -- ViewTable.jsx
 |    |    |    |    | -- Users
 |    |    |    |    |    | -- Main Components
 |    |    |    |    |    |    | -- Users.jsx
@@ -174,6 +207,8 @@ npm -v
 |    |    |    |    |    | -- Comment.jsx
 |    |    |    |    |    | -- CommentForm.jsx
 |    |    |    |    |    | -- CommentList.jsx
+|    |    |    |    |    | -- NoCollectionsFound.jsx
+|    |    |    |    |    | -- NoCommentsFound.jsx
 |    |    |    |    |    | -- PictureRow.jsx
 |    |    |    |    |    | -- TopActions.jsx
 |    |    |    |    |    | -- ViewRow.jsx
@@ -186,6 +221,8 @@ npm -v
 |    |    |    |    |    | -- Comment.jsx
 |    |    |    |    |    | -- CommentForm.jsx
 |    |    |    |    |    | -- CommentList.jsx
+|    |    |    |    |    | -- NoCommentsFound.jsx
+|    |    |    |    |    | -- NoNewsFound.jsx
 |    |    |    |    |    | -- PictureRow.jsx
 |    |    |    |    |    | -- TopActions.jsx
 |    |    |    |    |    | -- ViewRow.jsx
@@ -201,6 +238,8 @@ npm -v
 |    |    |    |    |    | -- Comment.jsx
 |    |    |    |    |    | -- CommentForm.jsx
 |    |    |    |    |    | -- CommentList.jsx
+|    |    |    |    |    | -- NoCollectionsFound.jsx
+|    |    |    |    |    | -- NoCommentsFound.jsx
 |    |    |    |    |    | -- PictureRow.jsx
 |    |    |    |    |    | -- TopActions.jsx
 |    |    |    |    |    | -- ViewRow.jsx
@@ -208,29 +247,25 @@ npm -v
 |    |    |    | -- Contact
 |    |    |    |    | -- Contact.jsx
 |    |    |    | -- Home
-|    |    |    |    | -- Main Components
-|    |    |    |    |    | -- Home.jsx
-|    |    |    |    |    | -- ReadOne.jsx
-|    |    |    |    | -- Partials Components
-|    |    |    |    |    | -- Comment.jsx
-|    |    |    |    |    | -- CommentForm.jsx
-|    |    |    |    |    | -- CommentList.jsx
-|    |    |    |    |    | -- PictureRow.jsx
+|    |    |    |    | -- Home.jsx
 |    |    |    | -- Loading Indicator
 |    |    |    |    | -- LoadingIndicator.jsx
 |    |    |    | -- MainApp Partials
 |    |    |    |    | -- AppBar.jsx
 |    |    |    | -- Profile
 |    |    |    |    | -- Profile.jsx
-|    |    | -- constants
-|    |    |    | -- errors.js
+|    |    |    | -- SearchResults
+|    |    |    |    | -- Main Components
+|    |    |    |    |    | -- ReadAll.jsx
+|    |    |    |    | -- Partials Components
+|    |    |    |    |    | -- NoCollectionsFound.jsx
+|    |    |    |    |    | -- ViewRow.jsx
+|    |    |    |    |    | -- ViewTable.jsx
 |    |    | -- containers
 |    |    |    | -- Admin
 |    |    |    |    | -- Collections
 |    |    |    |    |    | -- CreateView.jsx
 |    |    |    |    |    | -- DeleteView.jsx
-|    |    |    |    |    | -- ReadAllView.jsx
-|    |    |    |    |    | -- ReadOneView.jsx
 |    |    |    |    |    | -- UpdateView.jsx
 |    |    |    |    | -- Logs
 |    |    |    |    |    | -- Collections
@@ -256,8 +291,6 @@ npm -v
 |    |    |    |    | -- News
 |    |    |    |    |    | -- CreateView.jsx
 |    |    |    |    |    | -- DeleteView.jsx
-|    |    |    |    |    | -- ReadAllView.jsx
-|    |    |    |    |    | -- ReadOneView.jsx
 |    |    |    |    |    | -- UpdateView.jsx
 |    |    |    |    | -- Users
 |    |    |    |    |    | -- UsersView.jsx
@@ -284,11 +317,73 @@ npm -v
 |    |    |    | -- Home
 |    |    |    |    | -- HomeView.jsx
 |    |    |    | -- MainApp
+|    |    |    |    | -- functions.js
 |    |    |    |    | -- MainApp.jsx
+|    |    |    |    | -- ScrollToTop.jsx
+|    |    |    |    | -- ScrollToTopButton.jsx
 |    |    |    | -- Profile
 |    |    |    |    | -- ProfileView.jsx
+|    |    |    | -- SearchResults
+|    |    |    |    | -- ReadAllView.jsx
 |    |    | -- modules
 |    |    |    | -- Auth.js
+|    |    | -- reducers
+|    |    |    | -- Admin
+|    |    |    |    | -- Collections
+|    |    |    |    |    | -- manageCollectionsCreateReducerAdmin.js
+|    |    |    |    |    | -- manageCollectionsDeleteReducerAdmin.js
+|    |    |    |    |    | -- manageCollectionsReadAllReducerAdmin.js
+|    |    |    |    |    | -- manageCollectionsUpdateReducerAdmin.js
+|    |    |    |    | -- Logs
+|    |    |    |    |    | -- Collections
+|    |    |    |    |    |    | -- logsCreateCollectionsReducer.js
+|    |    |    |    |    |    | -- logsDeleteCollectionsReducer.js
+|    |    |    |    |    |    | -- logsUpdateCollectionsReducer.js
+|    |    |    |    |    | -- Login
+|    |    |    |    |    |    | -- logsLoginReducer.js
+|    |    |    |    |    | -- News
+|    |    |    |    |    |    | -- logsCreateNewsReducer.js
+|    |    |    |    |    |    | -- logsDeleteNewsReducer.js
+|    |    |    |    |    |    | -- logsUpdateNewsReducer.js
+|    |    |    |    |    | -- Profile
+|    |    |    |    |    |    | -- logsProfileReducer.js
+|    |    |    |    |    | -- Signup
+|    |    |    |    |    |    | -- logsSignUpReducer.js
+|    |    |    |    | -- News
+|    |    |    |    |    | -- manageNewsCreateReducerAdmin.js
+|    |    |    |    |    | -- manageNewsDeleteReducerAdmin.js
+|    |    |    |    |    | -- manageNewsUpdateReducerAdmin.js
+|    |    |    |    | -- Users
+|    |    |    |    |    | -- manageUsersReducerAdmin.js
+|    |    |    | -- AppBar
+|    |    |    |    | -- collectionNamesReducer.js
+|    |    |    |    | -- searchReducer.js
+|    |    |    | -- Authentication
+|    |    |    |    | -- loginReducer.js
+|    |    |    |    | -- signUpReducer.js
+|    |    |    | -- BrowseCollections
+|    |    |    |    | -- browseCollectionsReadAllReducer.js
+|    |    |    |    | -- browseCollectionsReadOneReducer.js
+|    |    |    | -- BrowseNews
+|    |    |    |    | -- browseNewsReadAllReducer.js
+|    |    |    |    | -- browseNewsReadOneReducer.js
+|    |    |    | -- Collections
+|    |    |    |    | -- manageCollectionsCreateReducer.js
+|    |    |    |    | -- manageCollectionsDeleteReducer.js
+|    |    |    |    | -- manageCollectionsReadAllReducer.js
+|    |    |    |    | -- manageCollectionsReadOneReducer.js
+|    |    |    |    | -- manageCollectionsUpdateReducer.js
+|    |    |    | -- Contact
+|    |    |    |    | -- contactReducer.js
+|    |    |    | -- Profile
+|    |    |    |    | -- profileReducer.js
+|    |    |    | -- collectionsHomeViewReducer.js
+|    |    |    | -- index.js
+|    |    |    | -- newsHomeViewReducer.js
+|    |    |    | -- shouldUpdateCollectionsReducer.js
+|    |    |    | -- userReducer.js
+|    |    | -- store
+|    |    |    | -- configureStore.js
 |    |    | -- style
 |    |    |    | -- constants
 |    |    |    |    | -- _fonts.scss
@@ -390,12 +485,14 @@ npm install bcrypt
 <li>See the main page</li>
 <li>Browse all news articles</li>
 <li>Browse all collections</li>
-<li>Comment on any article or collection</li>
+<li>Comment on any article or lesson</li>
 <li>You have your own profile and identity on the website</li>
 <li>Post new collections of yourself and manage them as you want (edit, delete)</li>
+<li>Favourite somebody's lesson</li>
+<li>View the profile of other users</li>
 </ol>
 
-<h3><i>4.Using the website as an admin</i></h3>
+<h3><i>4.Using the website as a moderator</i></h3>
 
 <p>You can:</p>
 
@@ -403,7 +500,23 @@ npm install bcrypt
 <li>See the main page</li>
 <li>Browse all news articles</li>
 <li>Browse all collections</li>
-<li>Comment on any article or collection</li>
+<li>Comment on any article or lesson</li>
+<li>You have your own profile and identity on the website</li>
+<li>Post new collections of yourself and manage them as you want (edit, delete)</li>
+<li>Favourite somebody's lesson</li>
+<li>View the profile of other users</li>
+<li>Delete mean or hurtful comments on collections and news</li>
+</ol>
+
+<h3><i>5.Using the website as an admin</i></h3>
+
+<p>You can:</p>
+
+<ol>
+<li>See the main page</li>
+<li>Browse all news articles</li>
+<li>Browse all collections</li>
+<li>Comment on any article or lesson</li>
 <li>You have your own profile and identity on the website</li>
 <li>Post new collections of yourself and manage them as you want (edit, delete)</li>
 <li>Post news articles and manage them as you want (edit, delete)</li>
@@ -412,7 +525,6 @@ npm install bcrypt
 <li>Create collections for other users in case they deleted it by mistake</li>
 <li>Have access to all the logs of the website (these include all CUD (create, update, delete) actions performed by anybody on both news and collections. The logs also include all login logs, signup logs and profile edit logs.</li>
 <li>Give users moderator rights or ban them from the website.</li>
-<p>Important note: Moderators are not yet implemented. Users can be set to moderators but they can perform the same actions regular users can.</p>
 </ol>
 
 <h1><i>Technical details</i></h1>
@@ -451,24 +563,43 @@ npm install bcrypt
 <h5>Notes:</h5>
 
 <ul>
-<li>The website is a SPA (single-page-app) created with ReactJS, React-Router and ExpressJS</li>
+<li>The website is a SPA (single-page-app) created with ReactJS, React-Router and ExpressJS. For the data management part we use Redux.</li>
 <li>Part of the style is created by using Material-UI</li>
 <li>Sass encapsulates our own approach to Material-UI and our own choice for element's style</li>
 <li>We use the principle of Container Components and Presentational Components</li>
-<li>Container components are found in /src/public/containers and they control the data flow and AJAX requests</li>
+<li>All of our AJAX requests are done with Axios and can be found in /src/actions , in the specific file for the specific page.</li>
+<li>Container Components make sure that Redux communicates with the Presentational Components by mapping props and connecting to the store.</li>
 <li>Presentational Components are found in /src/public/components and they contain the code regarding how every page is displayed</li>
-<li>React Dev Tools is disabled. If you wish to use it, delete the following section of /resource/index/index.html:</li>
+<li>React Dev Tools can be disabled with the following lines ( paste them to /resource/index/index.html</li>
 
 ```html
 <script>
     window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}
 </script>
 ```
+
+<li>Redux Dev Tools can be disabled by replacing the /src/public/store/configureStore.js with the following:</li>
+
+```javascript
+    import {createStore, applyMiddleware} from 'redux'
+    import thunk from 'redux-thunk'
+    import rootReducer from '../reducers/index.js'
+    
+    export default function configureStore() {
+        return createStore(
+            rootReducer,
+            applyMiddleware(thunk)
+        );
+    }
+```
+
+<li>In case you want to disable Redux Dev Tools, you also need to rebuild the app with the following command, in the root folder: </li>
+
+```shell
+webpack --optimize-minimize --define process.env.NODE_ENV="'production'"
+```
+
 </ul>
-
-<p>Material-UI is described as:</p>
-
-> A Set of React Components that Implement Google's Material Design
 
 <h3><i>Back-end:</i></h3>
 
@@ -492,15 +623,14 @@ npm install bcrypt
 <li>Body-parser</li>
 <li>Passport</li>
 <li>Nodemon</li>
-<li>Redis</li>
+<li>Redis ( Caching )</li>
 </ul>
 
 <h5>General notes:</h5>
 
 <ul>
 <li>The application uses <a hre="https://jwt.io/">JSON Web Token Authentication</a></li>
-<li>Authentication was created with the <b>help</b> of <a href="https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt">this</a> guide by Vladimir Ponomarev.</li>
-<li>The code was not copy-pasted, it was used as <b>guidance</b>. In the end, all credits for the ideea of implementing JWT Authencation like this goes to the author.</li>
+<li>Authentication was created with the help of <a href="https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt">this</a> guide by Vladimir Ponomarev.</li>
 <li>User input is verified by the following criteria: length, type and existence (req.body.data)</li>
 <li>Sanitize is done by using the <a href="https://www.npmjs.com/package/express-mongo-sanitize">express-mongo-sanitize</a> middleware</li>
 <li>Models for the data that is to be inserted into the database can be found in /resource/mongo-models</li>
@@ -511,11 +641,11 @@ npm install bcrypt
 
 <ul>
 <li>The identitity of the user is only checked when he logs in.</li>
-<li>The credentials and permission of the user are checked every time they navigate to any page of the website.</li>
+<li>The credentials and permission of the user are checked every time they navigate to any page of the website. Thanks to Redux, we don't refetch the data everytime the user changes the view.</li>
 <li>Regular users, if they manage to open React Dev Tools, can access Admin Panel, see the buttons but all requests to retrieve data will return a res.status(401).end() .</li>
 <li>This way, no sensitive data is shown to non-admins even if they manage to access the admin panel</li>
-<li>Trying to navigate to somebody's page for deleting a collection like <a>http://localhost/manage/readOne/591dc1ab2d590a01979b52a3/delete</a> will return a res.status(404) based on the fact that the collection's requested userId(creator's id) doesn't match the one from the decoded JWT. Same applies for all pages that are not part of Admin Panel</li>
-<li>Socket.io is used for the comments system. This way, we provide real-time comments for every single collection on the website, separately, of course.</li>
+<li>Trying to navigate to somebody's page for deleting a lesson like <a>http://localhost/manage/readOne/591dc1ab2d590a01979b52a3/delete</a> will return a res.status(404) based on the fact that the lesson's requested userId(creator's id) doesn't match the one from the decoded JWT. Same applies for all pages that are not part of Admin Panel</li>
+<li>Socket.io is used for the comments system. This way, we provide real-time comments for every single lesson on the website, separately, of course. Same for the favourite system.</li>
 <li>The reason behind why we use our own logging system if to be able to restore collections in case somebody deleted it or somebody messed with their account.</li>
 </ul>
 
@@ -525,13 +655,3 @@ npm install bcrypt
 <h1>Creators:</h1>
 <h5>Valentin Marian Constanda</h5>
 <h5>Cristiana Lazar</h5>
-
-notes on bugs or issues met in live test version ( mostly for mobile ):
-- when user updates his/her profile we should sign another jwt and not ask them to relog - Canceled until further security investigation Reason:
-
-We would have to pass the password as metadata in the JWT and I am, honestly, not sure that is safe. Will keep looking into it or remove the ideea for the feature.
-
-- we must see if we can fix the text editor for the mobile version. the problem is not on us but DraftJS itself. We must manually modify the dependency
-- usage of Link from react router didn't do the job for changing the link on mobile when navigating to, for example, "/collections#" so we replaced it with direct call to router.push(route) - FIXED
-
-Other issues will be available here, at the bottom of the docs
