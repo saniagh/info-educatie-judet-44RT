@@ -193,6 +193,7 @@ class Profile extends Component {
                                         <Card style={{backgroundColor: 'whitesmoke', boxShadow: 'transparent'}}>
                                             <CardMedia className="force-profile-picture-width">
                                                 <img onError={this.addDefaultPicture}
+                                                     className="profile-picture"
                                                      style={{borderRadius: "50%"}}
                                                      src={this.props.profile.profilePictureLink ? this.props.profile.profilePictureLink : "/images/img9.jpg"}/>
                                                 <Dialog
@@ -208,7 +209,7 @@ class Profile extends Component {
                                                 >
                                                     <CardMedia>
                                                         <img onError={this.addDefaultPicture}
-                                                             style={{borderRadius: "50%"}}
+                                                             style={{borderRadius: "50%", maxHeight: 600}}
                                                              src={this.props.profile.profilePictureLink ? this.props.profile.profilePictureLink : "/images/img9.jpg"}/>
                                                     </CardMedia>
                                                     <TextField
@@ -225,8 +226,8 @@ class Profile extends Component {
                                         </Card>
                                     }>
                                 <img onError={this.addDefaultPicture}
-                                     src={this.props.profile.profileCover ? this.props.profile.profileCover : "/images/img9.jpg"}
-                                     alt=""/>
+                                     style={{height: "auto !important"}}
+                                     src={this.props.profile.profileCover ? this.props.profile.profileCover : "/images/img9.jpg"}/>
                                 <Dialog
                                     title="Change cover picture"
                                     autoDetectWindowHeight={false}
