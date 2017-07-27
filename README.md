@@ -28,6 +28,7 @@ https://github.com/saniagh/info-educatie-judet-44RT
 <li>Browser that uses JavaScript</li>
 <li>Browser that supports LocalStorage (Chrome, Firefox etc)</li>
 <li>MongoDB installed (for development we used port 27017)</li>
+<li>Redis running on the machine you're developing with</li>
 </ul>
 
 <p>To check for a current installed version of NodeJS or npm, run the following commands:</p>
