@@ -215,7 +215,7 @@ class HomeView extends Component {
 
         }
 
-        document.title = "4Art";
+        document.title = "4ed";
         // must work on displaying if there are no collections yet. simply use the fetchedCollections prop.
 
         return (
