@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {CardMedia, CardTitle, Dialog, RaisedButton} from 'material-ui';
+import {CardMedia, CardTitle} from 'material-ui';
+import Lightbox from 'react-image-lightbox';
 
 class PictureRow extends Component {
 
@@ -43,25 +44,18 @@ class PictureRow extends Component {
                 >
                     <img onError={this.addDefaultPicture} src={this.props.pictureLink}/>
                 </CardMedia>
-                <Dialog
-                    autoDetectWindowHeight={false}
-                    repositionOnUpdate={false}
-                    style={{paddingTop: 0}}
-                    actions={<RaisedButton
-                        onTouchTap={this.handleCloseModal}
-                        label="Close"
-                        primary={true}
-                        buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
-                    open={this.state.modalIsOpen}
-                    title={this.props.pictureName}
-                    autoScrollBodyContent={true}
-                    onRequestClose={this.handleCloseModal}>
-                    <CardMedia>
-                        <img onError={this.addDefaultPicture} src={this.props.pictureLink}/>
-                    </CardMedia>
-                    <div dangerouslySetInnerHTML={this.getHTML()}
-                         style={{wordWrap: "break-word", wordBreak: 'break-word', overflowWrap: 'break-word'}}/>
-                </Dialog>
+                {this.state.modalIsOpen &&
+                <Lightbox mainSrc={this.props.pictureLink}
+                          onCloseRequest={this.handleCloseModal}
+                          imageTitle={this.props.pictureName}
+                          imageCaption={<div dangerouslySetInnerHTML={this.getHTML()}
+                                             style={{wordWrap: "break-word", wordBreak: 'break-word', overflowWrap: 'break-word'}}/>}
+                          reactModalStyle={{
+                              overlay: {zIndex: 9999},
+                              content: {zIndex: 9999}
+                          }}
+                />
+                }
             </div>
         )
     }

@@ -169,7 +169,7 @@ class Create extends Component {
                             <RichTextEditor
                                 value={this.props.collectionDescription}
                                 onChange={this.props.onCollectionDescriptionChange}
-                                placeholder="Collection description"
+                                placeholder="Collection's description"
                                 toolbarConfig={toolbarConfig}
                             />
                         </div>
@@ -200,7 +200,7 @@ class Create extends Component {
                                             Please use a name that is shorter than 100 characters
                                         </div> : null}
                                     {this.props.pictureNameError && this.props.pictureNameError[i] === "Please use a valid name for this picture" ?
-                                        <TextField hintText="Give your pictures a cool name"
+                                        <TextField hintText="Give your picture a suggestive name"
                                                    value={picture.pictureName}
                                                    onChange={this.props.handlePicturesNameChange(i)}
                                                    errorText={this.props.pictureNameError[i]}
@@ -212,7 +212,7 @@ class Create extends Component {
                                                    underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
                                         />
                                         :
-                                        <TextField hintText="Give your work of art a cool name"
+                                        <TextField hintText="Give your picture a suggestive name"
                                                    value={picture.pictureName}
                                                    onChange={this.props.handlePicturesNameChange(i)}
                                                    onKeyDown={this.handleKeyPress}
@@ -226,7 +226,7 @@ class Create extends Component {
                                 </div>
                                 <div className="input-field">
                                     {this.props.pictureLinkError && this.props.pictureLinkError[i] === "Please use a link for the picture" ?
-                                        <TextField hintText="Give us the link of your work of art"
+                                        <TextField hintText="Paste here the link to the picture you wish to add"
                                                    value={picture.pictureLink}
                                                    onChange={this.props.handlePicturesLinkChange(i)}
                                                    errorText={this.props.pictureLinkError[i]}
@@ -238,7 +238,7 @@ class Create extends Component {
                                                    underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
                                         />
                                         :
-                                        <TextField hintText="Give us the link of your work of art"
+                                        <TextField hintText="Paste here the link to the picture you wish to add"
                                                    value={picture.pictureLink}
                                                    onChange={this.props.handlePicturesLinkChange(i)}
                                                    onKeyDown={this.handleKeyPress}
@@ -265,7 +265,7 @@ class Create extends Component {
                                             <RichTextEditor
                                                 value={picture.pictureDescription}
                                                 onChange={this.props.handlePicturesDescriptionChange(i)}
-                                                placeholder="Collection description"
+                                                placeholder={"Picture's " + (i+1) + " description"}
                                                 toolbarConfig={toolbarConfig}
                                             />
                                         </div>
@@ -274,7 +274,7 @@ class Create extends Component {
                                             <RichTextEditor
                                                 value={picture.pictureDescription}
                                                 onChange={this.props.handlePicturesDescriptionChange(i)}
-                                                placeholder="Collection description"
+                                                placeholder={"Picture's " + (i+1) + " description"}
                                                 toolbarConfig={toolbarConfig}
                                             />
                                         </div>
@@ -422,7 +422,7 @@ class Create extends Component {
                                 label={stepIndex === 2 ? "Add collection" : "Next"}
                                 primary={true}
                                 onTouchTap={stepIndex === 2 ? this.props.onSave : this.handleNext}
-                                buttonStyle={{backgroundColor: "#9b9b9b"}}/>
+                                buttonStyle={stepIndex === 2 ? {backgroundColor: "green"} : {backgroundColor: "#9b9b9b"}}/>
 
                             {this.props.canResume === true ?
                                 <RaisedButton label="Resume"

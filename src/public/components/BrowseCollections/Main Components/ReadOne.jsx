@@ -138,6 +138,17 @@ class ReadOne extends Component {
                                             }
                                             avatar={this.props.collection.profilePictureLink}
                                         />
+                                        <CardActions>
+                                            <div className="heart-red-color">
+                                                <Checkbox
+                                                    label={this.props.collection.likes}
+                                                    checked={isLiked}
+                                                    checkedIcon={<ActionFavorite/>}
+                                                    uncheckedIcon={<ActionFavoriteBorder/>}
+                                                    onTouchTap={isLiked === false ? () => this.handlers.onLike(this.props.collection._id) : () => this.handlers.onUnlike(this.props.collection._id)}
+                                                />
+                                            </div>
+                                        </CardActions>
                                         {this.props.rows3}
                                         <CardText>
                                             <div
