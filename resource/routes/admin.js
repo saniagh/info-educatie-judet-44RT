@@ -90,7 +90,7 @@ function validateCreateCollectionForm(payload) {
 
     // message to send if there are any errors
     if (!isFormValid) {
-        message = "Check the specified fields for errors";
+        message = "Check the specified fields for errors. Make sure you didn't leave any fields empty!";
     }
 
     return {
@@ -156,7 +156,7 @@ function validateUpdateCollectionsForm(payload) {
 
     // message to send if there are any errors
     if (!isFormValid) {
-        message = "Check the specified fields for errors";
+        message = "Check the specified fields for errors. Make sure you didn't leave any fields empty!";
     }
 
     return {
@@ -190,7 +190,7 @@ function validateCreateNewsForm(payload) {
 
     // message to send if there are any errors
     if (!isFormValid) {
-        message = "Check the specified fields for errors";
+        message = "Check the specified fields for errors. Make sure you didn't leave any fields empty!";
     }
 
     return {
@@ -223,7 +223,7 @@ function validateUpdateNewsForm(payload) {
 
     // message to send if there are any errors
     if (!isFormValid) {
-        message = "Check the specified fields for errors";
+        message = "Check the specified fields for errors. Make sure you didn't leave any fields empty!";
     }
 
     return {

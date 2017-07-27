@@ -61,7 +61,7 @@ function validateCreateForm(payload) {
     });
 
     if (!isFormValid) {
-        message = "Check the specified fields for errors";
+        message = "Check the specified fields for errors. Make sure you didn't leave any fields empty!";
     }
 
     return {
@@ -107,7 +107,7 @@ function validateUpdateForm(payload) {
     });
 
     if (!isFormValid) {
-        message = "Check the specified fields for errors";
+        message = "Check the specified fields for errors. Make sure you didn't leave any fields empty!";
     }
 
     return {
