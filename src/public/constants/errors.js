@@ -1,1 +1,0 @@
-export const NO_RECORDS_ERROR  = 'No records found';
