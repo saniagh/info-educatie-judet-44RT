@@ -7,6 +7,8 @@ https://github.com/saniagh/info-educatie-judet-44RT
 
 ![QR Missing?](/resource/index/images/qr-code-github.png)
 
+For our poster, visit : http://ec2-52-29-50-230.eu-central-1.compute.amazonaws.com:8080/news/597ce1af03c66f3ad10c7520
+
 <h1><i>The ideea behind the project</i></h1>
 
 <p>4Art is a website dedicated to artists of all ages, genders and ethnicities. We offer a platform to share your own drawings, paintings, photographs and anything you wish, surprisingly, about art! :)</p>
