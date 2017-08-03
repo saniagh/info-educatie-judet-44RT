@@ -87,13 +87,17 @@ class Home extends Component {
             })
         });
 
-        socket.on("selectCat", () => {
+        socket.on("selectCat", (data) => {
             axios({
-                method: 'get',
+                method: 'post',
                 url: '/move/makeCat',
                 headers: {
                     'Authorization': `bearer ${Auth.getToken()}`,
-                }
+                    'Content-type': 'application/x-www-form-urlencoded'
+                },
+                data: qs.stringify({
+                    'currentCatPositionInArray': data.currentCatPositionInArray
+                })
             }).then((response) => {
                 this.setState({
                     playerPositions: response.data.playerPositions
@@ -170,13 +174,13 @@ class Home extends Component {
     render() {
 
         let playerStyle = {
-            backgroundColor: "green",
-            height: 40,
-            width: 40,
+            backgroundColor: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? "red" : "green",
+            height: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 80 : 40,
+            width: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 80 : 40,
             position: "absolute",
             left: this.state.left,
             top: this.state.top,
-            zIndex: 2
+            zIndex: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 2 : 1
         };
 
         return (
@@ -186,13 +190,13 @@ class Home extends Component {
                     if (player && player.userId !== this.state.userId) {
                         return <div key={player.positionInArray}
                                     style={{
-                                        backgroundColor: "red",
-                                        height: 40,
-                                        width: 40,
+                                        backgroundColor: player.role === "cat" ? "red" : "green",
+                                        height: player.role === "cat" ? 80 : 40,
+                                        width: player.role === "cat" ? 80 : 40,
                                         position: "absolute",
                                         top: player.top,
                                         left: player.left,
-                                        zIndex: 1
+                                        zIndex: player.role === "cat" === "cat" ? 2 : 1
                                     }}
                         />
                     }

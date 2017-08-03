@@ -3,9 +3,10 @@ const User = require('mongoose').model('User');
 const config = require('../../config');
 const jwt = require('jsonwebtoken');
 const router = new express.Router();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 let playerPositions = [];
-let currentCatPositionInArray = -1;
 
 router.post('/movePlayer', (req, res) => {
     if (req.headers.authorization.split(' ')[1] !== "null") {
@@ -48,9 +49,9 @@ router.post('/movePlayer', (req, res) => {
                     left: playerPositions[positionInArray].left - 40,
                     userId: userId,
                     positionInArray: positionInArray,
-                    role: "mouse",
-                    connected: true,
-                    wasCat: false
+                    connected: playerPositions[positionInArray].connected,
+                    role: playerPositions[positionInArray].role,
+                    wasCat: playerPositions[positionInArray].wasCat
                 }
             }
             else if (eventType == '38') {
@@ -59,9 +60,9 @@ router.post('/movePlayer', (req, res) => {
                     left: playerPositions[positionInArray].left,
                     userId: userId,
                     positionInArray: positionInArray,
-                    role: "mouse",
-                    connected: true,
-                    wasCat: false
+                    connected: playerPositions[positionInArray].connected,
+                    role: playerPositions[positionInArray].role,
+                    wasCat: playerPositions[positionInArray].wasCat
                 }
             }
             else if (eventType == '39') {
@@ -70,9 +71,9 @@ router.post('/movePlayer', (req, res) => {
                     left: playerPositions[positionInArray].left + 40,
                     userId: userId,
                     positionInArray: positionInArray,
-                    role: "mouse",
-                    connected: true,
-                    wasCat: false
+                    connected: playerPositions[positionInArray].connected,
+                    role: playerPositions[positionInArray].role,
+                    wasCat: playerPositions[positionInArray].wasCat
                 }
             }
 
@@ -82,9 +83,9 @@ router.post('/movePlayer', (req, res) => {
                     left: playerPositions[positionInArray].left,
                     userId: userId,
                     positionInArray: positionInArray,
-                    role: "mouse",
-                    connected: true,
-                    wasCat: false
+                    connected: playerPositions[positionInArray].connected,
+                    role: playerPositions[positionInArray].role,
+                    wasCat: playerPositions[positionInArray].wasCat
                 }
             }
 
@@ -125,7 +126,10 @@ router.post("/playerPositions", (req, res) => {
                     top: 500,
                     left: 500,
                     userId: userId,
-                    positionInArray: positionInArray
+                    positionInArray: positionInArray,
+                    role: "mouse",
+                    connected: true,
+                    wasCat: false
                 };
             }
 
@@ -137,7 +141,7 @@ router.post("/playerPositions", (req, res) => {
     }
 });
 
-router.get("/makeCat", (req, res) => {
+router.post("/makeCat", (req, res) => {
     if (req.headers.authorization && req.headers.authorization.split(' ')[1] !== "null") {
 
         const token = req.headers.authorization.split(' ')[1];
@@ -156,13 +160,35 @@ router.get("/makeCat", (req, res) => {
                 })
             }
 
-            console.log(playerPositions);
+            const currentCatPositionInArray = req.body.currentCatPositionInArray;
+            const length = playerPositions.length;
 
-            Object.keys(playerPositions).map((key) => {
-                if (playerPositions[key].connected === true && playerPositions[key].wasCat === false && playerPositions[key].role === "role")
-                    playerPositions[key].wasCat = true;
-                    playerPositions[key].role = "cat"
-            });
+            if (currentCatPositionInArray == length-1) {
+                let newGamePositions = playerPositions.map((player) => {{
+                    io.sockets.emit('restartGame');
+                        return {
+                            top: 500,
+                            left: 500,
+                            userId: player.userId,
+                            positionInArray: player.positionInArray,
+                            role: "mouse",
+                            connected: player.connected,
+                            wasCat: false
+                        }
+                    }
+
+                })
+            }
+
+            if (currentCatPositionInArray < length) {
+                console.log(currentCatPositionInArray);
+
+                playerPositions[currentCatPositionInArray].wasCat = true;
+                playerPositions[currentCatPositionInArray].role = "cat";
+
+                if (currentCatPositionInArray > 0)
+                    playerPositions[currentCatPositionInArray - 1].role = "mouse";
+            }
 
             res.send({
                 playerPositions: playerPositions
