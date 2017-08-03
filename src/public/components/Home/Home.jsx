@@ -23,6 +23,7 @@ class Home extends Component {
             playerPositions: [],
             userId: null,
             userName: "",
+            profilePictureLink: "",
             token: null,
             started: false,
             restarted: false
@@ -45,7 +46,8 @@ class Home extends Component {
         }).then((response) => {
             this.setState({
                 userId: response.data.userId,
-                userName: response.data.userName
+                userName: response.data.userName,
+                profilePictureLink: response.data.profilePictureLink
             })
         }).catch((err) => {
             console.log(err);

@@ -35094,6 +35094,10 @@
 
 	var _SignUpView2 = _interopRequireDefault(_SignUpView);
 
+	var _ProfileView = __webpack_require__(724);
+
+	var _ProfileView2 = _interopRequireDefault(_ProfileView);
+
 	var _Auth = __webpack_require__(611);
 
 	var _Auth2 = _interopRequireDefault(_Auth);
@@ -35136,6 +35140,15 @@
 
 	            // change the current URL to /
 	            replace('/');
+	        }
+	    }, {
+	        path: '/profile',
+	        getComponent: function getComponent(location, callback) {
+	            if (_Auth2.default.isUserAuthenticated()) {
+	                callback(null, _ProfileView2.default);
+	            } else {
+	                callback(null, _LoginView2.default);
+	            }
 	        }
 	    }, {
 	        path: '*',
@@ -35405,6 +35418,16 @@
 	                        ),
 	                        _Auth2.default.isUserAuthenticated() ? _react2.default.createElement(
 	                            _reactRouter.Link,
+	                            { to: '/profile' },
+	                            _react2.default.createElement(_materialUi.ListItem, { primaryText: 'Profile',
+	                                disabled: true,
+	                                style: {
+	                                    fontSize: 24,
+	                                    color: "gray"
+	                                } })
+	                        ) : null,
+	                        _Auth2.default.isUserAuthenticated() ? _react2.default.createElement(
+	                            _reactRouter.Link,
 	                            { to: '/logout' },
 	                            _react2.default.createElement(_materialUi.ListItem, { primaryText: 'Logout',
 	                                disabled: true,
@@ -35458,6 +35481,13 @@
 	                                _react2.default.createElement(_materialUi.ListItem, {
 	                                    primaryText: 'Home',
 	                                    leftIcon: _react2.default.createElement(_home2.default, null) })
+	                            ),
+	                            _react2.default.createElement(
+	                                _reactRouter.Link,
+	                                { to: '/profile',
+	                                    activeClassName: 'active-link-classname' },
+	                                _react2.default.createElement(_materialUi.ListItem, {
+	                                    primaryText: 'Profile' })
 	                            )
 	                        ),
 	                        _react2.default.createElement(_materialUi.Divider, null),
@@ -68836,6 +68866,7 @@
 	            playerPositions: [],
 	            userId: null,
 	            userName: "",
+	            profilePictureLink: "",
 	            token: null,
 	            started: false,
 	            restarted: false
@@ -68862,7 +68893,8 @@
 	            }).then(function (response) {
 	                _this2.setState({
 	                    userId: response.data.userId,
-	                    userName: response.data.userName
+	                    userName: response.data.userName,
+	                    profilePictureLink: response.data.profilePictureLink
 	                });
 	            }).catch(function (err) {
 	                console.log(err);
@@ -75325,6 +75357,192 @@
 	    return utils.compact(obj);
 	};
 
+
+/***/ }),
+/* 724 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Auth = __webpack_require__(611);
+
+	var _Auth2 = _interopRequireDefault(_Auth);
+
+	var _axios = __webpack_require__(693);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _qs = __webpack_require__(719);
+
+	var _qs2 = _interopRequireDefault(_qs);
+
+	var _Profile = __webpack_require__(725);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ProfileView = function (_Component) {
+	    _inherits(ProfileView, _Component);
+
+	    function ProfileView(props) {
+	        _classCallCheck(this, ProfileView);
+
+	        var _this = _possibleConstructorReturn(this, (ProfileView.__proto__ || Object.getPrototypeOf(ProfileView)).call(this, props));
+
+	        _this.onProfilePictureLinkChange = function (e) {
+	            _this.setState({
+	                profilePictureLink: e.target.value
+	            });
+	        };
+
+	        _this.onSave = function () {
+	            (0, _axios2.default)({
+	                method: 'post',
+	                url: '/profile/profilePicture',
+	                headers: {
+	                    'Authorization': 'bearer ' + _Auth2.default.getToken(),
+	                    'Content-type': 'application/x-www-form-urlencoded'
+	                },
+	                data: _qs2.default.stringify({
+	                    'profilePictureLink': _this.state.profilePictureLink
+	                })
+	            }).then(function (response) {
+	                _this.setState({
+	                    success: true,
+	                    message: response.data.message
+	                });
+	            }).catch(function (err) {
+	                _this.setState({
+	                    success: false,
+	                    message: err.data.message,
+	                    errors: err.data.errors
+	                });
+	            });
+	        };
+
+	        _this.state = {
+	            profilePictureLink: "",
+	            message: "",
+	            success: null,
+	            errors: {}
+	        };
+	        return _this;
+	    }
+
+	    _createClass(ProfileView, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var _this2 = this;
+
+	            (0, _axios2.default)({
+	                method: 'get',
+	                url: '/profile/profile',
+	                headers: {
+	                    'Authorization': 'bearer ' + _Auth2.default.getToken()
+	                }
+	            }).then(function (response) {
+	                _this2.setState({
+	                    profilePictureLink: response.data.profilePictureLink
+	                });
+	            }).catch(function (err) {
+	                console.log(err);
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(_Profile2.default, {
+	                success: this.state.success,
+	                message: this.state.message,
+	                profilePictureLink: this.state.profilePictureLink,
+	                onProfilePictureLinkChange: this.onProfilePictureLinkChange,
+	                onSave: this.onSave
+	            });
+	        }
+	    }]);
+
+	    return ProfileView;
+	}(_react.Component);
+
+	exports.default = ProfileView;
+
+/***/ }),
+/* 725 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _materialUi = __webpack_require__(396);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Profile = function (_Component) {
+	    _inherits(Profile, _Component);
+
+	    function Profile() {
+	        _classCallCheck(this, Profile);
+
+	        return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).apply(this, arguments));
+	    }
+
+	    _createClass(Profile, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                _materialUi.Card,
+	                null,
+	                _react2.default.createElement('div', { className: 'top-bar-spacing' }),
+	                _react2.default.createElement(_materialUi.TextField, { value: this.props.profilePictureLink,
+	                    onChange: this.props.onProfilePictureLinkChange,
+	                    errorText: this.props.errors && this.props.errors.profilePictureLink ? this.props.errors.profilePictureLink : null,
+	                    floatingLabelText: 'Profile picture link' }),
+	                _react2.default.createElement(_materialUi.RaisedButton, { label: 'Save',
+	                    primary: true,
+	                    onTouchTap: this.props.onSave }),
+	                _react2.default.createElement(_materialUi.Snackbar, { message: this.props.message,
+	                    open: this.props.success ? this.props.success : false,
+	                    autoHideDuration: 5000 })
+	            );
+	        }
+	    }]);
+
+	    return Profile;
+	}(_react.Component);
+
+	exports.default = Profile;
 
 /***/ })
 /******/ ]);

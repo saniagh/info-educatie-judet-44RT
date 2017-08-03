@@ -18,6 +18,7 @@ const loginPassport = require('./resource/authentication/login');
 const authenticationRoutes = require('./resource/routes/authentication');
 const moveRoutes = require('./resource/routes/move');
 const homeRoutes = require('./resource/routes/home');
+const profileRoutes = require('./resource/routes/customize.js');
 
 const express = require('express');
 
@@ -31,6 +32,7 @@ passport.use('login', loginPassport);
 app.use('/authentication', authenticationRoutes);
 app.use('/move', moveRoutes);
 app.use('/home', homeRoutes);
+app.use('/profile', profileRoutes);
 
 app.use(mongoSanitize());
 

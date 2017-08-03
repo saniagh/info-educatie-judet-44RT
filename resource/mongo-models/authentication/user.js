@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         index: {unique: true}
     },
+    profilePictureLink: {
+        type: String,
+        default: '/images/eu.jpg'
+    },
     registerDate: { type: Date, default: Date.now },
     time: { type: Date, default: Date.now }
 });

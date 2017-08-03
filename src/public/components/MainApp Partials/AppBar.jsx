@@ -93,6 +93,19 @@ class AppBarPersonal extends Component {
                         }
 
                         {Auth.isUserAuthenticated() ?
+                            <Link to={`/profile`}>
+                                <ListItem primaryText="Profile"
+                                          disabled={true}
+                                          style={{
+                                              fontSize: 24,
+                                              color: "gray"
+                                          }}/>
+                            </Link>
+                            :
+                            null
+                        }
+
+                        {Auth.isUserAuthenticated() ?
                             <Link to={`/logout`}>
                                 <ListItem primaryText="Logout"
                                           disabled={true}
@@ -138,6 +151,11 @@ class AppBarPersonal extends Component {
                                 <ListItem
                                     primaryText="Home"
                                     leftIcon={<ActionHome/>}/>
+                            </Link>
+                            <Link to={`/profile`}
+                                  activeClassName="active-link-classname">
+                                <ListItem
+                                    primaryText="Profile"/>
                             </Link>
                         </List>
                         <Divider/>

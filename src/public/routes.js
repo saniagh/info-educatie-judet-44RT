@@ -4,6 +4,7 @@ import HomeView from './containers/Home/HomeView.jsx';
 
 import LoginView from './containers/Authentication/LoginView.jsx';
 import SignUpView from './containers/Authentication/SignUpView.jsx';
+import ProfileView from './containers/Profile/ProfileView.jsx';
 
 import Auth from './modules/Auth';
 
@@ -51,6 +52,17 @@ const routes = {
 
                 // change the current URL to /
                 replace('/');
+            }
+        },
+
+        {
+            path: '/profile',
+            getComponent: (location, callback) => {
+                if (Auth.isUserAuthenticated()) {
+                    callback(null, ProfileView);
+                } else {
+                    callback(null, LoginView);
+                }
             }
         },
 
