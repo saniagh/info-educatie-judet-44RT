@@ -6,7 +6,7 @@ const config = require('../../config');
 module.exports = (req, res, next) => {
 
     // bearer {token} , not bearer null
-    if (req.headers.authorization.split(' ')[1].toString() !== "null") {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[1].toString() !== "null") {
 
         // {token}
         const token = req.headers.authorization.split(' ')[1];

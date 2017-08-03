@@ -3,28 +3,26 @@ import {Link} from 'react-router';
 import {Card, CardText, RaisedButton, TextField} from 'material-ui';
 
 class Login extends Component {
-
     render() {
+
         const styles = {
             button: {
-                width: '100%'
+                width: '100%',
             }
         };
+
         return (
-            <div>
+            <div className="parallax-login">
                 <div className="top-bar-spacing"/>
                 <Card className="container-login" style={{backgroundColor: 'transparent', boxShadow: 'none'}}>
                     <div className="content-login">
                         <form action="/" onSubmit={this.props.onSubmit}>
                             <div className="login-header">Login</div>
 
-                            {this.props.errors && this.props.errors.summary &&
+                            {this.props.successMessage &&
+                            <div className="success-message">{this.props.successMessage}</div>}
+                            {this.props.errors.summary &&
                             <div className="error-message">{this.props.errors.summary}</div>}
-                            {this.props.message ?
-                                <div className="error-message">{this.props.message}</div>
-                                :
-                                null
-                            }
                             <div>
                                 <div className="input-field">
                                     <TextField
@@ -32,12 +30,12 @@ class Login extends Component {
                                         name="email"
                                         value={this.props.user.email}
                                         onChange={this.props.onChange}
-                                        errorText={this.props.errors ? this.props.errors.email : null}
-
+                                        errorText={this.props.errors.email}
+                                        autoFocus={true}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#000000", opacity: 0.8}}
-                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                        inputStyle={{color: "#ee6e73"}}
+                                        floatingLabelStyle={{color: "#ee6e73"}}
+                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
                                     />
                                 </div>
 
@@ -48,23 +46,19 @@ class Login extends Component {
                                         name="password"
                                         value={this.props.user.password}
                                         onChange={this.props.onChange}
-                                        errorText={this.props.errors ? this.props.errors.password : null}
+                                        errorText={this.props.errors.password}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#000000", opacity: 0.8}}
-                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                        inputStyle={{color: "#ee6e73"}}
+                                        floatingLabelStyle={{color: "#ee6e73"}}
+                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
                                     />
                                 </div>
 
                                 <div className="button-login-signup">
                                     <RaisedButton
-                                        onTouchTap={this.props.onSubmit}
                                         style={styles.button}
-                                        labelStyle={{color: "#ffffff"}}
-                                        buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
-                                        label="Log in"
-                                        type="submit"
-                                    />
+                                        buttonStyle={{backgroundColor: "#eb7077"}}
+                                        type="submit" label="Log in" primary/>
                                 </div>
 
                                 <CardText>Don t have an account? <Link to='/signup'>Create one</Link>.</CardText>

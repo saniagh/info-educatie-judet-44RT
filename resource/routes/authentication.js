@@ -2,15 +2,10 @@ const express = require('express');
 const validator = require('validator');
 const passport = require('passport');
 const User = require('mongoose').model('User');
-const LoginLogs = require('mongoose').model('LoginLogs');
 const config = require('../../config');
 const jwt = require('jsonwebtoken');
 
 const router = new express.Router();
-
-// Redis
-const redis = require('redis');
-const client = redis.createClient();
 
 function validateLoginForm(payload) {
     const errors = {};
@@ -77,6 +72,8 @@ function validateSignupForm(payload) {
     };
 }
 
+let positionInArray = -1;
+
 router.post('/login', (req, res, next) => {
     const validationResult = validateLoginForm(req.body);
     if (!validationResult.success) {
@@ -111,32 +108,13 @@ router.post('/login', (req, res, next) => {
 
         return jwt.verify(token, config.jwtSecret, (err, decoded) => {
 
-            const userId = decoded.sub;
+            if (!err)
+                positionInArray++;
 
-            const logData = {
-                userId: userId
-            };
-
-            client.del("logsLogin");
-
-            const newLog = new LoginLogs(logData);
-            newLog.save((err) => {
-                if (err) {
-                    return res.status(400).json({
-                        message: "Error while logging"
-                    })
-                }
-
-                LoginLogs.find({}, (err, logs) => {
-                     if (logs) {
-                         client.set("logsLogin", JSON.stringify(logs))
-                     }
-                }).sort({time: -1});
-
-                return res.json({
-                    success: true,
-                    token,
-                });
+            return res.json({
+                success: true,
+                token,
+                positionInArray
             });
         });
     })(req, res, next);

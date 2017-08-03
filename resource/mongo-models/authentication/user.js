@@ -12,20 +12,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         index: {unique: true}
     },
-    firstName: String,
-    lastName: String,
-    birthDate: String,
-    profession: String,
-    companyName: String,
-    city: String,
-    country: String,
     registerDate: { type: Date, default: Date.now },
-    profilePictureLink: String,
-    profileCover: String,
-    admin: { type: Boolean, default: false },
-    banned: { type: Boolean, default: false},
-    moderator: { type: Boolean, default: false },
-    liked: {type: Array, default: []},
     time: { type: Date, default: Date.now }
 });
 

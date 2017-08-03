@@ -4,13 +4,15 @@ import {Card, CardText, RaisedButton, TextField} from 'material-ui';
 
 class SignUp extends Component {
     render() {
+
         const styles = {
             button: {
-                width: '100%'
+                width: '100%',
             }
         };
+
         return (
-            <div>
+            <div className="parallax-signup">
                 <div className="top-bar-spacing"/>
                 <Card className="container-signup" style={{backgroundColor: 'transparent', boxShadow: 'none'}}>
                     <div className="content-signup">
@@ -28,11 +30,11 @@ class SignUp extends Component {
                                         value={this.props.user.name}
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors.name}
-
+                                        autoFocus={true}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#000000", opacity: 0.8}}
-                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                        inputStyle={{color: "#ee6e73"}}
+                                        floatingLabelStyle={{color: "#ee6e73"}}
+                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
                                     />
                                 </div>
 
@@ -44,9 +46,9 @@ class SignUp extends Component {
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors.email}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#000000", opacity: 0.8}}
-                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                        inputStyle={{color: "#ee6e73"}}
+                                        floatingLabelStyle={{color: "#ee6e73"}}
+                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
                                     />
                                 </div>
 
@@ -59,9 +61,9 @@ class SignUp extends Component {
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors.password}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#000000", opacity: 0.8}}
-                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                        inputStyle={{color: "#ee6e73"}}
+                                        floatingLabelStyle={{color: "#ee6e73"}}
+                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
                                     />
                                 </div>
 
@@ -74,17 +76,17 @@ class SignUp extends Component {
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors.confirmPassword}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#000000", opacity: 0.8}}
-                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                        inputStyle={{color: "#ee6e73"}}
+                                        floatingLabelStyle={{color: "#ee6e73"}}
+                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
                                     />
                                 </div>
 
                                 <div className="button-line">
                                     <RaisedButton
                                         style={styles.button}
+                                        buttonStyle={{backgroundColor: "#eb7077"}}
                                         labelStyle={{color: "#ffffff"}}
-                                        buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
                                         type="submit" label="Create New Account" primary/>
                                 </div>
 
@@ -101,4 +103,3 @@ class SignUp extends Component {
 
 
 export default SignUp;
-

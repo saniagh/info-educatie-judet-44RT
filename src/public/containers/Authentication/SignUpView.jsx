@@ -1,73 +1,85 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux';
-import * as signUpActions from '../../actions/Authentication/signUpActions.js'
+
 import SignUp from '../../components/Authentication/SignUp.jsx';
-
-let createHandler = function (dispatch) {
-    let onUserInfoChange = function (fieldName, user, value) {
-        dispatch(signUpActions.onUserInfoChange(fieldName, user, value))
-    };
-
-    let onSaveUser = function (user) {
-        dispatch(signUpActions.onSaveUser(user))
-    };
-
-    return {
-        onUserInfoChange,
-        onSaveUser
-    }
-};
 
 class SignUpView extends Component {
     constructor(props, context) {
         super(props, context);
-        this.handlers = createHandler(this.props.dispatch);
-    }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.success === true)
-            this.context.router.replace('/login')
+        this.state = {
+            errors: {},
+            user: {
+                email: '',
+                name: '',
+                password: '',
+                confirmPassword: ''
+            }
+        };
     }
 
     onChange = (e) => {
-        this.handlers.onUserInfoChange(e.target.name, this.props.user, e.target.value);
+        const field = e.target.name;
+        const user = this.state.user;
+        user[field] = e.target.value;
+
+        this.setState({
+            user
+        });
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.handlers.onSaveUser(this.props.user);
+
+        //The next few lines will define the HTTP body message
+        const name = encodeURIComponent(this.state.user.name);
+        const email = encodeURIComponent(this.state.user.email);
+        const password = encodeURIComponent(this.state.user.password);
+        const confirmPassword = encodeURIComponent(this.state.user.confirmPassword);
+
+        const formData = `name=${name}&email=${email}&password=${password}&confirmPassword=${confirmPassword}`;
+
+        //AJAX
+        const xhr = new XMLHttpRequest();
+        xhr.open('post', '/authentication/signup');
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.responseType = 'json';
+        xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+                this.setState({
+                    errors: {}
+                });
+
+                localStorage.setItem('successMessage', xhr.response.message);
+
+                this.context.router.replace('/login');
+            } else {
+                const errors = xhr.response.errors ? xhr.response.errors : {};
+                errors.summary = xhr.response.message;
+
+                this.setState({
+                    errors
+                });
+            }
+        });
+        xhr.send(formData);
     };
 
     render() {
         document.title = "Signup";
-        return <SignUp
-                errors={this.props.errors}
-                user={this.props.user}
+        return (
+            <SignUp
+                errors={this.state.errors}
+                user={this.state.user}
                 onChange={this.onChange}
                 onSubmit={this.onSubmit}
-            />;
+            />
+        );
     }
 }
-
-SignUpView.propTypes = {
-    user: PropTypes.object,
-    errors: PropTypes.object
-};
 
 SignUpView.contextTypes = {
     router: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => {
-    let errors = state.signUpReducer.errors;
-    if (errors)
-        errors = {...errors, summary: state.signUpReducer.message};
-    return {
-        user: state.signUpReducer.user,
-        errors: errors,
-        success: state.signUpReducer.success
-    }
-};
-
-export default connect(mapStateToProps)(SignUpView)
+export default SignUpView;

@@ -9,12 +9,8 @@ window.onbeforeunload = () => {
 
 class ScrollToTop extends Component {
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.location !== nextProps.location) {
-            if ((nextProps.location.pathname !== '/collections' || this.props.location.pathname !== '/collections') && (nextProps.location.pathname !== '/news' || this.props.location.pathname !== '/news') && (nextProps.location.pathname !== '/manage' || this.props.location.pathname !== '/manage') && (nextProps.location.pathname !== '/' || this.props.location.pathname !== '/') && !(nextProps.location.pathname.includes("/search") || this.props.location.pathname.includes("/search")) && (nextProps.location.pathname !== "/login") && (nextProps.location.pathname !== "/signup") && !(nextProps.location.pathname.includes("/profile") && this.props.location.pathname.includes("/profile")) && !(nextProps.location.pathname.includes("/users") && this.props.location.pathname.includes("/users"))) {
-                smoothScroll();
-            }
-        }
+    componentDidUpdate() {
+        smoothScroll();
     }
 
     render() {

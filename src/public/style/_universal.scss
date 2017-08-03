@@ -1,6 +1,11 @@
 @import "./partials/appBar";
 @import './constants/functions';
 
+body, html {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .top-bar-spacing {
   @include widthAndHeight(auto, 50px);
   @media screen and (min-width: 1271px) {
