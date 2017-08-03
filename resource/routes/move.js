@@ -31,10 +31,75 @@ router.post('/movePlayer', (req, res) => {
 
             let lengthExp = require('../../variable.js');
 
-            if (lengthExp.currentCatPositionInArray !== lengthExp.length && playerPositions[lengthExp.currentCatPositionInArray].role === "cat")
-            playerPositions.map((mouse) => {
+            // cat moves and attacks the mice
+            if (lengthExp.currentCatPositionInArray !== lengthExp.length && playerPositions[lengthExp.currentCatPositionInArray].role === "cat") {
 
-            });
+                let n = lengthExp.length, cat = playerPositions[lengthExp.currentCatPositionInArray];
+
+                for (let j = 0; j < n; j++) {
+                    if (playerPositions[j].role === "mouse") {
+
+                        const mouse = playerPositions[j];
+
+                        if (eventType == '37' && cat.left - (mouse.left + 40) < 0 && cat.left - (mouse.left + 40) > -160) {
+                            // mouse has been caught from the left and is ported out of view
+                            mouse.left = -1000;
+                            mouse.top = -1000;
+                        }
+
+                        if (eventType == '38' && (cat.left + 160) - mouse.left > 0 && (cat.left + 160) - mouse.left < 160) {
+                            // mouse has been caught from the right
+                            mouse.left = -1000;
+                            mouse.top = -1000;
+                        }
+
+                        if (eventType == '39' && cat.top - (mouse.top + 40) < 0 && cat.top - (mouse.top + 40) > -160) {
+                            // mouse has been caught from the top
+                            mouse.left = -1000;
+                            mouse.top = -1000;
+                        }
+
+                        if (eventType == '40' && (cat.top + 160) - mouse.top > 0 && (cat.top + 160) - mouse.top < 160) {
+                            // mouse has been caught from the bottom
+                            mouse.left = -1000;
+                            mouse.top = -1000;
+                        }
+
+                    }
+                }
+            }
+
+            // the mice runs into the cat.
+            if (lengthExp.currentCatPositionInArray !== lengthExp.length && playerPositions[lengthExp.currentCatPositionInArray].role === "mouse") {
+
+                let mouse = playerPositions[positionInArray],
+                    cat = playerPositions[lengthExp.currentCatPositionInArray];
+
+                if (eventType == '37' && (cat.left + 160) - mouse.left > 0 && (cat.left + 160) - mouse.left < 160) {
+                    // mice ran into the cat from the left
+                    mouse.left = -1000;
+                    mouse.top = -1000;
+                }
+
+                if (eventType == '38' && cat.left - (mouse.left + 40) < 0 && cat.left - (mouse.left + 40) > -160) {
+                    // mice ran into the cat from the right
+                    mouse.left = -1000;
+                    mouse.top = -1000;
+                }
+
+                if (eventType == '39' && (cat.top + 160) - mouse.top > 0 && (cat.top + 160) - mouse.top < 160) {
+                    // mice ran into the cat from the top
+                    mouse.left = -1000;
+                    mouse.top = -1000;
+                }
+
+                if (eventType == '40' && cat.top - (mouse.top + 40) < 0 && cat.top - (mouse.top + 40) > -160) {
+                    // mice ran into the cat from the bottom
+                    mouse.left = -1000;
+                    mouse.top = -1000;
+                }
+
+            }
 
             if (typeof playerPositions[positionInArray] === 'undefined') {
                 playerPositions[positionInArray] = {
@@ -48,7 +113,7 @@ router.post('/movePlayer', (req, res) => {
                 }
             }
 
-            if (eventType == '37') {
+            if (eventType == '37' && playerPositions[positionInArray].top > 0 && playerPositions[positionInArray].left - 40 > 0) {
                 playerPositions[positionInArray] = {
                     top: playerPositions[positionInArray].top,
                     left: playerPositions[positionInArray].left - 40,
@@ -59,7 +124,7 @@ router.post('/movePlayer', (req, res) => {
                     wasCat: playerPositions[positionInArray].wasCat
                 }
             }
-            else if (eventType == '38') {
+            else if (eventType == '38' && playerPositions[positionInArray].top - 40 > 0 && playerPositions[positionInArray].left > 0) {
                 playerPositions[positionInArray] = {
                     top: playerPositions[positionInArray].top - 40,
                     left: playerPositions[positionInArray].left,
@@ -70,7 +135,7 @@ router.post('/movePlayer', (req, res) => {
                     wasCat: playerPositions[positionInArray].wasCat
                 }
             }
-            else if (eventType == '39') {
+            else if (eventType == '39' && playerPositions[positionInArray].top > 0 && playerPositions[positionInArray].left + 40 > 0) {
                 playerPositions[positionInArray] = {
                     top: playerPositions[positionInArray].top,
                     left: playerPositions[positionInArray].left + 40,
@@ -82,7 +147,7 @@ router.post('/movePlayer', (req, res) => {
                 }
             }
 
-            else if (eventType == '40') {
+            else if (eventType == '40' && playerPositions[positionInArray].top + 40 > 0 && playerPositions[positionInArray].left > 0) {
                 playerPositions[positionInArray] = {
                     top: playerPositions[positionInArray].top + 40,
                     left: playerPositions[positionInArray].left,
@@ -147,7 +212,6 @@ router.post("/playerPositions", (req, res) => {
 });
 
 
-
 router.post("/makeCat", (req, res) => {
     if (req.headers.authorization && req.headers.authorization.split(' ')[1] !== "null") {
 
@@ -197,6 +261,13 @@ router.post("/makeCat", (req, res) => {
             }
             else {
                 console.log(currentCatPositionInArray);
+
+                for (let i = 0 ; i < length ; i++) {
+                    if (playerPositions[i].left < 0 || playerPositions[i].top < 0) {
+                        playerPositions[i].left = 500;
+                        playerPositions[i].top = 500;
+                    }
+                }
 
                 playerPositions[currentCatPositionInArray % length].wasCat = true;
                 playerPositions[currentCatPositionInArray % length].role = "cat";
