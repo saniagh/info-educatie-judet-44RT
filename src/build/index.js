@@ -35203,6 +35203,7 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+
 	            return _react2.default.createElement(_MainApp2.default, { children: this.props.children,
 	                location: this.props.location });
 	        }
@@ -35245,8 +35246,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var socket = io.connect();
-
 	var MainApp = function (_Component) {
 	    _inherits(MainApp, _Component);
 
@@ -35259,11 +35258,6 @@
 	    _createClass(MainApp, [{
 	        key: 'render',
 	        value: function render() {
-
-	            setInterval(function () {
-	                socket.emit("selectCat", function () {});
-	            }, 10000);
-
 	            return _react2.default.createElement(
 	                'div',
 	                null,
@@ -71114,7 +71108,21 @@
 	                });
 	            });
 
-	            socket.on("selectCat", function () {});
+	            socket.on("selectCat", function () {
+	                (0, _axios2.default)({
+	                    method: 'get',
+	                    url: '/move/makeCat',
+	                    headers: {
+	                        'Authorization': 'bearer ' + _Auth2.default.getToken()
+	                    }
+	                }).then(function (response) {
+	                    _this2.setState({
+	                        playerPositions: response.data.playerPositions
+	                    });
+	                }).catch(function (err) {
+	                    console.log(err);
+	                });
+	            });
 
 	            socket.on("mustUpdatePositions", function () {
 	                (0, _axios2.default)({

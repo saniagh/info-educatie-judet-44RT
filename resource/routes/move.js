@@ -37,7 +37,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     positionInArray: positionInArray,
                     role: "mouse",
-                    connected: true
+                    connected: true,
+                    wasCat: false
                 }
             }
 
@@ -48,7 +49,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     positionInArray: positionInArray,
                     role: "mouse",
-                    connected: true
+                    connected: true,
+                    wasCat: false
                 }
             }
             else if (eventType == '38') {
@@ -58,7 +60,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     positionInArray: positionInArray,
                     role: "mouse",
-                    connected: true
+                    connected: true,
+                    wasCat: false
                 }
             }
             else if (eventType == '39') {
@@ -68,7 +71,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     positionInArray: positionInArray,
                     role: "mouse",
-                    connected: true
+                    connected: true,
+                    wasCat: false
                 }
             }
 
@@ -79,7 +83,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     positionInArray: positionInArray,
                     role: "mouse",
-                    connected: true
+                    connected: true,
+                    wasCat: false
                 }
             }
 
@@ -133,7 +138,7 @@ router.post("/playerPositions", (req, res) => {
 });
 
 router.get("/makeCat", (req, res) => {
-    if (req.headers.authorization.split(' ')[1] !== "null") {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[1] !== "null") {
 
         const token = req.headers.authorization.split(' ')[1];
 
@@ -151,7 +156,17 @@ router.get("/makeCat", (req, res) => {
                 })
             }
 
+            console.log(playerPositions);
 
+            Object.keys(playerPositions).map((key) => {
+                if (playerPositions[key].connected === true && playerPositions[key].wasCat === false && playerPositions[key].role === "role")
+                    playerPositions[key].wasCat = true;
+                    playerPositions[key].role = "cat"
+            });
+
+            res.send({
+                playerPositions: playerPositions
+            })
 
         });
     }

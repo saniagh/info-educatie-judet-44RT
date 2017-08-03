@@ -11,9 +11,6 @@ module.exports = function (socket) {
     socket.on('mustUpdatePositions', function () {
         socket.broadcast.emit('mustUpdatePositions')
     });
-    socket.on('selectCat', function () {
-        socket.broadcast.emit("selectCat");
-    });
     socket.on('userDisconnected', function (data) {
 
         axios({

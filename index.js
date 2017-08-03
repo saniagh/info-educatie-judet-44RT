@@ -34,6 +34,11 @@ app.use('/home', homeRoutes);
 
 app.use(mongoSanitize());
 
+setInterval(() => {
+    console.log("INTERVAL");
+    io.sockets.emit('selectCat')
+}, 10000);
+
 //Avoid writing useless code - more info in the path of this require ( in the file )
 const authenticationChecker = require('./resource/middleware/authentication-check');
 app.use('/', authenticationChecker);

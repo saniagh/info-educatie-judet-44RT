@@ -88,7 +88,19 @@ class Home extends Component {
         });
 
         socket.on("selectCat", () => {
-
+            axios({
+                method: 'get',
+                url: '/move/makeCat',
+                headers: {
+                    'Authorization': `bearer ${Auth.getToken()}`,
+                }
+            }).then((response) => {
+                this.setState({
+                    playerPositions: response.data.playerPositions
+                })
+            }).catch((err) => {
+                console.log(err);
+            })
         });
 
         socket.on("mustUpdatePositions", () => {

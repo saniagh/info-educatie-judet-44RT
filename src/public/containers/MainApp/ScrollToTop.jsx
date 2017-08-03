@@ -14,6 +14,7 @@ class ScrollToTop extends Component {
     }
 
     render() {
+
         return <MainApp children={this.props.children}
                         location={this.props.location}/>
     }
