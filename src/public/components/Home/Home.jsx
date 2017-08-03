@@ -22,7 +22,8 @@ class Home extends Component {
             positionInArray: -1,
             playerPositions: [],
             userId: null,
-            token: null
+            token: null,
+            finished: false
         }
     }
 
@@ -47,7 +48,8 @@ class Home extends Component {
             console.log(err);
         });
 
-        socket.emit("userConnected", () => {});
+        socket.emit("userConnected", () => {
+        });
 
         axios({
             method: 'post',
@@ -100,6 +102,24 @@ class Home extends Component {
                 })
             }).then((response) => {
                 this.setState({
+                    playerPositions: response.data.playerPositions,
+                    finished: response.data.finished
+                })
+            }).catch((err) => {
+                console.log(err);
+            })
+        });
+
+        socket.on('resetGame', () => {
+            axios({
+                method: 'get',
+                url: '/move/restartGame',
+                headers: {
+                    'Authorization': `bearer ${Auth.getToken()}`,
+                }
+            }).then((response) => {
+                this.setState({
+                    finished: false,
                     playerPositions: response.data.playerPositions
                 })
             }).catch((err) => {
@@ -142,12 +162,31 @@ class Home extends Component {
         socket.emit("userDisconnected", {positionInArray: this.state.positionInArray, token: this.state.token});
     }
 
+    resetGame = () => {
+        socket.emit('resetGame');
+        axios({
+            method: 'get',
+            url: '/move/restartGame',
+            headers: {
+                'Authorization': `bearer ${Auth.getToken()}`,
+            }
+        }).then((response) => {
+            this.setState({
+                finished: false,
+                playerPositions: response.data.playerPositions
+            })
+        }).catch((err) => {
+            console.log(err);
+        })
+    };
+
     handleKeyPress = (e) => {
 
         const eventType = e.keyCode;
 
         if (e.keyCode == '37' || e.keyCode == '38' || e.keyCode == '39' || e.keyCode == '40') {
-            socket.emit("mustUpdatePositions", () => {});
+            socket.emit("mustUpdatePositions", () => {
+            });
             axios({
                 method: 'post',
                 url: '/move/movePlayer',
@@ -185,6 +224,14 @@ class Home extends Component {
 
         return (
             <div style={{padding: 50}}>
+                {this.state.finished === true ?
+                    <RaisedButton label="Restart game"
+                                  onTouchTap={this.resetGame}
+                                  primary={true}/>
+                    :
+                    null
+                }
+
                 <div style={playerStyle}/>
                 {this.state.playerPositions.map((player) => {
                     if (player && player.userId !== this.state.userId) {

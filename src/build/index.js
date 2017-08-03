@@ -68859,6 +68859,24 @@
 
 	        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
+	        _this.resetGame = function () {
+	            socket.emit('resetGame');
+	            (0, _axios2.default)({
+	                method: 'get',
+	                url: '/move/restartGame',
+	                headers: {
+	                    'Authorization': 'bearer ' + _Auth2.default.getToken()
+	                }
+	            }).then(function (response) {
+	                _this.setState({
+	                    finished: false,
+	                    playerPositions: response.data.playerPositions
+	                });
+	            }).catch(function (err) {
+	                console.log(err);
+	            });
+	        };
+
 	        _this.handleKeyPress = function (e) {
 
 	            var eventType = e.keyCode;
@@ -68894,7 +68912,8 @@
 	            positionInArray: -1,
 	            playerPositions: [],
 	            userId: null,
-	            token: null
+	            token: null,
+	            finished: false
 	        };
 	        return _this;
 	    }
@@ -68976,6 +68995,24 @@
 	                    })
 	                }).then(function (response) {
 	                    _this2.setState({
+	                        playerPositions: response.data.playerPositions,
+	                        finished: response.data.finished
+	                    });
+	                }).catch(function (err) {
+	                    console.log(err);
+	                });
+	            });
+
+	            socket.on('resetGame', function () {
+	                (0, _axios2.default)({
+	                    method: 'get',
+	                    url: '/move/restartGame',
+	                    headers: {
+	                        'Authorization': 'bearer ' + _Auth2.default.getToken()
+	                    }
+	                }).then(function (response) {
+	                    _this2.setState({
+	                        finished: false,
 	                        playerPositions: response.data.playerPositions
 	                    });
 	                }).catch(function (err) {
@@ -69036,6 +69073,9 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { style: { padding: 50 } },
+	                this.state.finished === true ? _react2.default.createElement(_materialUi.RaisedButton, { label: 'Restart game',
+	                    onTouchTap: this.resetGame,
+	                    primary: true }) : null,
 	                _react2.default.createElement('div', { style: playerStyle }),
 	                this.state.playerPositions.map(function (player) {
 	                    if (player && player.userId !== _this3.state.userId) {

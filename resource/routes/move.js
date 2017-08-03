@@ -3,8 +3,6 @@ const User = require('mongoose').model('User');
 const config = require('../../config');
 const jwt = require('jsonwebtoken');
 const router = new express.Router();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
 
 let playerPositions = [];
 
@@ -163,20 +161,11 @@ router.post("/makeCat", (req, res) => {
             const currentCatPositionInArray = req.body.currentCatPositionInArray;
             const length = playerPositions.length;
 
-            if (currentCatPositionInArray == length-1) {
-                let newGamePositions = playerPositions.map((player) => {{
-                    io.sockets.emit('restartGame');
-                        return {
-                            top: 500,
-                            left: 500,
-                            userId: player.userId,
-                            positionInArray: player.positionInArray,
-                            role: "mouse",
-                            connected: player.connected,
-                            wasCat: false
-                        }
-                    }
-
+            if (currentCatPositionInArray == length) {
+                console.log("game finished");
+                res.send({
+                    playerPositions: playerPositions,
+                    finished: true
                 })
             }
 
@@ -188,13 +177,55 @@ router.post("/makeCat", (req, res) => {
 
                 if (currentCatPositionInArray > 0)
                     playerPositions[currentCatPositionInArray - 1].role = "mouse";
+
+                res.send({
+                    playerPositions: playerPositions,
+                    finished: false
+                })
+            }
+        });
+    }
+});
+
+router.get("/restartGame", (req, res) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[1] !== "null") {
+
+        const token = req.headers.authorization.split(' ')[1];
+
+        return jwt.verify(token, config.jwtSecret, (err, decoded) => {
+
+            if (err) {
+                return res.status(401).json({
+                    message: "Not authorized"
+                })
             }
 
-            res.send({
+            if (!decoded) {
+                return res.status(400).json({
+                    message: "Internal error"
+                })
+            }
+
+            let newGamePositions = playerPositions.map((player) => {{
+                console.log("restarting game");
+                return {
+                    top: 500,
+                    left: 500,
+                    userId: player.userId,
+                    positionInArray: player.positionInArray,
+                    role: "mouse",
+                    connected: player.connected,
+                    wasCat: false
+                }
+            }
+            });
+            playerPositions = newGamePositions;
+
+            res.json({
                 playerPositions: playerPositions
             })
 
-        });
+        })
     }
 });
 

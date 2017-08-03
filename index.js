@@ -34,15 +34,11 @@ app.use('/home', homeRoutes);
 
 app.use(mongoSanitize());
 
-let currentCatPositionInArray = 0;
-
-io.sockets.on("restartGame", () => {
-    currentCatPositionInArray = 0;
-});
+let position = require('./variable.js');
 
 setInterval(() => {
-    io.sockets.emit('selectCat', {currentCatPositionInArray: currentCatPositionInArray});
-    currentCatPositionInArray++;
+    io.sockets.emit('selectCat', {currentCatPositionInArray: position.currentCatPositionInArray});
+    position.currentCatPositionInArray++;
 }, 10000);
 
 //Avoid writing useless code - more info in the path of this require ( in the file )
