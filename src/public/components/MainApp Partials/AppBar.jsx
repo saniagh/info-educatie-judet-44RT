@@ -120,13 +120,7 @@ class AppBarPersonal extends Component {
                         <NavigationMenu style={{height: 30, width: 28}}/>
                     </div>
                     <ToolbarGroup/>
-                    <ToolbarGroup>
-                        <Link to={`/`}>
-                            <div style={{display: "flex"}}>
-                                <img src="/images/logo.png" style={{width: 50, height: 50}}/>
-                            </div>
-                        </Link>
-                    </ToolbarGroup>
+                    <ToolbarGroup/>
                     <ToolbarGroup/>
                 </Toolbar>
 

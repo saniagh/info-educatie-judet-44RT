@@ -35432,19 +35432,7 @@
 	                        _react2.default.createElement(_menu2.default, { style: { height: 30, width: 28 } })
 	                    ),
 	                    _react2.default.createElement(_materialUi.ToolbarGroup, null),
-	                    _react2.default.createElement(
-	                        _materialUi.ToolbarGroup,
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/' },
-	                            _react2.default.createElement(
-	                                'div',
-	                                { style: { display: "flex" } },
-	                                _react2.default.createElement('img', { src: '/images/logo.png', style: { width: 50, height: 50 } })
-	                            )
-	                        )
-	                    ),
+	                    _react2.default.createElement(_materialUi.ToolbarGroup, null),
 	                    _react2.default.createElement(_materialUi.ToolbarGroup, null)
 	                ),
 	                _react2.default.createElement(
@@ -68601,10 +68589,6 @@
 
 	var _keyboardArrowUp2 = _interopRequireDefault(_keyboardArrowUp);
 
-	var _add = __webpack_require__(613);
-
-	var _add2 = _interopRequireDefault(_add);
-
 	var _functions = __webpack_require__(614);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -68627,17 +68611,9 @@
 	    _createClass(ScrollButton, [{
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_add2.default, { className: 'add',
-	                    onTouchTap: function onTouchTap() {
-	                        _this2.context.router.push("/manage/create");
-	                        (0, _functions.smoothScroll)();
-	                    }
-	                }),
 	                _react2.default.createElement(_keyboardArrowUp2.default, {
 	                    className: 'scroll',
 	                    onTouchTap: function onTouchTap() {
@@ -68658,43 +68634,7 @@
 	exports.default = ScrollButton;
 
 /***/ }),
-/* 613 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _pure = __webpack_require__(430);
-
-	var _pure2 = _interopRequireDefault(_pure);
-
-	var _SvgIcon = __webpack_require__(440);
-
-	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ContentAdd = function ContentAdd(props) {
-	  return _react2.default.createElement(
-	    _SvgIcon2.default,
-	    props,
-	    _react2.default.createElement('path', { d: 'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z' })
-	  );
-	};
-	ContentAdd = (0, _pure2.default)(ContentAdd);
-	ContentAdd.displayName = 'ContentAdd';
-	ContentAdd.muiName = 'SvgIcon';
-
-	exports.default = ContentAdd;
-
-/***/ }),
+/* 613 */,
 /* 614 */
 /***/ (function(module, exports) {
 
@@ -68874,13 +68814,14 @@
 	                    },
 	                    data: _qs2.default.stringify({
 	                        'eventType': eventType,
-	                        'positionInArray': _Auth2.default.getPositionInArray()
+	                        'positionInArray': _Auth2.default.getPositionInArray(),
+	                        'started': _this.state.started
 	                    })
 	                }).then(function (response) {
-
 	                    _this.setState({
 	                        left: response.data.left,
-	                        top: response.data.top
+	                        top: response.data.top,
+	                        playerPositions: response.data.playerPositions
 	                    });
 	                }).catch(function (err) {
 	                    console.log(err);
@@ -68894,6 +68835,7 @@
 	            positionInArray: -1,
 	            playerPositions: [],
 	            userId: null,
+	            userName: "",
 	            token: null,
 	            started: false,
 	            restarted: false
@@ -68919,7 +68861,8 @@
 	                }
 	            }).then(function (response) {
 	                _this2.setState({
-	                    userId: response.data.userId
+	                    userId: response.data.userId,
+	                    userName: response.data.userName
 	                });
 	            }).catch(function (err) {
 	                console.log(err);
@@ -68941,6 +68884,7 @@
 	                _this2.setState({
 	                    playerPositions: response.data.playerPositions
 	                });
+	                socket.emit("mustUpdatePositions");
 	            }).catch(function (err) {
 	                console.log(err);
 	            });
@@ -69008,7 +68952,9 @@
 	                    })
 	                }).then(function (response) {
 	                    _this2.setState({
-	                        playerPositions: response.data.playerPositions
+	                        playerPositions: response.data.playerPositions,
+	                        top: response.data.playerPositions[_Auth2.default.getPositionInArray()].top,
+	                        left: response.data.playerPositions[_Auth2.default.getPositionInArray()].left
 	                    });
 	                }).catch(function (err) {
 	                    console.log(err);
@@ -69035,6 +68981,8 @@
 	        value: function render() {
 	            var _this3 = this;
 
+	            var aliveCount = 0;
+
 	            var playerStyle = {
 	                backgroundColor: this.state.playerPositions.length && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? "red" : "green",
 	                height: this.state.playerPositions.length && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? 160 : 40,
@@ -69045,10 +68993,24 @@
 	                zIndex: this.state.playerPositions.length && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? 2 : 1
 	            };
 
+	            if (this.state.playerPositions && this.state.playerPositions.length > 1) {
+	                this.state.playerPositions.map(function (player) {
+	                    if (player.left > 0 && player.top > 0) aliveCount++;
+	                });
+	            }
+
+	            var alive = true;
+
+	            if (this.state.playerPositions[_Auth2.default.getPositionInArray()] && this.state.playerPositions[_Auth2.default.getPositionInArray()].left < 0 && this.state.playerPositions[_Auth2.default.getPositionInArray()].top < 0) alive = false;else alive = true;
+
 	            return _react2.default.createElement(
 	                'div',
 	                { style: { padding: 50 } },
-	                _react2.default.createElement('div', { style: playerStyle }),
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: playerStyle },
+	                    this.state.userName.substring(0, 4)
+	                ),
 	                this.state.started === false ? _react2.default.createElement(
 	                    'div',
 	                    null,
@@ -69063,19 +69025,50 @@
 	                    null,
 	                    'Restarting...'
 	                ) : null,
+	                this.state.playerPositions && this.state.playerPositions.length > 1 ? _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'Players: ',
+	                    this.state.playerPositions.length
+	                ) : null,
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'Players still alive: ',
+	                    aliveCount
+	                ),
+	                this.state.playerPositions[_Auth2.default.getPositionInArray()] && alive === true && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "mouse" ? _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'You are alive and well! Just keep running'
+	                ) : null,
+	                this.state.playerPositions[_Auth2.default.getPositionInArray()] && alive === false && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "mouse" ? _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'Look at the good part, you were eaten by the coolest cat around'
+	                ) : null,
+	                this.state.playerPositions[_Auth2.default.getPositionInArray()] && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'Hunt \'em all!'
+	                ) : null,
 	                this.state.playerPositions.map(function (player) {
 	                    if (player && player.userId !== _this3.state.userId) {
-	                        return _react2.default.createElement('div', { key: player.positionInArray,
-	                            style: {
-	                                backgroundColor: player.role === "cat" ? "red" : "green",
-	                                height: player.role === "cat" ? 160 : 40,
-	                                width: player.role === "cat" ? 160 : 40,
-	                                position: "absolute",
-	                                top: player.top,
-	                                left: player.left,
-	                                zIndex: player.role === "cat" === "cat" ? 2 : 1
-	                            }
-	                        });
+	                        return _react2.default.createElement(
+	                            'div',
+	                            { key: player.positionInArray,
+	                                style: {
+	                                    backgroundColor: player.role === "cat" ? "red" : "green",
+	                                    height: player.role === "cat" ? 160 : 40,
+	                                    width: player.role === "cat" ? 160 : 40,
+	                                    position: "absolute",
+	                                    top: player.top,
+	                                    left: player.left,
+	                                    zIndex: player.role === "cat" === "cat" ? 2 : 1
+	                                }
+	                            },
+	                            player.userName.substring(0, 4)
+	                        );
 	                    }
 	                })
 	            );

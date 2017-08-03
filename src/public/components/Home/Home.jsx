@@ -22,6 +22,7 @@ class Home extends Component {
             positionInArray: -1,
             playerPositions: [],
             userId: null,
+            userName: "",
             token: null,
             started: false,
             restarted: false
@@ -43,7 +44,8 @@ class Home extends Component {
             }
         }).then((response) => {
             this.setState({
-                userId: response.data.userId
+                userId: response.data.userId,
+                userName: response.data.userName
             })
         }).catch((err) => {
             console.log(err);
@@ -65,7 +67,8 @@ class Home extends Component {
         }).then((response) => {
             this.setState({
                 playerPositions: response.data.playerPositions
-            })
+            });
+            socket.emit("mustUpdatePositions");
         }).catch((err) => {
             console.log(err);
         });
@@ -133,7 +136,9 @@ class Home extends Component {
                 })
             }).then((response) => {
                 this.setState({
-                    playerPositions: response.data.playerPositions
+                    playerPositions: response.data.playerPositions,
+                    top: response.data.playerPositions[Auth.getPositionInArray()].top,
+                    left: response.data.playerPositions[Auth.getPositionInArray()].left
                 })
             }).catch((err) => {
                 console.log(err);
@@ -171,13 +176,14 @@ class Home extends Component {
                 },
                 data: qs.stringify({
                     'eventType': eventType,
-                    'positionInArray': Auth.getPositionInArray()
+                    'positionInArray': Auth.getPositionInArray(),
+                    'started': this.state.started
                 })
             }).then((response) => {
-
                 this.setState({
                     left: response.data.left,
-                    top: response.data.top
+                    top: response.data.top,
+                    playerPositions: response.data.playerPositions
                 })
             }).catch((err) => {
                 console.log(err);
@@ -186,6 +192,9 @@ class Home extends Component {
     };
 
     render() {
+
+
+        let aliveCount = 0;
 
         let playerStyle = {
             backgroundColor: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? "red" : "green",
@@ -197,9 +206,24 @@ class Home extends Component {
             zIndex: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 2 : 1
         };
 
+        if (this.state.playerPositions && this.state.playerPositions.length > 1) {
+            this.state.playerPositions.map((player) => {
+                if (player.left > 0 && player.top > 0)
+                    aliveCount++;
+            })
+        }
+
+        let alive = true;
+
+        if (this.state.playerPositions[Auth.getPositionInArray()] && this.state.playerPositions[Auth.getPositionInArray()].left < 0 && this.state.playerPositions[Auth.getPositionInArray()].top < 0)
+            alive = false;
+        else alive = true;
+
         return (
             <div style={{padding: 50}}>
-                <div style={playerStyle}/>
+                <div style={playerStyle}>
+                    {this.state.userName.substring(0,4)}
+                </div>
                 {this.state.started === false ?
                 <div>Game is starting shortly !</div>
                     :
@@ -210,6 +234,30 @@ class Home extends Component {
                     :
                     null
                 }
+                {this.state.playerPositions && this.state.playerPositions.length > 1 ?
+                    <div>Players: {this.state.playerPositions.length}</div>
+                    :
+                    null
+                }
+                <div>Players still alive: {aliveCount}</div>
+
+                {this.state.playerPositions[Auth.getPositionInArray()] && alive === true && this.state.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
+                    <div>You are alive and well! Just keep running</div>
+                    :
+                    null
+                }
+                {this.state.playerPositions[Auth.getPositionInArray()] &&  alive === false && this.state.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
+                    <div>Look at the good part, you were eaten by the coolest cat around</div>
+                    :
+                    null
+                }
+
+                {this.state.playerPositions[Auth.getPositionInArray()] && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ?
+                    <div>Hunt 'em all!</div>
+                    :
+                    null
+                }
+
                 {this.state.playerPositions.map((player) => {
                     if (player && player.userId !== this.state.userId) {
                         return <div key={player.positionInArray}
@@ -222,7 +270,9 @@ class Home extends Component {
                                         left: player.left,
                                         zIndex: player.role === "cat" === "cat" ? 2 : 1
                                     }}
-                        />
+                        >
+                            {player.userName.substring(0,4)}
+                        </div>
                     }
                 })}
             </div>

@@ -26,86 +26,84 @@ router.post('/movePlayer', (req, res) => {
             }
 
             const userId = decoded.sub;
+            const userName = decoded.userName;
             const positionInArray = req.body.positionInArray;
             const eventType = req.body.eventType;
+            const length = playerPositions.length;
+            const started = req.body.started;
 
-            let lengthExp = require('../../variable.js');
+            let catIndex = 0;
 
-            // cat moves and attacks the mice
-            if (lengthExp.currentCatPositionInArray !== lengthExp.length && playerPositions[lengthExp.currentCatPositionInArray].role === "cat") {
+            for (let i = 0 ; i < length ; i++) {
+                if (playerPositions[i].role === "cat") {
+                    catIndex = i;
+                }
+            }
 
-                let n = lengthExp.length, cat = playerPositions[lengthExp.currentCatPositionInArray];
-
-                for (let j = 0; j < n; j++) {
-                    if (playerPositions[j].role === "mouse") {
-
-                        const mouse = playerPositions[j];
-
-                        if (eventType == '37' && cat.left - (mouse.left + 40) < 0 && cat.left - (mouse.left + 40) > -160) {
-                            // mouse has been caught from the left and is ported out of view
-                            mouse.left = -1000;
-                            mouse.top = -1000;
+            if (started === "true") {
+                for (let i = 0 ; i < length ; i++) {
+                    if (playerPositions[i].role === "mouse") {
+                        const mouse = playerPositions[i];
+                        const cat = playerPositions[catIndex];
+                        if (mouse.left === cat.left && mouse.top === cat.top) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
                         }
-
-                        if (eventType == '38' && (cat.left + 160) - mouse.left > 0 && (cat.left + 160) - mouse.left < 160) {
-                            // mouse has been caught from the right
-                            mouse.left = -1000;
-                            mouse.top = -1000;
+                        else if (mouse.left === cat.left && cat.top + 120 === mouse.top) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
                         }
-
-                        if (eventType == '39' && cat.top - (mouse.top + 40) < 0 && cat.top - (mouse.top + 40) > -160) {
-                            // mouse has been caught from the top
-                            mouse.left = -1000;
-                            mouse.top = -1000;
+                        else if (mouse.top === cat.top && cat.left + 120 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
                         }
-
-                        if (eventType == '40' && (cat.top + 160) - mouse.top > 0 && (cat.top + 160) - mouse.top < 160) {
-                            // mouse has been caught from the bottom
-                            mouse.left = -1000;
-                            mouse.top = -1000;
+                        else if (cat.top + 120 === mouse.top && cat.left + 120 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
                         }
-
+                        else if (cat.top + 120 === mouse.top && cat.left + 80 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (mouse.left === cat.left && cat.top + 80 === mouse.top) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (mouse.top === cat.top && cat.left + 80 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (cat.top + 80 === mouse.top && cat.left + 80 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (cat.top + 80 === mouse.top && cat.left + 40 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (mouse.left === cat.left && cat.top + 40 === mouse.top) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (mouse.top === cat.top && cat.left + 40 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
+                        else if (cat.top + 40 === mouse.top && cat.left + 40 === mouse.left) {
+                            playerPositions[i].left = -1000;
+                            playerPositions[i].top = -1000;
+                        }
                     }
                 }
             }
 
-            // the mice runs into the cat.
-            if (lengthExp.currentCatPositionInArray !== lengthExp.length && playerPositions[lengthExp.currentCatPositionInArray].role === "mouse") {
-
-                let mouse = playerPositions[positionInArray],
-                    cat = playerPositions[lengthExp.currentCatPositionInArray];
-
-                if (eventType == '37' && (cat.left + 160) - mouse.left > 0 && (cat.left + 160) - mouse.left < 160) {
-                    // mice ran into the cat from the left
-                    mouse.left = -1000;
-                    mouse.top = -1000;
-                }
-
-                if (eventType == '38' && cat.left - (mouse.left + 40) < 0 && cat.left - (mouse.left + 40) > -160) {
-                    // mice ran into the cat from the right
-                    mouse.left = -1000;
-                    mouse.top = -1000;
-                }
-
-                if (eventType == '39' && (cat.top + 160) - mouse.top > 0 && (cat.top + 160) - mouse.top < 160) {
-                    // mice ran into the cat from the top
-                    mouse.left = -1000;
-                    mouse.top = -1000;
-                }
-
-                if (eventType == '40' && cat.top - (mouse.top + 40) < 0 && cat.top - (mouse.top + 40) > -160) {
-                    // mice ran into the cat from the bottom
-                    mouse.left = -1000;
-                    mouse.top = -1000;
-                }
-
-            }
 
             if (typeof playerPositions[positionInArray] === 'undefined') {
                 playerPositions[positionInArray] = {
                     top: 500,
                     left: 500,
                     userId: userId,
+                    userName: userName,
                     positionInArray: positionInArray,
                     role: "mouse",
                     connected: true,
@@ -118,6 +116,7 @@ router.post('/movePlayer', (req, res) => {
                     top: playerPositions[positionInArray].top,
                     left: playerPositions[positionInArray].left - 40,
                     userId: userId,
+                    userName: userName,
                     positionInArray: positionInArray,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
@@ -129,6 +128,7 @@ router.post('/movePlayer', (req, res) => {
                     top: playerPositions[positionInArray].top - 40,
                     left: playerPositions[positionInArray].left,
                     userId: userId,
+                    userName: userName,
                     positionInArray: positionInArray,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
@@ -140,6 +140,7 @@ router.post('/movePlayer', (req, res) => {
                     top: playerPositions[positionInArray].top,
                     left: playerPositions[positionInArray].left + 40,
                     userId: userId,
+                    userName: userName,
                     positionInArray: positionInArray,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
@@ -152,6 +153,7 @@ router.post('/movePlayer', (req, res) => {
                     top: playerPositions[positionInArray].top + 40,
                     left: playerPositions[positionInArray].left,
                     userId: userId,
+                    userName: userName,
                     positionInArray: positionInArray,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
@@ -159,7 +161,7 @@ router.post('/movePlayer', (req, res) => {
                 }
             }
 
-            res.send({
+            res.json({
                 top: playerPositions[positionInArray].top,
                 left: playerPositions[positionInArray].left,
                 playerPositions: playerPositions
@@ -190,12 +192,14 @@ router.post("/playerPositions", (req, res) => {
 
             const positionInArray = req.body.positionInArray;
             const userId = decoded.sub;
+            const userName = decoded.userName;
 
             if (typeof playerPositions[positionInArray] === 'undefined') {
                 playerPositions[positionInArray] = {
                     top: 500,
                     left: 500,
                     userId: userId,
+                    userName: userName,
                     positionInArray: positionInArray,
                     role: "mouse",
                     connected: true,
@@ -238,6 +242,7 @@ router.post("/makeCat", (req, res) => {
                 lengthExp.length = playerPositions.length;
 
             const length = playerPositions.length;
+            const userName = decoded.userName;
 
             let restarted = false;
 
@@ -251,6 +256,7 @@ router.post("/makeCat", (req, res) => {
                         top: 500,
                         left: 500,
                         userId: player.userId,
+                        userName: userName,
                         positionInArray: player.positionInArray,
                         role: "mouse",
                         connected: player.connected,
@@ -303,7 +309,6 @@ router.post("/removePlayer", (req, res) => {
             }
 
             const positionInArray = req.body.positionInArray;
-            const userId = decoded.sub;
 
             playerPositions[positionInArray] = {
                 ...playerPositions[positionInArray],

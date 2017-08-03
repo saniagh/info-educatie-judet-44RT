@@ -25,9 +25,11 @@ router.get('/credentials', (req, res) => {
             }
 
             const userId = decoded.sub;
+            const userName = decoded.userName;
 
             res.json({
-                userId: userId
+                userId: userId,
+                userName: userName
             })
         });
     }
