@@ -29,6 +29,13 @@ router.post('/movePlayer', (req, res) => {
             const positionInArray = req.body.positionInArray;
             const eventType = req.body.eventType;
 
+            let lengthExp = require('../../variable.js');
+
+            if (lengthExp.currentCatPositionInArray !== lengthExp.length && playerPositions[lengthExp.currentCatPositionInArray].role === "cat")
+            playerPositions.map((mouse) => {
+
+            });
+
             if (typeof playerPositions[positionInArray] === 'undefined') {
                 playerPositions[positionInArray] = {
                     top: 500,
@@ -139,6 +146,8 @@ router.post("/playerPositions", (req, res) => {
     }
 });
 
+
+
 router.post("/makeCat", (req, res) => {
     if (req.headers.authorization && req.headers.authorization.split(' ')[1] !== "null") {
 
@@ -158,74 +167,48 @@ router.post("/makeCat", (req, res) => {
                 })
             }
 
+            let lengthExp = require('../../variable.js');
+
             const currentCatPositionInArray = req.body.currentCatPositionInArray;
+            if (lengthExp.length === 0)
+                lengthExp.length = playerPositions.length;
+
             const length = playerPositions.length;
 
-            if (currentCatPositionInArray == length) {
-                console.log("game finished");
-                res.send({
-                    playerPositions: playerPositions,
-                    finished: true
-                })
-            }
+            let restarted = false;
 
-            if (currentCatPositionInArray < length) {
+            // not equal in type
+            if (currentCatPositionInArray == lengthExp.length) {
+                lengthExp.currentCatPositionInArray = 0;
+                restarted = true;
+                let newGamePositions = playerPositions.map((player) => {
+                    console.log("restarting game");
+                    return {
+                        top: 500,
+                        left: 500,
+                        userId: player.userId,
+                        positionInArray: player.positionInArray,
+                        role: "mouse",
+                        connected: player.connected,
+                        wasCat: false
+                    }
+                });
+                playerPositions = newGamePositions;
+            }
+            else {
                 console.log(currentCatPositionInArray);
 
-                playerPositions[currentCatPositionInArray].wasCat = true;
-                playerPositions[currentCatPositionInArray].role = "cat";
+                playerPositions[currentCatPositionInArray % length].wasCat = true;
+                playerPositions[currentCatPositionInArray % length].role = "cat";
 
-                if (currentCatPositionInArray > 0)
-                    playerPositions[currentCatPositionInArray - 1].role = "mouse";
-
-                res.send({
-                    playerPositions: playerPositions,
-                    finished: false
-                })
+                if (currentCatPositionInArray % length > 0)
+                    playerPositions[(currentCatPositionInArray % length) - 1].role = "mouse";
             }
-        });
-    }
-});
-
-router.get("/restartGame", (req, res) => {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[1] !== "null") {
-
-        const token = req.headers.authorization.split(' ')[1];
-
-        return jwt.verify(token, config.jwtSecret, (err, decoded) => {
-
-            if (err) {
-                return res.status(401).json({
-                    message: "Not authorized"
-                })
-            }
-
-            if (!decoded) {
-                return res.status(400).json({
-                    message: "Internal error"
-                })
-            }
-
-            let newGamePositions = playerPositions.map((player) => {{
-                console.log("restarting game");
-                return {
-                    top: 500,
-                    left: 500,
-                    userId: player.userId,
-                    positionInArray: player.positionInArray,
-                    role: "mouse",
-                    connected: player.connected,
-                    wasCat: false
-                }
-            }
-            });
-            playerPositions = newGamePositions;
-
-            res.json({
-                playerPositions: playerPositions
+            res.send({
+                playerPositions: playerPositions,
+                restarted: restarted
             })
-
-        })
+        });
     }
 });
 

@@ -9,10 +9,7 @@ module.exports = function (socket) {
         socket.broadcast.emit('userConnected');
     });
     socket.on('mustUpdatePositions', function () {
-        socket.broadcast.emit('mustUpdatePositions')
-    });
-    socket.on('resetGame', function () {
-        socket.broadcast.emit('resetGame')
+        socket.broadcast.emit('mustUpdatePositions');
     });
     socket.on('userDisconnected', function (data) {
 

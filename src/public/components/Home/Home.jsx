@@ -23,7 +23,8 @@ class Home extends Component {
             playerPositions: [],
             userId: null,
             token: null,
-            finished: false
+            started: false,
+            restarted: false
         }
     }
 
@@ -103,25 +104,17 @@ class Home extends Component {
             }).then((response) => {
                 this.setState({
                     playerPositions: response.data.playerPositions,
-                    finished: response.data.finished
-                })
-            }).catch((err) => {
-                console.log(err);
-            })
-        });
-
-        socket.on('resetGame', () => {
-            axios({
-                method: 'get',
-                url: '/move/restartGame',
-                headers: {
-                    'Authorization': `bearer ${Auth.getToken()}`,
+                    started: true,
+                    restarted: false
+                });
+                if (response.data.restarted === true) {
+                    this.setState({
+                        top: 500,
+                        left: 500,
+                        restarted: true,
+                        started: false
+                    })
                 }
-            }).then((response) => {
-                this.setState({
-                    finished: false,
-                    playerPositions: response.data.playerPositions
-                })
             }).catch((err) => {
                 console.log(err);
             })
@@ -162,24 +155,6 @@ class Home extends Component {
         socket.emit("userDisconnected", {positionInArray: this.state.positionInArray, token: this.state.token});
     }
 
-    resetGame = () => {
-        socket.emit('resetGame');
-        axios({
-            method: 'get',
-            url: '/move/restartGame',
-            headers: {
-                'Authorization': `bearer ${Auth.getToken()}`,
-            }
-        }).then((response) => {
-            this.setState({
-                finished: false,
-                playerPositions: response.data.playerPositions
-            })
-        }).catch((err) => {
-            console.log(err);
-        })
-    };
-
     handleKeyPress = (e) => {
 
         const eventType = e.keyCode;
@@ -214,8 +189,8 @@ class Home extends Component {
 
         let playerStyle = {
             backgroundColor: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? "red" : "green",
-            height: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 80 : 40,
-            width: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 80 : 40,
+            height: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 160 : 40,
+            width: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 160 : 40,
             position: "absolute",
             left: this.state.left,
             top: this.state.top,
@@ -224,22 +199,24 @@ class Home extends Component {
 
         return (
             <div style={{padding: 50}}>
-                {this.state.finished === true ?
-                    <RaisedButton label="Restart game"
-                                  onTouchTap={this.resetGame}
-                                  primary={true}/>
+                <div style={playerStyle}/>
+                {this.state.started === false ?
+                <div>Game is starting shortly !</div>
+                    :
+                    <div>Game has started</div>
+                }
+                {this.state.restarted === true ?
+                <div>Restarting...</div>
                     :
                     null
                 }
-
-                <div style={playerStyle}/>
                 {this.state.playerPositions.map((player) => {
                     if (player && player.userId !== this.state.userId) {
                         return <div key={player.positionInArray}
                                     style={{
                                         backgroundColor: player.role === "cat" ? "red" : "green",
-                                        height: player.role === "cat" ? 80 : 40,
-                                        width: player.role === "cat" ? 80 : 40,
+                                        height: player.role === "cat" ? 160 : 40,
+                                        width: player.role === "cat" ? 160 : 40,
                                         position: "absolute",
                                         top: player.top,
                                         left: player.left,
