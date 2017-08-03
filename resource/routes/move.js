@@ -251,7 +251,7 @@ router.post("/makeCat", (req, res) => {
                 lengthExp.currentCatPositionInArray = 0;
                 restarted = true;
                 let newGamePositions = playerPositions.map((player) => {
-                    console.log("restarting game");
+                    console.log("Restarting game");
                     return {
                         top: 500,
                         left: 500,
@@ -266,7 +266,6 @@ router.post("/makeCat", (req, res) => {
                 playerPositions = newGamePositions;
             }
             else {
-                console.log(currentCatPositionInArray);
 
                 for (let i = 0 ; i < length ; i++) {
                     if (playerPositions[i].left < 0 || playerPositions[i].top < 0) {

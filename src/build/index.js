@@ -69007,9 +69007,17 @@
 	                'div',
 	                { style: { padding: 50 } },
 	                _react2.default.createElement(
-	                    'div',
+	                    _materialUi.Card,
 	                    { style: playerStyle },
-	                    this.state.userName.substring(0, 4)
+	                    _react2.default.createElement(
+	                        _materialUi.CardMedia,
+	                        { overlay: _react2.default.createElement(
+	                                'div',
+	                                { style: { color: "white" } },
+	                                this.state.userName.substring(0, 4)
+	                            ) },
+	                        _react2.default.createElement('img', { src: '/images/eu.jpg' })
+	                    )
 	                ),
 	                this.state.started === false ? _react2.default.createElement(
 	                    'div',
@@ -69055,7 +69063,7 @@
 	                this.state.playerPositions.map(function (player) {
 	                    if (player && player.userId !== _this3.state.userId) {
 	                        return _react2.default.createElement(
-	                            'div',
+	                            _materialUi.Card,
 	                            { key: player.positionInArray,
 	                                style: {
 	                                    backgroundColor: player.role === "cat" ? "red" : "green",
@@ -69067,7 +69075,15 @@
 	                                    zIndex: player.role === "cat" === "cat" ? 2 : 1
 	                                }
 	                            },
-	                            player.userName.substring(0, 4)
+	                            _react2.default.createElement(
+	                                _materialUi.CardMedia,
+	                                { overlay: _react2.default.createElement(
+	                                        'div',
+	                                        { style: { color: "white" } },
+	                                        player.userName.substring(0, 4)
+	                                    ) },
+	                                _react2.default.createElement('img', { src: '/images/eu.jpg' })
+	                            )
 	                        );
 	                    }
 	                })
