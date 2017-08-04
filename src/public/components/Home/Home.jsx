@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
-import {RaisedButton, CardMedia, FlatButton, Dialog, Card, Snackbar} from 'material-ui';
-import LoadingIndicator from '../Loading Indicator/LoadingIndicator.jsx';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {CardMedia, Card, Snackbar} from 'material-ui';
 import Auth from '../../modules/Auth.js';
 
 import axios from 'axios';
@@ -99,6 +95,7 @@ class Home extends Component {
         });
 
         socket.on("selectCat", (data) => {
+            console.log("initial server socket");
             axios({
                 method: 'post',
                 url: '/move/makeCat',

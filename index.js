@@ -37,15 +37,16 @@ app.use('/profile', profileRoutes);
 app.use(mongoSanitize());
 
 let position = require('./variable.js');
-/*
+
 setTimeout(() => {
     io.sockets.emit('selectCat', {currentCatPositionInArray: position.currentCatPositionInArray});
+    position.currentCatPositionInArray++;
 }, 5000);
-*/
+
 setInterval(() => {
     io.sockets.emit('selectCat', {currentCatPositionInArray: position.currentCatPositionInArray});
     position.currentCatPositionInArray++;
-}, 10000);
+}, 30000);
 
 //Avoid writing useless code - more info in the path of this require ( in the file )
 const authenticationChecker = require('./resource/middleware/authentication-check');
