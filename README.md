@@ -48,6 +48,7 @@ webpack --optimize-minimize --define process.env.NODE_ENV="'production'"
 <li>Use the arrow keys to move your (or my) picture.</li>
 <li>Rules are simple: You are the mouse, you run; You are the cat, you chase the mice</li>
 <li>Game restarts once everybody has been a cat at least once unless the disconnected</li>
+<li>As the one who chases the others, you have 30 seconds to do it.</li>
 </ul>
 
 <h2>Technical details</h2>
