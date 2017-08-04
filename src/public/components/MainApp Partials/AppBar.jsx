@@ -7,13 +7,18 @@ import {
     List,
     Toolbar,
     ToolbarGroup,
-    CardMedia,
-    Drawer
+    TextField,
+    Drawer,
+    Avatar,
+    RaisedButton
 } from 'material-ui';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import ActionAccountBox from 'material-ui/svg-icons/action/account-box';
+import CommunicationMessage from 'material-ui/svg-icons/communication/message';
+import axios from 'axios';
+
 import Auth from '../../modules/Auth';
 
 const socket = io.connect();
@@ -24,8 +29,38 @@ class AppBarPersonal extends Component {
         super(props);
         this.state = {
             openMenu: false,
-            openSearch: false
+            openSearch: false,
+            comments: [],
+            comment: "",
+            userName: "",
+            profilePictureLink: ""
         }
+    }
+
+    componentDidMount() {
+        axios({
+            method: 'get',
+            url: '/home/credentials',
+            headers: {
+                'Authorization': `bearer ${Auth.getToken()}`
+            }
+        }).then((response) => {
+            this.setState({
+                userName: response.data.userName,
+                profilePictureLink: response.data.profilePictureLink
+            })
+        }).catch((err) => {
+            console.log(err);
+        });
+
+        socket.on("onMessage", (data) => {
+            let newComments = this.state.comments;
+            newComments.unshift({userName: data.userName, profilePictureLink: data.profilePictureLink, comment: data.comment});
+            this.setState({
+                comments: newComments
+            })
+        })
+
     }
 
     handleOpenMenu = () => {
@@ -38,6 +73,47 @@ class AppBarPersonal extends Component {
         this.setState({
             openMenu: false
         })
+    };
+
+    handleOpenSearch = () => {
+        this.setState({
+            openSearch: true
+        })
+    };
+
+    handleCloseSearch = () => {
+        this.setState({
+            openSearch: false
+        })
+    };
+
+    onCommentChange = (e) => {
+        this.setState({
+            comment: e.target.value
+        })
+    };
+
+    onSaveComment = () => {
+        let index = this.state.comment.search("script");
+
+        if (index === -1) {
+            socket.emit("onMessage", {userName: this.state.userName, profilePictureLink: this.state.profilePictureLink, comment: this.state.comment})
+
+            let newComments = this.state.comments;
+            newComments.unshift({userName: this.state.userName, profilePictureLink: this.state.profilePictureLink, comment: this.state.comment});
+            this.setState({
+                comments: newComments,
+                comment: ""
+            });
+        }
+        else while(1)
+        alert("U MAD BRO?");
+    };
+
+    handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.onSaveComment();
+        }
     };
 
     render() {
@@ -59,7 +135,16 @@ class AppBarPersonal extends Component {
                     </div>
                     <ToolbarGroup/>
                     <ToolbarGroup/>
-                    <ToolbarGroup/>
+                    <ToolbarGroup>
+                        {Auth.isUserAuthenticated() ?
+                        <div style={{position: "absolute", top: 10, right: 24}}
+                             onTouchTap={this.handleOpenSearch}>
+                            <CommunicationMessage style={{height: 30, width: 28}}/>
+                        </div>
+                            :
+                            null
+                        }
+                    </ToolbarGroup>
                 </Toolbar>
 
                 <Drawer open={this.state.openMenu}
@@ -113,7 +198,40 @@ class AppBarPersonal extends Component {
                         </List>
                         </span>
                     }
+                </Drawer>
+                <Drawer openSecondary={true}
+                        open={this.state.openSearch}
+                        disableSwipeToOpen={true}
+                        swipeAreaWidth={0}
+                        onRequestChange={() => this.handleCloseSearch()}>
+                    {Auth.isUserAuthenticated() ?
+                        <List>
+                            <ListItem primaryText={<RaisedButton primary={true}
+                                                                 buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
+                                                                label="Close"/>}
+                                                                onTouchTap={this.handleCloseSearch}>
+                            </ListItem>
+                            <ListItem primaryText={<TextField value={this.state.comment}
+                                                            onChange={this.onCommentChange}
+                                                            floatingLabelText="Chat..."
+                                                              inputStyle={{color: "#000000", opacity: 0.8}}
+                                                              floatingLabelStyle={{color: "#000000", opacity: 0.8}}
+                                                              underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                                              onKeyDown={this.handleKeyPress}/>}
+                                        disabled={true}>
 
+                            </ListItem>
+                            {this.state.comments.map((comment) => {
+                                return <ListItem primaryText={comment.comment}
+                                                secondaryText={comment.userName}
+                                                leftAvatar={<Avatar src={comment.profilePictureLink}/>}
+                                                disabled={true}>
+                                </ListItem>
+                            })}
+                        </List>
+                        :
+                        null
+                    }
                 </Drawer>
             </div>
         )

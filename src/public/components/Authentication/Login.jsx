@@ -33,9 +33,9 @@ class Login extends Component {
                                         errorText={this.props.errors.email}
                                         autoFocus={true}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#ee6e73"}}
-                                        floatingLabelStyle={{color: "#ee6e73"}}
-                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
+                                        inputStyle={{color: "#000000", opacity: 0.8}}
+                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
+                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
                                     />
                                 </div>
 
@@ -48,16 +48,16 @@ class Login extends Component {
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors.password}
                                         style={{minWidth: "100%"}}
-                                        inputStyle={{color: "#ee6e73"}}
-                                        floatingLabelStyle={{color: "#ee6e73"}}
-                                        underlineFocusStyle={{borderColor: "#ee6e73"}}
+                                        inputStyle={{color: "#000000", opacity: 0.8}}
+                                        floatingLabelStyle={{color: "#000000", opacity: 0.8}}
+                                        underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
                                     />
                                 </div>
 
                                 <div className="button-login-signup">
                                     <RaisedButton
                                         style={styles.button}
-                                        buttonStyle={{backgroundColor: "#eb7077"}}
+                                        buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
                                         type="submit" label="Log in" primary/>
                                 </div>
 
