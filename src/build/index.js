@@ -35318,6 +35318,10 @@
 
 	var _menu2 = _interopRequireDefault(_menu);
 
+	var _accountBox = __webpack_require__(726);
+
+	var _accountBox2 = _interopRequireDefault(_accountBox);
+
 	var _Auth = __webpack_require__(611);
 
 	var _Auth2 = _interopRequireDefault(_Auth);
@@ -35368,88 +35372,19 @@
 	                'div',
 	                null,
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'top-bar-actions-desktop' },
-	                    _react2.default.createElement(
-	                        _materialUi.List,
-	                        { className: 'top-bar-left-actions' },
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/',
-	                                className: 'top-bar-actions-button-style',
-	                                activeClassName: 'active-link-classname' },
-	                            _react2.default.createElement(_materialUi.ListItem, {
-	                                primaryText: 'Home',
-	                                disabled: true,
-	                                style: {
-	                                    fontSize: 24,
-	                                    color: "gray"
-	                                } })
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _materialUi.List,
-	                        { className: 'top-bar-right-actions' },
-	                        _Auth2.default.isUserAuthenticated() ? null : _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/login',
-	                                className: 'top-bar-actions-button-style',
-	                                activeClassName: 'active-link-classname'
-	                            },
-	                            _react2.default.createElement(_materialUi.ListItem, { primaryText: 'Login',
-	                                disabled: true,
-	                                style: {
-	                                    fontSize: 24,
-	                                    color: "gray"
-	                                } })
-	                        ),
-	                        _Auth2.default.isUserAuthenticated() ? null : _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/signup',
-	                                className: 'top-bar-actions-button-style',
-	                                activeClassName: 'active-link-classname'
-	                            },
-	                            _react2.default.createElement(_materialUi.ListItem, { primaryText: 'Sign Up',
-	                                disabled: true,
-	                                style: {
-	                                    fontSize: 24,
-	                                    color: "gray"
-	                                } })
-	                        ),
-	                        _Auth2.default.isUserAuthenticated() ? _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/profile' },
-	                            _react2.default.createElement(_materialUi.ListItem, { primaryText: 'Profile',
-	                                disabled: true,
-	                                style: {
-	                                    fontSize: 24,
-	                                    color: "gray"
-	                                } })
-	                        ) : null,
-	                        _Auth2.default.isUserAuthenticated() ? _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/logout' },
-	                            _react2.default.createElement(_materialUi.ListItem, { primaryText: 'Logout',
-	                                disabled: true,
-	                                style: {
-	                                    fontSize: 24,
-	                                    color: "gray"
-	                                } })
-	                        ) : null
-	                    )
-	                ),
-	                _react2.default.createElement(
 	                    _materialUi.Toolbar,
-	                    { className: 'top-bar-actions-mobile',
+	                    {
 	                        style: {
-	                            backgroundColor: "#f4f7f6",
+	                            backgroundColor: "transparent",
+	                            boxShadow: "transparent",
 	                            width: "100%",
 	                            zIndex: 99,
 	                            height: 50
-	                        } },
+	                        },
+	                        className: 'appBar' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { style: { position: "absolute", top: 10 },
+	                        { style: { position: "absolute", top: 10, cursor: "pointer" },
 	                            onTouchTap: this.handleOpenMenu
 	                        },
 	                        _react2.default.createElement(_menu2.default, { style: { height: 30, width: 28 } })
@@ -35487,7 +35422,8 @@
 	                                { to: '/profile',
 	                                    activeClassName: 'active-link-classname' },
 	                                _react2.default.createElement(_materialUi.ListItem, {
-	                                    primaryText: 'Profile' })
+	                                    primaryText: 'Profile',
+	                                    leftIcon: _react2.default.createElement(_accountBox2.default, null) })
 	                            )
 	                        ),
 	                        _react2.default.createElement(_materialUi.Divider, null),
@@ -68641,16 +68577,7 @@
 	    _createClass(ScrollButton, [{
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(_keyboardArrowUp2.default, {
-	                    className: 'scroll',
-	                    onTouchTap: function onTouchTap() {
-	                        return (0, _functions.smoothScroll)();
-	                    }
-	                })
-	            );
+	            return _react2.default.createElement('div', null);
 	        }
 	    }]);
 
@@ -68835,28 +68762,56 @@
 
 	            if (e.keyCode == '37' || e.keyCode == '38' || e.keyCode == '39' || e.keyCode == '40') {
 	                socket.emit("mustUpdatePositions", function () {});
-	                (0, _axios2.default)({
-	                    method: 'post',
-	                    url: '/move/movePlayer',
-	                    headers: {
-	                        'Authorization': 'bearer ' + _Auth2.default.getToken(),
-	                        'Content-type': 'application/x-www-form-urlencoded'
-	                    },
-	                    data: _qs2.default.stringify({
-	                        'eventType': eventType,
-	                        'positionInArray': _Auth2.default.getPositionInArray(),
-	                        'started': _this.state.started
-	                    })
-	                }).then(function (response) {
-	                    _this.setState({
-	                        left: response.data.left,
-	                        top: response.data.top,
-	                        playerPositions: response.data.playerPositions
+	                if ((_this.state.top < document.body.scrollHeight - 40 || e.keyCode != '40') && _this.state.playerPositions[_Auth2.default.getPositionInArray()].role != "cat" && (_this.state.left < document.body.clientWidth - 40 || e.keyCode != '39')) {
+	                    (0, _axios2.default)({
+	                        method: 'post',
+	                        url: '/move/movePlayer',
+	                        headers: {
+	                            'Authorization': 'bearer ' + _Auth2.default.getToken(),
+	                            'Content-type': 'application/x-www-form-urlencoded'
+	                        },
+	                        data: _qs2.default.stringify({
+	                            'eventType': eventType,
+	                            'positionInArray': _Auth2.default.getPositionInArray(),
+	                            'started': _this.state.started
+	                        })
+	                    }).then(function (response) {
+	                        _this.setState({
+	                            left: response.data.left,
+	                            top: response.data.top,
+	                            playerPositions: response.data.playerPositions
+	                        });
+	                    }).catch(function (err) {
+	                        console.log(err);
 	                    });
-	                }).catch(function (err) {
-	                    console.log(err);
-	                });
+	                } else if ((_this.state.top < document.body.scrollHeight - 160 || e.keyCode != '40') && (_this.state.left < document.body.clientWidth - 40 || e.keyCode != '39')) {
+	                    (0, _axios2.default)({
+	                        method: 'post',
+	                        url: '/move/movePlayer',
+	                        headers: {
+	                            'Authorization': 'bearer ' + _Auth2.default.getToken(),
+	                            'Content-type': 'application/x-www-form-urlencoded'
+	                        },
+	                        data: _qs2.default.stringify({
+	                            'eventType': eventType,
+	                            'positionInArray': _Auth2.default.getPositionInArray(),
+	                            'started': _this.state.started
+	                        })
+	                    }).then(function (response) {
+	                        _this.setState({
+	                            left: response.data.left,
+	                            top: response.data.top,
+	                            playerPositions: response.data.playerPositions
+	                        });
+	                    }).catch(function (err) {
+	                        console.log(err);
+	                    });
+	                }
 	            }
+	        };
+
+	        _this.addDefaultPicture = function (e) {
+	            e.target.src = "/images/eu.jpg";
 	        };
 
 	        _this.state = {
@@ -68867,6 +68822,7 @@
 	            userId: null,
 	            userName: "",
 	            profilePictureLink: "",
+	            score: 0,
 	            token: null,
 	            started: false,
 	            restarted: false
@@ -68914,7 +68870,8 @@
 	                })
 	            }).then(function (response) {
 	                _this2.setState({
-	                    playerPositions: response.data.playerPositions
+	                    playerPositions: response.data.playerPositions,
+	                    score: response.data.playerPositions[_Auth2.default.getPositionInArray()].score
 	                });
 	                socket.emit("mustUpdatePositions");
 	            }).catch(function (err) {
@@ -68934,7 +68891,8 @@
 	                    })
 	                }).then(function (response) {
 	                    _this2.setState({
-	                        playerPositions: response.data.playerPositions
+	                        playerPositions: response.data.playerPositions,
+	                        score: response.data.playerPositions[_Auth2.default.getPositionInArray()].score
 	                    });
 	                }).catch(function (err) {
 	                    console.log(err);
@@ -68955,6 +68913,7 @@
 	                }).then(function (response) {
 	                    _this2.setState({
 	                        playerPositions: response.data.playerPositions,
+	                        score: response.data.playerPositions[_Auth2.default.getPositionInArray()].score,
 	                        started: true,
 	                        restarted: false
 	                    });
@@ -68985,6 +68944,7 @@
 	                }).then(function (response) {
 	                    _this2.setState({
 	                        playerPositions: response.data.playerPositions,
+	                        score: response.data.playerPositions[_Auth2.default.getPositionInArray()].score,
 	                        top: response.data.playerPositions[_Auth2.default.getPositionInArray()].top,
 	                        left: response.data.playerPositions[_Auth2.default.getPositionInArray()].left
 	                    });
@@ -69016,7 +68976,6 @@
 	            var aliveCount = 0;
 
 	            var playerStyle = {
-	                backgroundColor: this.state.playerPositions.length && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? "red" : "green",
 	                height: this.state.playerPositions.length && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? 160 : 40,
 	                width: this.state.playerPositions.length && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? 160 : 40,
 	                position: "absolute",
@@ -69027,7 +68986,7 @@
 
 	            if (this.state.playerPositions && this.state.playerPositions.length > 1) {
 	                this.state.playerPositions.map(function (player) {
-	                    if (player.left > 0 && player.top > 0) aliveCount++;
+	                    if (player.left > 0 && player.top > 0 && player.connected === true) aliveCount++;
 	                });
 	            }
 
@@ -69035,9 +68994,27 @@
 
 	            if (this.state.playerPositions[_Auth2.default.getPositionInArray()] && this.state.playerPositions[_Auth2.default.getPositionInArray()].left < 0 && this.state.playerPositions[_Auth2.default.getPositionInArray()].top < 0) alive = false;else alive = true;
 
+	            var firstOnScore = "Nobody",
+	                maxScore = 0,
+	                connectedPlayers = 0;
+
+	            this.state.playerPositions.map(function (player) {
+	                {
+	                    if (player.score > maxScore) {
+	                        maxScore = player.score;
+	                        firstOnScore = player.userName;
+	                    }
+	                    if (player.connected === true) {
+	                        connectedPlayers++;
+	                    }
+	                }
+	            });
+
 	            return _react2.default.createElement(
-	                'div',
-	                { style: { padding: 50 } },
+	                _materialUi.Card,
+	                { style: { height: document.body.scrollHeight, minWidth: document.body.clientWidth, padding: 30 },
+	                    className: 'background-home' },
+	                _react2.default.createElement('div', { className: 'top-bar-spacing' }),
 	                _react2.default.createElement(
 	                    _materialUi.Card,
 	                    { style: playerStyle },
@@ -69045,52 +69022,60 @@
 	                        _materialUi.CardMedia,
 	                        { overlay: _react2.default.createElement(
 	                                'div',
-	                                { style: { color: "white" } },
+	                                {
+	                                    style: { color: "white", height: "100%" } },
 	                                this.state.userName.substring(0, 4)
 	                            ) },
-	                        _react2.default.createElement('img', { src: '/images/eu.jpg' })
+	                        _react2.default.createElement('img', { src: this.state.profilePictureLink,
+	                            style: { height: "100%" },
+	                            onError: this.addDefaultPicture })
 	                    )
 	                ),
-	                this.state.started === false ? _react2.default.createElement(
+	                _react2.default.createElement(_materialUi.Snackbar, { message: 'Game is starting shortly', open: !this.state.started, autoHideDuration: 10000 }),
+	                this.state.playerPositions[_Auth2.default.getPositionInArray()] ? _react2.default.createElement(
 	                    'div',
-	                    null,
-	                    'Game is starting shortly !'
-	                ) : _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Game has started'
-	                ),
-	                this.state.restarted === true ? _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Restarting...'
-	                ) : null,
-	                this.state.playerPositions && this.state.playerPositions.length > 1 ? _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Players: ',
-	                    this.state.playerPositions.length
-	                ) : null,
-	                _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Players still alive: ',
-	                    aliveCount
-	                ),
-	                this.state.playerPositions[_Auth2.default.getPositionInArray()] && alive === true && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "mouse" ? _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'You are alive and well! Just keep running'
-	                ) : null,
-	                this.state.playerPositions[_Auth2.default.getPositionInArray()] && alive === false && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "mouse" ? _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Look at the good part, you were eaten by the coolest cat around'
-	                ) : null,
-	                this.state.playerPositions[_Auth2.default.getPositionInArray()] && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    'Hunt \'em all!'
+	                    { style: { display: "flex", flex: 1, justifyContent: "space-around" } },
+	                    this.state.playerPositions && this.state.playerPositions.length > 1 ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'Players: ',
+	                        this.state.playerPositions.length
+	                    ) : null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'Players still alive: ',
+	                        aliveCount
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'Best score: ',
+	                        firstOnScore,
+	                        ' with ',
+	                        maxScore
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'Your score: ',
+	                        this.state.playerPositions[_Auth2.default.getPositionInArray()].score
+	                    ),
+	                    this.state.playerPositions[_Auth2.default.getPositionInArray()] && alive === true && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "mouse" ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'You are alive and well! Just keep running'
+	                    ) : null,
+	                    this.state.playerPositions[_Auth2.default.getPositionInArray()] && alive === false && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "mouse" ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'Look at the good part, you were eaten by the coolest cat around'
+	                    ) : null,
+	                    this.state.playerPositions[_Auth2.default.getPositionInArray()] && this.state.playerPositions[_Auth2.default.getPositionInArray()].role === "cat" ? _react2.default.createElement(
+	                        'div',
+	                        { className: 'score' },
+	                        'Hunt \'em all!'
+	                    ) : null
 	                ) : null,
 	                this.state.playerPositions.map(function (player) {
 	                    if (player && player.userId !== _this3.state.userId) {
@@ -69098,7 +69083,6 @@
 	                            _materialUi.Card,
 	                            { key: player.positionInArray,
 	                                style: {
-	                                    backgroundColor: player.role === "cat" ? "red" : "green",
 	                                    height: player.role === "cat" ? 160 : 40,
 	                                    width: player.role === "cat" ? 160 : 40,
 	                                    position: "absolute",
@@ -69111,10 +69095,13 @@
 	                                _materialUi.CardMedia,
 	                                { overlay: _react2.default.createElement(
 	                                        'div',
-	                                        { style: { color: "white" } },
+	                                        {
+	                                            style: { color: "white", height: "100%" } },
 	                                        player.userName.substring(0, 4)
 	                                    ) },
-	                                _react2.default.createElement('img', { src: '/images/eu.jpg' })
+	                                _react2.default.createElement('img', { src: player.profilePictureLink,
+	                                    style: { height: "100%" },
+	                                    onError: _this3.addDefaultPicture })
 	                            )
 	                        );
 	                    }
@@ -75523,16 +75510,38 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                _materialUi.Card,
-	                null,
+	                { style: { height: document.body.scrollHeight, minWidth: document.body.clientWidth, padding: 30 },
+	                    className: 'background-home' },
 	                _react2.default.createElement('div', { className: 'top-bar-spacing' }),
-	                _react2.default.createElement(_materialUi.TextField, { value: this.props.profilePictureLink,
-	                    onChange: this.props.onProfilePictureLinkChange,
-	                    errorText: this.props.errors && this.props.errors.profilePictureLink ? this.props.errors.profilePictureLink : null,
-	                    floatingLabelText: 'Profile picture link' }),
-	                _react2.default.createElement(_materialUi.RaisedButton, { label: 'Save',
-	                    primary: true,
-	                    onTouchTap: this.props.onSave }),
-	                _react2.default.createElement(_materialUi.Snackbar, { message: this.props.message,
+	                _react2.default.createElement(
+	                    'div',
+	                    { style: { display: "flex", flex: 1, justifyContent: "center" } },
+	                    _react2.default.createElement(
+	                        _materialUi.Card,
+	                        { style: { padding: 20 } },
+	                        _react2.default.createElement(_materialUi.CardHeader, { title: 'Edit picture',
+	                            avatar: this.props.profilePictureLink }),
+	                        _react2.default.createElement(_materialUi.TextField, { value: this.props.profilePictureLink,
+	                            onChange: this.props.onProfilePictureLinkChange,
+	                            errorText: this.props.errors && this.props.errors.profilePictureLink ? this.props.errors.profilePictureLink : null,
+	                            floatingLabelText: 'Profile picture link' }),
+	                        _react2.default.createElement(
+	                            _materialUi.CardMedia,
+	                            { style: { maxHeight: 400, width: "auto" } },
+	                            _react2.default.createElement('img', { src: this.props.profilePictureLink,
+	                                style: { maxHeight: 400, width: "auto" },
+	                                alt: '/images/eu.jpg' })
+	                        ),
+	                        _react2.default.createElement(
+	                            _materialUi.CardActions,
+	                            null,
+	                            _react2.default.createElement(_materialUi.RaisedButton, { label: 'Save',
+	                                primary: true,
+	                                onTouchTap: this.props.onSave })
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(_materialUi.Snackbar, { message: 'Success! Please relog.',
 	                    open: this.props.success ? this.props.success : false,
 	                    autoHideDuration: 5000 })
 	            );
@@ -75543,6 +75552,43 @@
 	}(_react.Component);
 
 	exports.default = Profile;
+
+/***/ }),
+/* 726 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _pure = __webpack_require__(430);
+
+	var _pure2 = _interopRequireDefault(_pure);
+
+	var _SvgIcon = __webpack_require__(440);
+
+	var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ActionAccountBox = function ActionAccountBox(props) {
+	  return _react2.default.createElement(
+	    _SvgIcon2.default,
+	    props,
+	    _react2.default.createElement('path', { d: 'M3 5v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.11 0-2 .9-2 2zm12 4c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm-9 8c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1H6v-1z' })
+	  );
+	};
+	ActionAccountBox = (0, _pure2.default)(ActionAccountBox);
+	ActionAccountBox.displayName = 'ActionAccountBox';
+	ActionAccountBox.muiName = 'SvgIcon';
+
+	exports.default = ActionAccountBox;
 
 /***/ })
 /******/ ]);

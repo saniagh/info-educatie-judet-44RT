@@ -1,9 +1,31 @@
 @import "./partials/appBar";
 @import './constants/functions';
 
+.force-picture {
+  background-image: url("https://image.freepik.com/free-photo/green-garden_2318088.jpg");
+  background-repeat: no-repeat;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.background-home {
+  background: linear-gradient(135deg, rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%);
+}
+
+.appBar {
+  background: linear-gradient(135deg, rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%);
+}
+
+.score {
+  background: linear-gradient(to right, rgba(180,223,91,1) 0%,rgba(180,223,91,1) 100%);
+  color: gray;
+  border-radius: 10px;
+  padding: 20px;
+}
+
 body, html {
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .top-bar-spacing {

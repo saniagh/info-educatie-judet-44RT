@@ -42,7 +42,7 @@ router.get('/credentials', (req, res) => {
 
                 res.json({
                     userId: userId,
-                    userName: userName
+                    userName: userName,
                     profilePictureLink: user.profilePictureLink
                 })
             });

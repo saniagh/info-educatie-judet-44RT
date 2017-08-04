@@ -31,6 +31,7 @@ router.post('/movePlayer', (req, res) => {
             const eventType = req.body.eventType;
             const length = playerPositions.length;
             const started = req.body.started;
+            const profilePictureLink = decoded.profilePictureLink;
 
             let catIndex = 0;
 
@@ -48,50 +49,74 @@ router.post('/movePlayer', (req, res) => {
                         if (mouse.left === cat.left && mouse.top === cat.top) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (mouse.left === cat.left && cat.top + 120 === mouse.top) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (mouse.top === cat.top && cat.left + 120 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (cat.top + 120 === mouse.top && cat.left + 120 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (cat.top + 120 === mouse.top && cat.left + 80 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (mouse.left === cat.left && cat.top + 80 === mouse.top) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (mouse.top === cat.top && cat.left + 80 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (cat.top + 80 === mouse.top && cat.left + 80 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (cat.top + 80 === mouse.top && cat.left + 40 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (mouse.left === cat.left && cat.top + 40 === mouse.top) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (mouse.top === cat.top && cat.left + 40 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                         else if (cat.top + 40 === mouse.top && cat.left + 40 === mouse.left) {
                             playerPositions[i].left = -1000;
                             playerPositions[i].top = -1000;
+                            playerPositions[catIndex].score++;
+                            playerPositions[i].score--;
                         }
                     }
                 }
@@ -104,6 +129,8 @@ router.post('/movePlayer', (req, res) => {
                     left: 500,
                     userId: userId,
                     userName: userName,
+                    profilePictureLink: profilePictureLink,
+                    score: 0,
                     positionInArray: positionInArray,
                     role: "mouse",
                     connected: true,
@@ -118,6 +145,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     userName: userName,
                     positionInArray: positionInArray,
+                    profilePictureLink: profilePictureLink,
+                    score: playerPositions[positionInArray].score,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
                     wasCat: playerPositions[positionInArray].wasCat
@@ -130,6 +159,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     userName: userName,
                     positionInArray: positionInArray,
+                    profilePictureLink: profilePictureLink,
+                    score: playerPositions[positionInArray].score,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
                     wasCat: playerPositions[positionInArray].wasCat
@@ -142,6 +173,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     userName: userName,
                     positionInArray: positionInArray,
+                    profilePictureLink: profilePictureLink,
+                    score: playerPositions[positionInArray].score,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
                     wasCat: playerPositions[positionInArray].wasCat
@@ -155,6 +188,8 @@ router.post('/movePlayer', (req, res) => {
                     userId: userId,
                     userName: userName,
                     positionInArray: positionInArray,
+                    profilePictureLink: profilePictureLink,
+                    score: playerPositions[positionInArray].score,
                     connected: playerPositions[positionInArray].connected,
                     role: playerPositions[positionInArray].role,
                     wasCat: playerPositions[positionInArray].wasCat
@@ -193,6 +228,7 @@ router.post("/playerPositions", (req, res) => {
             const positionInArray = req.body.positionInArray;
             const userId = decoded.sub;
             const userName = decoded.userName;
+            const profilePictureLink = decoded.profilePictureLink;
 
             if (typeof playerPositions[positionInArray] === 'undefined') {
                 playerPositions[positionInArray] = {
@@ -200,6 +236,8 @@ router.post("/playerPositions", (req, res) => {
                     left: 500,
                     userId: userId,
                     userName: userName,
+                    profilePictureLink: profilePictureLink,
+                    score: 0,
                     positionInArray: positionInArray,
                     role: "mouse",
                     connected: true,
@@ -243,6 +281,7 @@ router.post("/makeCat", (req, res) => {
 
             const length = playerPositions.length;
             const userName = decoded.userName;
+            const profilePictureLink = decoded.profilePictureLink;
 
             let restarted = false;
 
@@ -257,6 +296,8 @@ router.post("/makeCat", (req, res) => {
                         left: 500,
                         userId: player.userId,
                         userName: userName,
+                        profilePictureLink: profilePictureLink,
+                        score: player.score,
                         positionInArray: player.positionInArray,
                         role: "mouse",
                         connected: player.connected,
@@ -266,7 +307,6 @@ router.post("/makeCat", (req, res) => {
                 playerPositions = newGamePositions;
             }
             else {
-
                 for (let i = 0 ; i < length ; i++) {
                     if (playerPositions[i].left < 0 || playerPositions[i].top < 0) {
                         playerPositions[i].left = 500;

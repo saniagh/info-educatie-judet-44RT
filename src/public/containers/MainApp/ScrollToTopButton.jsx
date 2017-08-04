@@ -6,11 +6,6 @@ import {smoothScroll} from './functions.js';
 class ScrollButton extends Component {
     render() {
         return <div>
-            <HardwareKeyboardArrowUp
-                className="scroll"
-                onTouchTap={() => smoothScroll()}
-            />
-
         </div>
     }
 }

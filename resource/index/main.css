@@ -199,9 +199,27 @@
   padding-left: 50px !important;
   padding-right: 10px !important; }
 
+.force-picture {
+  background-image: url("https://image.freepik.com/free-photo/green-garden_2318088.jpg");
+  background-repeat: no-repeat;
+  min-height: 100%;
+  min-width: 100%; }
+
+.background-home {
+  background: linear-gradient(135deg, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%); }
+
+.appBar {
+  background: linear-gradient(135deg, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%); }
+
+.score {
+  background: linear-gradient(to right, #b4df5b 0%, #b4df5b 100%);
+  color: gray;
+  border-radius: 10px;
+  padding: 20px; }
+
 body, html {
   overflow-x: hidden;
-  overflow-y: auto; }
+  overflow-y: hidden; }
 
 .top-bar-spacing {
   width: auto;

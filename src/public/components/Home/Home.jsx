@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {RaisedButton, CardMedia, FlatButton, Dialog, Card} from 'material-ui';
+import {RaisedButton, CardMedia, FlatButton, Dialog, Card, Snackbar} from 'material-ui';
 import LoadingIndicator from '../Loading Indicator/LoadingIndicator.jsx';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,6 +24,7 @@ class Home extends Component {
             userId: null,
             userName: "",
             profilePictureLink: "",
+            score: 0,
             token: null,
             started: false,
             restarted: false
@@ -68,7 +69,8 @@ class Home extends Component {
             })
         }).then((response) => {
             this.setState({
-                playerPositions: response.data.playerPositions
+                playerPositions: response.data.playerPositions,
+                score: response.data.playerPositions[Auth.getPositionInArray()].score
             });
             socket.emit("mustUpdatePositions");
         }).catch((err) => {
@@ -88,7 +90,8 @@ class Home extends Component {
                 })
             }).then((response) => {
                 this.setState({
-                    playerPositions: response.data.playerPositions
+                    playerPositions: response.data.playerPositions,
+                    score: response.data.playerPositions[Auth.getPositionInArray()].score
                 })
             }).catch((err) => {
                 console.log(err);
@@ -109,6 +112,7 @@ class Home extends Component {
             }).then((response) => {
                 this.setState({
                     playerPositions: response.data.playerPositions,
+                    score: response.data.playerPositions[Auth.getPositionInArray()].score,
                     started: true,
                     restarted: false
                 });
@@ -139,6 +143,7 @@ class Home extends Component {
             }).then((response) => {
                 this.setState({
                     playerPositions: response.data.playerPositions,
+                    score: response.data.playerPositions[Auth.getPositionInArray()].score,
                     top: response.data.playerPositions[Auth.getPositionInArray()].top,
                     left: response.data.playerPositions[Auth.getPositionInArray()].left
                 })
@@ -169,37 +174,64 @@ class Home extends Component {
         if (e.keyCode == '37' || e.keyCode == '38' || e.keyCode == '39' || e.keyCode == '40') {
             socket.emit("mustUpdatePositions", () => {
             });
-            axios({
-                method: 'post',
-                url: '/move/movePlayer',
-                headers: {
-                    'Authorization': `bearer ${Auth.getToken()}`,
-                    'Content-type': 'application/x-www-form-urlencoded',
-                },
-                data: qs.stringify({
-                    'eventType': eventType,
-                    'positionInArray': Auth.getPositionInArray(),
-                    'started': this.state.started
-                })
-            }).then((response) => {
-                this.setState({
-                    left: response.data.left,
-                    top: response.data.top,
-                    playerPositions: response.data.playerPositions
-                })
-            }).catch((err) => {
-                console.log(err);
-            });
+            if ((this.state.top < document.body.scrollHeight - 40 || e.keyCode != '40') && this.state.playerPositions[Auth.getPositionInArray()].role != "cat" && (this.state.left < document.body.clientWidth - 40 || e.keyCode != '39')) {
+                axios({
+                    method: 'post',
+                    url: '/move/movePlayer',
+                    headers: {
+                        'Authorization': `bearer ${Auth.getToken()}`,
+                        'Content-type': 'application/x-www-form-urlencoded',
+                    },
+                    data: qs.stringify({
+                        'eventType': eventType,
+                        'positionInArray': Auth.getPositionInArray(),
+                        'started': this.state.started
+                    })
+                }).then((response) => {
+                    this.setState({
+                        left: response.data.left,
+                        top: response.data.top,
+                        playerPositions: response.data.playerPositions
+                    })
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+            else if ((this.state.top < document.body.scrollHeight - 160 || e.keyCode != '40') && (this.state.left < document.body.clientWidth - 40 || e.keyCode != '39')) {
+                axios({
+                    method: 'post',
+                    url: '/move/movePlayer',
+                    headers: {
+                        'Authorization': `bearer ${Auth.getToken()}`,
+                        'Content-type': 'application/x-www-form-urlencoded',
+                    },
+                    data: qs.stringify({
+                        'eventType': eventType,
+                        'positionInArray': Auth.getPositionInArray(),
+                        'started': this.state.started
+                    })
+                }).then((response) => {
+                    this.setState({
+                        left: response.data.left,
+                        top: response.data.top,
+                        playerPositions: response.data.playerPositions
+                    })
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
         }
+    };
+
+    addDefaultPicture = (e) => {
+        e.target.src = "/images/eu.jpg"
     };
 
     render() {
 
-
         let aliveCount = 0;
 
         let playerStyle = {
-            backgroundColor: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? "red" : "green",
             height: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 160 : 40,
             width: this.state.playerPositions.length && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ? 160 : 40,
             position: "absolute",
@@ -210,7 +242,7 @@ class Home extends Component {
 
         if (this.state.playerPositions && this.state.playerPositions.length > 1) {
             this.state.playerPositions.map((player) => {
-                if (player.left > 0 && player.top > 0)
+                if (player.left > 0 && player.top > 0 && player.connected === true)
                     aliveCount++;
             })
         }
@@ -221,43 +253,62 @@ class Home extends Component {
             alive = false;
         else alive = true;
 
+        let firstOnScore = "Nobody", maxScore = 0, connectedPlayers = 0;
+
+        this.state.playerPositions.map((player) => {
+            {
+                if (player.score > maxScore) {
+                    maxScore = player.score;
+                    firstOnScore = player.userName
+                }
+                if (player.connected === true) {
+                    connectedPlayers++
+                }
+            }
+        });
+
         return (
-            <div style={{padding: 50}}>
+            <Card style={{height: document.body.scrollHeight, minWidth: document.body.clientWidth, padding: 30}}
+                  className="background-home">
+                <div className="top-bar-spacing"/>
                 <Card style={playerStyle}>
-                    <CardMedia overlay={<div style={{color: "white"}}>{this.state.userName.substring(0, 4)}</div>}>
-                        <img src="/images/eu.jpg"/>
+                    <CardMedia overlay={<div
+                        style={{color: "white", height: "100%"}}>{this.state.userName.substring(0, 4)}</div>}>
+                        <img src={this.state.profilePictureLink}
+                             style={{height: "100%"}}
+                             onError={this.addDefaultPicture}/>
                     </CardMedia>
                 </Card>
-                {this.state.started === false ?
-                    <div>Game is starting shortly !</div>
-                    :
-                    <div>Game has started</div>
-                }
-                {this.state.restarted === true ?
-                    <div>Restarting...</div>
-                    :
-                    null
-                }
-                {this.state.playerPositions && this.state.playerPositions.length > 1 ?
-                    <div>Players: {this.state.playerPositions.length}</div>
-                    :
-                    null
-                }
-                <div>Players still alive: {aliveCount}</div>
+                <Snackbar message="Game is starting shortly" open={!this.state.started} autoHideDuration={10000}/>
+                {this.state.playerPositions[Auth.getPositionInArray()] ?
+                    <div style={{display: "flex", flex: 1, justifyContent: "space-around"}}>
+                        {this.state.playerPositions && this.state.playerPositions.length > 1 ?
+                            <div className="score">Players: {this.state.playerPositions.length}</div>
+                            :
+                            null
+                        }
+                        <div className="score">Players still alive: {aliveCount}</div>
+                        <div className="score">Best score: {firstOnScore} with {maxScore}</div>
+                        <div className="score">
+                            Your score: {this.state.playerPositions[Auth.getPositionInArray()].score}
+                        </div>
+                        {this.state.playerPositions[Auth.getPositionInArray()] && alive === true && this.state.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
+                            <div className="score">You are alive and well! Just keep running</div>
+                            :
+                            null
+                        }
+                        {this.state.playerPositions[Auth.getPositionInArray()] && alive === false && this.state.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
+                            <div className="score">Look at the good part, you were eaten by the coolest cat around</div>
+                            :
+                            null
+                        }
 
-                {this.state.playerPositions[Auth.getPositionInArray()] && alive === true && this.state.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
-                    <div>You are alive and well! Just keep running</div>
-                    :
-                    null
-                }
-                {this.state.playerPositions[Auth.getPositionInArray()] && alive === false && this.state.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
-                    <div>Look at the good part, you were eaten by the coolest cat around</div>
-                    :
-                    null
-                }
-
-                {this.state.playerPositions[Auth.getPositionInArray()] && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ?
-                    <div>Hunt 'em all!</div>
+                        {this.state.playerPositions[Auth.getPositionInArray()] && this.state.playerPositions[Auth.getPositionInArray()].role === "cat" ?
+                            <div className="score">Hunt 'em all!</div>
+                            :
+                            null
+                        }
+                    </div>
                     :
                     null
                 }
@@ -266,7 +317,6 @@ class Home extends Component {
                     if (player && player.userId !== this.state.userId) {
                         return <Card key={player.positionInArray}
                                      style={{
-                                         backgroundColor: player.role === "cat" ? "red" : "green",
                                          height: player.role === "cat" ? 160 : 40,
                                          width: player.role === "cat" ? 160 : 40,
                                          position: "absolute",
@@ -275,13 +325,16 @@ class Home extends Component {
                                          zIndex: player.role === "cat" === "cat" ? 2 : 1
                                      }}
                         >
-                            <CardMedia overlay={<div style={{color: "white"}}>{player.userName.substring(0, 4)}</div>}>
-                                <img src="/images/eu.jpg"/>
+                            <CardMedia overlay={<div
+                                style={{color: "white", height: "100%"}}>{player.userName.substring(0, 4)}</div>}>
+                                <img src={player.profilePictureLink}
+                                     style={{height: "100%"}}
+                                     onError={this.addDefaultPicture}/>
                             </CardMedia>
                         </Card>
                     }
                 })}
-            </div>
+            </Card>
         )
     }
 }

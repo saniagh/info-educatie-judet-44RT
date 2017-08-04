@@ -13,6 +13,7 @@ import {
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import ActionAccountBox from 'material-ui/svg-icons/action/account-box';
 import Auth from '../../modules/Auth';
 
 const socket = io.connect();
@@ -42,92 +43,16 @@ class AppBarPersonal extends Component {
     render() {
         return (
             <div>
-                <div className="top-bar-actions-desktop">
-                    <List className="top-bar-left-actions">
-
-                        <Link to={`/`}
-                              className="top-bar-actions-button-style"
-                              activeClassName="active-link-classname">
-                            <ListItem
-                                primaryText="Home"
-                                disabled={true}
-                                style={{
-                                    fontSize: 24,
-                                    color: "gray"
-                                }}/>
-                        </Link>
-                    </List>
-
-                    <List className="top-bar-right-actions">
-
-                        {Auth.isUserAuthenticated() ?
-                            null
-                            :
-                            <Link to={`/login`}
-                                  className="top-bar-actions-button-style"
-                                  activeClassName="active-link-classname"
-                            >
-                                <ListItem primaryText="Login"
-                                          disabled={true}
-                                          style={{
-                                              fontSize: 24,
-                                              color: "gray"
-                                          }}/>
-                            </Link>
-                        }
-
-                        {Auth.isUserAuthenticated() ?
-                            null
-                            :
-                            <Link to={`/signup`}
-                                  className="top-bar-actions-button-style"
-                                  activeClassName="active-link-classname"
-                            >
-                                <ListItem primaryText="Sign Up"
-                                          disabled={true}
-                                          style={{
-                                              fontSize: 24,
-                                              color: "gray"
-                                          }}/>
-                            </Link>
-                        }
-
-                        {Auth.isUserAuthenticated() ?
-                            <Link to={`/profile`}>
-                                <ListItem primaryText="Profile"
-                                          disabled={true}
-                                          style={{
-                                              fontSize: 24,
-                                              color: "gray"
-                                          }}/>
-                            </Link>
-                            :
-                            null
-                        }
-
-                        {Auth.isUserAuthenticated() ?
-                            <Link to={`/logout`}>
-                                <ListItem primaryText="Logout"
-                                          disabled={true}
-                                          style={{
-                                              fontSize: 24,
-                                              color: "gray"
-                                          }}/>
-                            </Link>
-                            :
-                            null
-                        }
-
-                    </List>
-                </div>
-                <Toolbar className="top-bar-actions-mobile"
+                <Toolbar
                          style={{
-                             backgroundColor: "#f4f7f6",
+                             backgroundColor: "transparent",
+                             boxShadow: "transparent",
                              width: "100%",
                              zIndex: 99,
                              height: 50
-                         }}>
-                    <div style={{position: "absolute", top: 10}}
+                         }}
+                className="appBar">
+                    <div style={{position: "absolute", top: 10, cursor: "pointer"}}
                          onTouchTap={this.handleOpenMenu}
                     >
                         <NavigationMenu style={{height: 30, width: 28}}/>
@@ -155,7 +80,8 @@ class AppBarPersonal extends Component {
                             <Link to={`/profile`}
                                   activeClassName="active-link-classname">
                                 <ListItem
-                                    primaryText="Profile"/>
+                                    primaryText="Profile"
+                                    leftIcon={<ActionAccountBox/>}/>
                             </Link>
                         </List>
                         <Divider/>
