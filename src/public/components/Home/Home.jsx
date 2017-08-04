@@ -276,7 +276,7 @@ class Home extends Component {
                              onError={this.addDefaultPicture}/>
                     </CardMedia>
                 </Card>
-                <Snackbar message="Game is starting shortly" open={!this.state.started} autoHideDuration={10000}/>
+                <Snackbar message="Game is starting shortly" open={!this.state.started} autoHideDuration={5000}/>
                 {this.state.playerPositions[Auth.getPositionInArray()] ?
                     <div style={{display: "flex", flex: 1, justifyContent: "space-around"}}>
                         {this.state.playerPositions && this.state.playerPositions.length > 1 ?
