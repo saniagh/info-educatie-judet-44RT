@@ -55,12 +55,15 @@ class AppBarPersonal extends Component {
 
         socket.on("onMessage", (data) => {
             let newComments = this.state.comments;
-            newComments.unshift({userName: data.userName, profilePictureLink: data.profilePictureLink, comment: data.comment});
+            newComments.unshift({
+                userName: data.userName,
+                profilePictureLink: data.profilePictureLink,
+                comment: data.comment
+            });
             this.setState({
                 comments: newComments
             })
         })
-
     }
 
     handleOpenMenu = () => {
@@ -94,20 +97,45 @@ class AppBarPersonal extends Component {
     };
 
     onSaveComment = () => {
-        let index = this.state.comment.search("script");
 
-        if (index === -1) {
-            socket.emit("onMessage", {userName: this.state.userName, profilePictureLink: this.state.profilePictureLink, comment: this.state.comment})
-
-            let newComments = this.state.comments;
-            newComments.unshift({userName: this.state.userName, profilePictureLink: this.state.profilePictureLink, comment: this.state.comment});
+        axios({
+            method: 'get',
+            url: '/home/credentials',
+            headers: {
+                'Authorization': `bearer ${Auth.getToken()}`
+            }
+        }).then((response) => {
             this.setState({
-                comments: newComments,
-                comment: ""
+                userName: response.data.userName,
+                profilePictureLink: response.data.profilePictureLink
             });
-        }
-        else while(1)
-        alert("U MAD BRO?");
+
+            let index = this.state.comment.search("script");
+
+            if (index === -1) {
+                socket.emit("onMessage", {
+                    userName: this.state.userName,
+                    profilePictureLink: this.state.profilePictureLink,
+                    comment: this.state.comment
+                });
+
+                let newComments = this.state.comments;
+                newComments.unshift({
+                    userName: this.state.userName,
+                    profilePictureLink: this.state.profilePictureLink,
+                    comment: this.state.comment
+                });
+                this.setState({
+                    comments: newComments,
+                    comment: ""
+                });
+            }
+            else while (1)
+                alert("U MAD BRO?");
+
+        }).catch((err) => {
+            console.log(err);
+        });
     };
 
     handleKeyPress = (e) => {
@@ -120,14 +148,14 @@ class AppBarPersonal extends Component {
         return (
             <div>
                 <Toolbar
-                         style={{
-                             backgroundColor: "transparent",
-                             boxShadow: "transparent",
-                             width: "100%",
-                             zIndex: 99,
-                             height: 50
-                         }}
-                className="appBar">
+                    style={{
+                        backgroundColor: "transparent",
+                        boxShadow: "transparent",
+                        width: "100%",
+                        zIndex: 99,
+                        height: 50
+                    }}
+                    className="appBar">
                     <div style={{position: "absolute", top: 10, cursor: "pointer"}}
                          onTouchTap={this.handleOpenMenu}
                     >
@@ -137,10 +165,10 @@ class AppBarPersonal extends Component {
                     <ToolbarGroup/>
                     <ToolbarGroup>
                         {Auth.isUserAuthenticated() ?
-                        <div style={{position: "absolute", top: 10, right: 24}}
-                             onTouchTap={this.handleOpenSearch}>
-                            <CommunicationMessage style={{height: 30, width: 28}}/>
-                        </div>
+                            <div style={{position: "absolute", top: 10, right: 24}}
+                                 onTouchTap={this.handleOpenSearch}>
+                                <CommunicationMessage style={{height: 30, width: 28}}/>
+                            </div>
                             :
                             null
                         }
@@ -207,25 +235,32 @@ class AppBarPersonal extends Component {
                     {Auth.isUserAuthenticated() ?
                         <List>
                             <ListItem primaryText={<RaisedButton primary={true}
-                                                                 buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
-                                                                label="Close"/>}
-                                                                onTouchTap={this.handleCloseSearch}>
+                                                                 buttonStyle={{
+                                                                     backgroundColor: "#000000",
+                                                                     opacity: 0.8
+                                                                 }}
+                                                                 label="Close"/>}
+                                      onTouchTap={this.handleCloseSearch}>
                             </ListItem>
                             <ListItem primaryText={<TextField value={this.state.comment}
-                                                            onChange={this.onCommentChange}
-                                                            floatingLabelText="Chat..."
+                                                              onChange={this.onCommentChange}
+                                                              floatingLabelText="Chat..."
                                                               inputStyle={{color: "#000000", opacity: 0.8}}
                                                               floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                                              underlineFocusStyle={{borderColor: "#000000", opacity: 0.8}}
+                                                              underlineFocusStyle={{
+                                                                  borderColor: "#000000",
+                                                                  opacity: 0.8
+                                                              }}
                                                               onKeyDown={this.handleKeyPress}/>}
-                                        disabled={true}>
+                                      disabled={true}>
 
                             </ListItem>
-                            {this.state.comments.map((comment) => {
-                                return <ListItem primaryText={comment.comment}
-                                                secondaryText={comment.userName}
-                                                leftAvatar={<Avatar src={comment.profilePictureLink}/>}
-                                                disabled={true}>
+                            {this.state.comments.map((comment, index) => {
+                                return <ListItem key={index}
+                                                 primaryText={comment.comment}
+                                                 secondaryText={comment.userName}
+                                                 leftAvatar={<Avatar src={comment.profilePictureLink}/>}
+                                                 disabled={true}>
                                 </ListItem>
                             })}
                         </List>

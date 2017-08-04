@@ -38,11 +38,6 @@ app.use(mongoSanitize());
 
 let position = require('./variable.js');
 
-setTimeout(() => {
-    io.sockets.emit('selectCat', {currentCatPositionInArray: position.currentCatPositionInArray});
-    position.currentCatPositionInArray++;
-}, 5000);
-
 setInterval(() => {
     io.sockets.emit('selectCat', {currentCatPositionInArray: position.currentCatPositionInArray});
     position.currentCatPositionInArray++;

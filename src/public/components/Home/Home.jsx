@@ -95,7 +95,6 @@ class Home extends Component {
         });
 
         socket.on("selectCat", (data) => {
-            console.log("initial server socket");
             axios({
                 method: 'post',
                 url: '/move/makeCat',

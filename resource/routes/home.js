@@ -26,26 +26,13 @@ router.get('/credentials', (req, res) => {
 
             const userId = decoded.sub;
             const userName = decoded.userName;
+            const profilePictureLink = decoded.profilePictureLink;
 
-            User.findOne({_id: userId}, (err, user) => {
-                if (err) {
-                    return res.status(400).json({
-                        message: "User not found"
-                    });
-                }
-
-                if (!user) {
-                    return res.status(404).json({
-                        message: "User not found"
-                    });
-                }
-
-                res.json({
-                    userId: userId,
-                    userName: userName,
-                    profilePictureLink: user.profilePictureLink
-                })
-            });
+            res.json({
+                userId: userId,
+                userName: userName,
+                profilePictureLink: profilePictureLink
+            })
         });
     }
 });

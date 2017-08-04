@@ -36,7 +36,7 @@ router.post('/movePlayer', (req, res) => {
             let catIndex = 0;
 
             for (let i = 0; i < length; i++) {
-                if (playerPositions[i].role === "cat") {
+                if (playerPositions[i] && playerPositions[i].role === "cat") {
                     catIndex = i;
                 }
             }
@@ -45,7 +45,7 @@ router.post('/movePlayer', (req, res) => {
 
             if (started === "true" && lengthExp.invulnerability === false) {
                 for (let i = 0; i < length; i++) {
-                    if (playerPositions[i].role === "mouse") {
+                    if (playerPositions[i] && playerPositions[i].role === "mouse") {
                         const mouse = playerPositions[i];
                         const cat = playerPositions[catIndex];
                         if (mouse.left === cat.left && mouse.top === cat.top) {
@@ -278,7 +278,7 @@ router.post("/makeCat", (req, res) => {
             let lengthExp = require('../../variable.js');
 
             const currentCatPositionInArray = req.body.currentCatPositionInArray;
-            if (lengthExp.length === 0)
+            if (lengthExp.length === 0 || playerPositions.length >= lengthExp.length)
                 lengthExp.length = playerPositions.length;
 
             const length = playerPositions.length;
@@ -287,14 +287,14 @@ router.post("/makeCat", (req, res) => {
 
             let restarted = false;
 
-            console.log("players are invulnerable");
+            //console.log("Players are invulnerable");
             // spawn protect
             setTimeout(() => {
                 lengthExp.invulnerability = false;
-                console.log("players are vulnerable");
+               // console.log("players are vulnerable");
                 // return to normal value
                 setTimeout(() => {
-                    console.log("players are no longer vulnerable");
+                    //console.log("players are no longer vulnerable");
                     lengthExp.invulnerability = true;
                 }, 7000)
             }, 3000);
@@ -305,7 +305,7 @@ router.post("/makeCat", (req, res) => {
                 lengthExp.invulnerability = true;
                 restarted = true;
                 let newGamePositions = playerPositions.map((player) => {
-                    console.log("Restarting game");
+                    //console.log("Restarting game");
                     return {
                         top: 500,
                         left: 500,
@@ -330,7 +330,7 @@ router.post("/makeCat", (req, res) => {
                     }
                 }
 
-                if (playerPositions[currentCatPositionInArray].connected === true) {
+                if (playerPositions[currentCatPositionInArray] && playerPositions[currentCatPositionInArray].connected === true) {
                     playerPositions[currentCatPositionInArray % length].wasCat = true;
                     playerPositions[currentCatPositionInArray % length].role = "cat";
                 }
