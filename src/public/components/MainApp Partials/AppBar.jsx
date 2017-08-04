@@ -133,7 +133,7 @@ class AppBarPersonal extends Component {
                 });
             }
             else if (index !== -1) while (1)
-                alert("U MAD BRO?");
+                alert("Please do not use the word script. Ok, David?");
             else {
                 this.setState({
                     errors: {

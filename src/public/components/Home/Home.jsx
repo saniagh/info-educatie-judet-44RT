@@ -14,7 +14,7 @@ class Home extends Component {
     }
 
     addDefaultPicture = (e) => {
-        e.target.src = "/images/eu.jpg"
+        e.target.src = "https://vignette1.wikia.nocookie.net/cutemariobro/images/5/59/Person-placeholder.jpg/revision/latest?cb=20170131092134"
     };
 
     render() {

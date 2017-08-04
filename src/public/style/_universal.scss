@@ -1,11 +1,28 @@
 @import "./partials/appBar";
 @import './constants/functions';
 
-.force-picture {
-  background-image: url("https://image.freepik.com/free-photo/green-garden_2318088.jpg");
-  background-repeat: no-repeat;
-  min-height: 100%;
-  min-width: 100%;
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: Roboto, 'sans-serif';
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+body, html, main {
+  @include widthAndHeight("auto", 100%);
+}
+
+.top-bar-spacing {
+  @include widthAndHeight(auto, 50px);
+  @media screen and (min-width: 1271px) {
+    display: none;
+  }
 }
 
 .background-home {
@@ -21,24 +38,6 @@
   color: gray;
   border-radius: 10px;
   padding: 20px;
-}
-
-body, html {
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
-.top-bar-spacing {
-  @include widthAndHeight(auto, 50px);
-  @media screen and (min-width: 1271px) {
-    display: none;
-  }
-}
-
-body {
-  margin: 0;
-  font-size: 16px;
-  font-family: Roboto, 'sans-serif';
 }
 
 a {
@@ -68,70 +67,12 @@ a {
   padding: 0 16px;
   color: deepskyblue;
 }
-
-.heart-and-tags-container {
-  @include display(flex, 0, space-between);
-  @include box-sizing(border-box);
-  padding: 8px;
-
-  @media screen and (max-width: 1200px) {
-    display: block;
-  }
-}
-
-.tags-container {
-  display: block;
-  @include box-sizing(border-box);
-  padding: 8px;
-  max-width: 100%;
-}
-
-.heart-red-color {
-  svg {
-    fill: red !important;
-  }
-  @include display(flex, 0, flex-start);
-  @media screen and (max-width: 1200px) {
-    display: block;
-    flex: 0;
-    justify-content: flex-start;
-  }
-}
-
-.add {
-  color: #ffffff !important;
-  opacity: 0.3 !important;
-  background-color: #000000 !important;
-  width: 40px !important;
-  height: 40px !important;
-  position: fixed !important;
-  bottom: 10px !important;
-  right: 60px !important;
-  border-radius: 5px !important;
-  border: none !important;
-  cursor: pointer !important;
-  z-index: 9000;
-
-  &:hover {
-    opacity: 1 !important;
-  }
-}
-
-.scroll {
-  color: #ffffff !important;
-  opacity: 0.3 !important;
-  background-color: #000000 !important;
-  width: 40px !important;
-  height: 40px !important;
-  position: fixed !important;
-  bottom: 10px !important;
-  right: 10px !important;
-  border-radius: 5px !important;
-  border: none !important;
-  cursor: pointer !important;
-  z-index: 9000;
-
-  &:hover {
-    opacity: 1 !important;
+// loading indicator wave style
+.sk-wave {
+  width: 18.750em !important;
+  height: 18.750em !important;
+  position: relative !important;
+  div {
+    width: 3.750em !important;
   }
 }
