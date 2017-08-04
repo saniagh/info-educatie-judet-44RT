@@ -51,6 +51,12 @@ webpack --optimize-minimize --define process.env.NODE_ENV="'production'"
 <li>As the one who chases the others, you have 30 seconds to do it.</li>
 </ul>
 
+<h2>Notes:</h2>
+
+<ul>
+<li>There might be issues if somebody connects while the game has already started</li>
+</ul>
+
 <h2>Technical details</h2>
 
 <h4>Front-end</h4>
