@@ -38,10 +38,9 @@ class Home extends Component {
             alive = false;
         else alive = true;
 
-        let firstOnScore = "Nobody", maxScore = 0, connectedPlayers = 0;
+        let firstOnScore = "Nobody", maxScore = 0, connectedPlayers = 0, catName = "";
 
         this.props.playerPositions.map((player) => {
-            {
                 if (player.score > maxScore) {
                     maxScore = player.score;
                     firstOnScore = player.userName
@@ -49,7 +48,8 @@ class Home extends Component {
                 if (player.connected === true) {
                     connectedPlayers++
                 }
-            }
+                if (player.role === "cat")
+                    catName = player.userName;
         });
 
         return (
@@ -93,6 +93,15 @@ class Home extends Component {
                             :
                             null
                         }
+                    </div>
+                    :
+                    null
+                }
+                {aliveCount === 1 ?
+                    <div style={{display: "flex", flex: 1, justifyContent: "space-around"}}>
+                        <div className="score">
+                            All have been devoured by the supreme {catName}
+                        </div>
                     </div>
                     :
                     null
