@@ -7,8 +7,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {browserHistory, Router} from 'react-router';
 import routes from './routes.js';
 
-let socket = io.connect();
-
 injectTapEventPlugin();
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme()}>

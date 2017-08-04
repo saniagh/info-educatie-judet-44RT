@@ -2,11 +2,6 @@ import React, {Component} from 'react';
 import {CardMedia, Card, Snackbar} from 'material-ui';
 import Auth from '../../modules/Auth.js';
 
-import axios from 'axios';
-import qs from 'qs';
-
-const socket = io.connect();
-
 class Home extends Component {
 
     constructor(props) {
