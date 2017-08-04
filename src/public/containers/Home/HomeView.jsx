@@ -5,7 +5,7 @@ import {Card, CardMedia, CardTitle} from 'material-ui';
 class HomeView extends Component {
     render() {
 
-        document.title = "Best game";
+        document.title = "Block Pictures Chase";
 
         return (
             <Home />

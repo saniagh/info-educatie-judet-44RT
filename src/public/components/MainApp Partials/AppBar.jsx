@@ -33,7 +33,8 @@ class AppBarPersonal extends Component {
             comments: [],
             comment: "",
             userName: "",
-            profilePictureLink: ""
+            profilePictureLink: "",
+            errors: {}
         }
     }
 
@@ -112,7 +113,7 @@ class AppBarPersonal extends Component {
 
             let index = this.state.comment.search("script");
 
-            if (index === -1) {
+            if (index === -1 && this.state.comment.length > 0) {
                 socket.emit("onMessage", {
                     userName: this.state.userName,
                     profilePictureLink: this.state.profilePictureLink,
@@ -127,11 +128,19 @@ class AppBarPersonal extends Component {
                 });
                 this.setState({
                     comments: newComments,
-                    comment: ""
+                    comment: "",
+                    errors: {}
                 });
             }
-            else while (1)
+            else if (index !== -1) while (1)
                 alert("U MAD BRO?");
+            else {
+                this.setState({
+                    errors: {
+                        comment: "A message cannot be empty!"
+                    }
+                })
+            }
 
         }).catch((err) => {
             console.log(err);
@@ -245,6 +254,7 @@ class AppBarPersonal extends Component {
                             <ListItem primaryText={<TextField value={this.state.comment}
                                                               onChange={this.onCommentChange}
                                                               floatingLabelText="Chat..."
+                                                              errorText={this.state.errors.comment}
                                                               inputStyle={{color: "#000000", opacity: 0.8}}
                                                               floatingLabelStyle={{color: "#000000", opacity: 0.8}}
                                                               underlineFocusStyle={{
