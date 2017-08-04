@@ -63,7 +63,7 @@ module.exports = new PassportLocalStrategy(
                 };
 
                 // create the token
-                const token = jwt.sign(payload, config.jwtSecret);
+                const token = jwt.sign(payload, config.jwtSecret, { expiresIn: 60 * 60 * 2 });
 
                 return done(null, token);
             });
