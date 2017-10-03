@@ -1,20 +1,8 @@
+@import "./partials/appBar";
 @import './constants/functions';
 
-html {
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
-body {
-  margin: 0;
-  font-size: 16px;
-  font-family: Roboto, 'sans-serif';
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
-body, html, main {
-  @include widthAndHeight("auto", 100%);
+* {
+  outline: none !important;
 }
 
 .top-bar-spacing {
@@ -24,19 +12,10 @@ body, html, main {
   }
 }
 
-.background-home {
-  background: linear-gradient(135deg, rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%);
-}
-
-.appBar {
-  background: linear-gradient(135deg, rgba(252,255,244,1) 0%,rgba(223,229,215,1) 40%,rgba(179,190,173,1) 100%);
-}
-
-.score {
-  background: linear-gradient(to right, rgba(180,223,91,1) 0%,rgba(180,223,91,1) 100%);
-  color: gray;
-  border-radius: 10px;
-  padding: 20px;
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: Roboto, 'sans-serif';
 }
 
 a {
@@ -65,4 +44,71 @@ a {
 .success-message {
   padding: 0 16px;
   color: deepskyblue;
+}
+
+.heart-and-tags-container {
+  @include display(flex, 0, space-between);
+  @include box-sizing(border-box);
+  padding: 8px;
+
+  @media screen and (max-width: 1200px) {
+    display: block;
+  }
+}
+
+.tags-container {
+  display: block;
+  @include box-sizing(border-box);
+  padding: 8px;
+  max-width: 100%;
+}
+
+.heart-red-color {
+  svg {
+    fill: red !important;
+  }
+  @include display(flex, 0, flex-start);
+  @media screen and (max-width: 1200px) {
+    display: block;
+    flex: 0;
+    justify-content: flex-start;
+  }
+}
+
+.add {
+  color: #ffffff !important;
+  opacity: 0.3 !important;
+  background-color: #000000 !important;
+  width: 40px !important;
+  height: 40px !important;
+  position: fixed !important;
+  bottom: 10px !important;
+  right: 60px !important;
+  border-radius: 5px !important;
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 9000;
+
+  &:hover {
+    opacity: 1 !important;
+  }
+}
+
+.scroll {
+  color: #ffffff !important;
+  opacity: 0.3 !important;
+  background-color: #000000 !important;
+  width: 40px !important;
+  height: 40px !important;
+  position: fixed !important;
+  bottom: 10px !important;
+  right: 10px !important;
+  border-radius: 5px !important;
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 9000;
+
+  &:hover {
+    opacity: 1 !important;
+  }
 }

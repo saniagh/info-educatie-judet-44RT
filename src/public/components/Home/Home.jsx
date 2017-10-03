@@ -1,136 +1,196 @@
 import React, {Component} from 'react';
-import {CardMedia, Card, Snackbar} from 'material-ui';
+import {Link} from 'react-router';
+import {
+    RaisedButton,
+    CardMedia,
+    FlatButton,
+    Dialog
+} from 'material-ui';
+import LoadingIndicator from '../Loading Indicator/LoadingIndicator.jsx';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import * as homeViewActions from '../../actions/newsHomeViewActions.js';
 import Auth from '../../modules/Auth.js';
+import ReadOneView from '../../containers/BrowseCollections/ReadOneView.jsx';
+import ReadOneViewNews from '../../containers/BrowseNews/ReadOneView.jsx';
+
+let createHandler = function (dispatch) {
+
+    let onCloseSnackBar = function () {
+        dispatch(homeViewActions.onCloseSnackBar())
+    };
+
+    return {
+        onCloseSnackBar
+    }
+};
 
 class Home extends Component {
 
     constructor(props) {
         super(props);
+        this.handlers = createHandler(this.props.dispatch);
     }
 
-    addDefaultPicture = (e) => {
-        e.target.src = "https://vignette1.wikia.nocookie.net/cutemariobro/images/5/59/Person-placeholder.jpg/revision/latest?cb=20170131092134"
+    onCloseSnackBar = () => {
+        this.handlers.onCloseSnackBar();
     };
 
     render() {
-
-        let aliveCount = 0;
-
-        let playerStyle = {
-            height: this.props.playerPositions.length && this.props.playerPositions[Auth.getPositionInArray()].role === "cat" ? 160 : 40,
-            width: this.props.playerPositions.length && this.props.playerPositions[Auth.getPositionInArray()].role === "cat" ? 160 : 40,
-            position: "absolute",
-            left: this.props.left,
-            top: this.props.top,
-            zIndex: this.props.playerPositions.length && this.props.playerPositions[Auth.getPositionInArray()].role === "cat" ? 2 : 1
-        };
-
-        if (this.props.playerPositions && this.props.playerPositions.length > 1) {
-            this.props.playerPositions.map((player) => {
-                if (player.left > 0 && player.top > 0 && player.connected === true)
-                    aliveCount++;
-            })
-        }
-
-        let alive = true;
-
-        if (this.props.playerPositions[Auth.getPositionInArray()] && this.props.playerPositions[Auth.getPositionInArray()].left < 0 && this.props.playerPositions[Auth.getPositionInArray()].top < 0)
-            alive = false;
-        else alive = true;
-
-        let firstOnScore = "Nobody", maxScore = 0, connectedPlayers = 0, catName = "";
-
-        this.props.playerPositions.map((player) => {
-                if (player.score > maxScore) {
-                    maxScore = player.score;
-                    firstOnScore = player.userName
-                }
-                if (player.connected === true) {
-                    connectedPlayers++
-                }
-                if (player.role === "cat")
-                    catName = player.userName;
-        });
-
         return (
-            <Card style={{height: document.body.scrollHeight, minWidth: document.body.clientWidth, padding: 30}}
-                  className="background-home">
-                <div className="top-bar-spacing"/>
-                <Card style={playerStyle}>
-                    <CardMedia overlay={<div
-                        style={{color: "white", height: "100%"}}>{this.props.userName.substring(0, 4)}</div>}>
-                        <img src={this.props.profilePictureLink}
-                             style={{height: "100%"}}
-                             onError={this.addDefaultPicture}/>
-                    </CardMedia>
-                </Card>
-                <Snackbar message="Game is starting shortly" open={!this.props.started} autoHideDuration={5000}/>
-                {this.props.playerPositions[Auth.getPositionInArray()] ?
-                    <div style={{display: "flex", flex: 1, justifyContent: "space-around"}}>
-                        {this.props.playerPositions && this.props.playerPositions.length > 1 ?
-                            <div className="score">Players: {this.props.playerPositions.length}</div>
-                            :
-                            null
-                        }
-                        <div className="score">Players still alive: {aliveCount}</div>
-                        <div className="score">Best score: {firstOnScore} with {maxScore}</div>
-                        <div className="score">
-                            Your score: {this.props.playerPositions[Auth.getPositionInArray()].score}
-                        </div>
-                        {this.props.playerPositions[Auth.getPositionInArray()] && alive === true && this.props.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
-                            <div className="score">You are alive and well! Just keep running</div>
-                            :
-                            null
-                        }
-                        {this.props.playerPositions[Auth.getPositionInArray()] && alive === false && this.props.playerPositions[Auth.getPositionInArray()].role === "mouse" ?
-                            <div className="score">Look at the good part, you were eaten by the coolest cat around</div>
-                            :
-                            null
-                        }
+            <div>
 
-                        {this.props.playerPositions[Auth.getPositionInArray()] && this.props.playerPositions[Auth.getPositionInArray()].role === "cat" ?
-                            <div className="score">Hunt 'em all!</div>
-                            :
-                            null
-                        }
+                <div className={Auth.isUserAuthenticated() ? "section-title-authenticated" : "section-title"}>Latest
+                    collections
+                </div>
+                {this.props.fetchedCollections === true ?
+
+                    <div>
+                        <div className="container-home">
+                            <div className="news-desktop">
+                                <ul>
+                                    {this.props.rowsCollections1}
+                                </ul>
+                            </div>
+                            <div className="news-mobile">
+                                <ul>
+                                    {this.props.rowsCollections3}
+                                </ul>
+
+                            </div>
+                            <div className="buttons-home-view">
+                                <Link
+                                    to={`/collections`}>
+                                    <FlatButton label="All collections"
+                                                labelStyle={{fontSize: 24, color: "black"}}
+                                                style={{
+                                                    height: 64,
+                                                    width: 300,
+                                                    padding: 10,
+                                                    border: "1px solid black",
+                                                    borderRadius: 40,
+                                                    opacity: 0.8
+                                                }}/>
+                                </Link>
+                            </div>
+                        </div>
+
                     </div>
                     :
                     null
                 }
-                {aliveCount === 1 ?
-                    <div style={{display: "flex", flex: 1, justifyContent: "space-around"}}>
-                        <div className="score">
-                            All have been devoured by the supreme {catName}
+                {
+                    this.props.fetchingCollections === true && this.props.fetchedCollections === false ?
+                        <LoadingIndicator/>
+                        :
+                        null
+                }
+                {
+                    this.props.fetchingCollections === false && this.props.fetchedCollections === false ?
+                        <div>
+                            No collections so far
+                        </div>
+                        :
+                        null
+                }
+
+                <div className={Auth.isUserAuthenticated() ? "section-title-news-authenticated" : "section-title-news"}>
+                    Latest news
+                </div>
+
+                {this.props.fetchedNews === true ?
+
+                    <div>
+                        <div className="container-home">
+                            <div className="news-mobile-cancel">
+                                <ul>
+                                    {this.props.rowsNews}
+                                </ul>
+                            </div>
+                            <div className="buttons-home-view">
+                                <Link
+                                    to={`/news`}>
+                                    <FlatButton label="All news articles"
+                                                labelStyle={{fontSize: 24, color: "black"}}
+                                                style={{
+                                                    height: 64,
+                                                    width: 300,
+                                                    padding: 10,
+                                                    border: "1px solid black",
+                                                    borderRadius: 40,
+                                                    opacity: 0.8
+                                                }}/>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     :
                     null
                 }
+                {
+                    this.props.fetchedNews === false && this.props.fetchingNews === true ?
+                        <LoadingIndicator/>
+                        :
+                        null
+                }
+                {
+                    this.props.fetchedNews === false && this.props.fetchingNews === true ?
+                        <div>
+                            No news around
+                        </div>
+                        :
+                        null
+                }
 
-                {this.props.playerPositions.map((player) => {
-                    if (player && player.userId !== this.props.userId) {
-                        return <Card key={player.positionInArray}
-                                     style={{
-                                         height: player.role === "cat" ? 160 : 40,
-                                         width: player.role === "cat" ? 160 : 40,
-                                         position: "absolute",
-                                         top: player.top,
-                                         left: player.left,
-                                         zIndex: player.role === "cat" === "cat" ? 2 : 1
-                                     }}
-                        >
-                            <CardMedia overlay={<div
-                                style={{color: "white", height: "100%"}}>{player.userName.substring(0, 4)}</div>}>
-                                <img src={player.profilePictureLink}
-                                     style={{height: "100%"}}
-                                     onError={this.addDefaultPicture}/>
-                            </CardMedia>
-                        </Card>
-                    }
-                })}
-            </Card>
+                <Dialog
+                    repositionOnUpdate={false}
+                    actions={<RaisedButton
+                        onTouchTap={() => this.props.handleCloseCollections(false)}
+                        label="Return" primary={true}
+                        buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
+                    contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                    bodyStyle={{padding: 0, borderBottom: 0}}
+                    modal={false}
+                    open={this.props.openCollections}
+                    onRequestClose={() => this.props.handleCloseCollections(false)}
+                    autoScrollBodyContent={true}
+                >
+                    <ReadOneView collectionId={this.props.collectionId}
+                                 dispatch={this.props.dispatch}
+                    />
+                </Dialog>
+
+                <Dialog
+                    repositionOnUpdate={false}
+                    actions={<RaisedButton
+                        onTouchTap={() => this.props.handleCloseNews(false)}
+                        label="Return" primary={true}
+                        buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}/>}
+                    contentStyle={{width: "100%", minWidth: '100%', maxWidth: "none"}}
+                    bodyStyle={{padding: 0, borderBottom: 0}}
+                    modal={false}
+                    open={this.props.openNews}
+                    onRequestClose={() => this.props.handleCloseNews(false)}
+                    autoScrollBodyContent={true}
+                >
+                    <ReadOneViewNews newsId={this.props.newsId}
+                                     dispatch={this.props.dispatch}
+                    />
+                </Dialog>
+
+            </div>
         )
     }
 }
 
-export default Home;
+Home.propTypes = {
+    openSnackBar: PropTypes.bool
+};
+
+const mapStateToProps = (state) => {
+    return {
+        openSnackBar: state.newsHomeViewReducer.openSnackBar
+    }
+};
+
+export default connect(mapStateToProps)(Home)

@@ -1,43 +1,23 @@
 import React, {Component} from 'react';
 import MainApp from './MainApp.jsx';
 import {smoothScroll} from './functions.js';
-import Auth from '../../modules/Auth.js';
 
 // Important
 window.onbeforeunload = () => {
     window.scrollTo(0, 0);
 };
 
-const socket = io.connect();
-
 class ScrollToTop extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            token: "",
-            positionInArray: ""
+    componentWillReceiveProps(nextProps) {
+        if (this.props.location !== nextProps.location) {
+            if ((nextProps.location.pathname !== '/collections' || this.props.location.pathname !== '/collections') && (nextProps.location.pathname !== '/news' || this.props.location.pathname !== '/news') && (nextProps.location.pathname !== '/manage' || this.props.location.pathname !== '/manage') && (nextProps.location.pathname !== '/' || this.props.location.pathname !== '/') && !(nextProps.location.pathname.includes("/search") || this.props.location.pathname.includes("/search")) && (nextProps.location.pathname !== "/login") && (nextProps.location.pathname !== "/signup") && !(nextProps.location.pathname.includes("/profile") && this.props.location.pathname.includes("/profile")) && !(nextProps.location.pathname.includes("/users") && this.props.location.pathname.includes("/users"))) {
+                smoothScroll();
+            }
         }
     }
 
-    componentDidMount() {
-        this.setState({
-            token: Auth.getToken(),
-            positionInArray: Auth.getPositionInArray()
-        })
-    }
-
-    componentDidUpdate() {
-        smoothScroll();
-    }
-
-    componentWillUnmount() {
-        socket.emit("userDisconnected", {positionInArray: this.state.positionInArray, token: this.state.token});
-    }
-
     render() {
-
         return <MainApp children={this.props.children}
                         location={this.props.location}/>
     }

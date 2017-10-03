@@ -12,11 +12,20 @@ const UserSchema = new mongoose.Schema({
         type: String,
         index: {unique: true}
     },
-    profilePictureLink: {
-        type: String,
-        default: 'https://vignette1.wikia.nocookie.net/cutemariobro/images/5/59/Person-placeholder.jpg/revision/latest?cb=20170131092134'
-    },
+    firstName: String,
+    lastName: String,
+    birthDate: String,
+    profession: String,
+    companyName: String,
+    city: String,
+    country: String,
     registerDate: { type: Date, default: Date.now },
+    profilePictureLink: String,
+    profileCover: String,
+    admin: { type: Boolean, default: false },
+    banned: { type: Boolean, default: false},
+    moderator: { type: Boolean, default: false },
+    liked: {type: Array, default: []},
     time: { type: Date, default: Date.now }
 });
 

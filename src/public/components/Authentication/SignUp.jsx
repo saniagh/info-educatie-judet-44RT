@@ -4,15 +4,13 @@ import {Card, CardText, RaisedButton, TextField} from 'material-ui';
 
 class SignUp extends Component {
     render() {
-
         const styles = {
             button: {
-                width: '100%',
+                width: '100%'
             }
         };
-
         return (
-            <div className="parallax-signup">
+            <div>
                 <div className="top-bar-spacing"/>
                 <Card className="container-signup" style={{backgroundColor: 'transparent', boxShadow: 'none'}}>
                     <div className="content-signup">
@@ -30,7 +28,7 @@ class SignUp extends Component {
                                         value={this.props.user.name}
                                         onChange={this.props.onChange}
                                         errorText={this.props.errors.name}
-                                        autoFocus={true}
+
                                         style={{minWidth: "100%"}}
                                         inputStyle={{color: "#000000", opacity: 0.8}}
                                         floatingLabelStyle={{color: "#000000", opacity: 0.8}}
@@ -85,9 +83,9 @@ class SignUp extends Component {
                                 <div className="button-line">
                                     <RaisedButton
                                         style={styles.button}
-                                        primary={true}
+                                        labelStyle={{color: "#ffffff"}}
                                         buttonStyle={{backgroundColor: "#000000", opacity: 0.8}}
-                                        type="submit" label="Create New Account"/>
+                                        type="submit" label="Create New Account" primary/>
                                 </div>
 
                                 <CardText style={{textAlign: "center"}}>Already a member? <Link to='/login'>Log
@@ -103,3 +101,4 @@ class SignUp extends Component {
 
 
 export default SignUp;
+

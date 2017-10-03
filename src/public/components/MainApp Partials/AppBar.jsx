@@ -1,287 +1,345 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router';
+import {connect} from 'react-redux';
 import {} from 'material-ui';
+import * as searchActions from '../../actions/AppBar/searchActions.js';
 import {
+    Avatar,
     ListItem,
     Divider,
     List,
+    AutoComplete,
     Toolbar,
     ToolbarGroup,
-    TextField,
-    Drawer,
-    Avatar,
-    RaisedButton
+    CardMedia,
+    Drawer
 } from 'material-ui';
+import ImageCollections from 'material-ui/svg-icons/image/collections';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
+import AVLibraryBooks from 'material-ui/svg-icons/av/library-books';
+import ActionAnnouncement from 'material-ui/svg-icons/action/announcement';
+import ActionAccountCircle from 'material-ui/svg-icons/action/account-circle';
+import ActionPermContactCalendar from 'material-ui/svg-icons/action/perm-contact-calendar';
+import ActionSearch from 'material-ui/svg-icons/action/search';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
-import ActionAccountBox from 'material-ui/svg-icons/action/account-box';
-import CommunicationMessage from 'material-ui/svg-icons/communication/message';
-import axios from 'axios';
-
 import Auth from '../../modules/Auth';
 
-const socket = io.connect();
+let createHandler = function (dispatch) {
+
+    let onSearchQueryChange = function (searchQuery) {
+        dispatch(searchActions.onSearchQueryChange(searchQuery))
+    };
+
+    let searchAllCollections = function (searchQuery) {
+        dispatch(searchActions.onSearchAll(searchQuery))
+    };
+
+    return {
+        onSearchQueryChange,
+        searchAllCollections
+    }
+};
 
 class AppBarPersonal extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
+
+        this.handler = createHandler(this.props.dispatch);
+
         this.state = {
-            openMenu: false,
-            openSearch: false,
-            comments: [],
-            comment: "",
-            userName: "",
-            profilePictureLink: "",
-            errors: {}
+            isMobileMenuOpened: false
         }
     }
 
-    componentDidMount() {
-        axios({
-            method: 'get',
-            url: '/home/credentials',
-            headers: {
-                'Authorization': `bearer ${Auth.getToken()}`
-            }
-        }).then((response) => {
-            this.setState({
-                userName: response.data.userName,
-                profilePictureLink: response.data.profilePictureLink
-            })
-        }).catch((err) => {
-            console.log(err);
-        });
-
-        socket.on("onMessage", (data) => {
-            let newComments = this.state.comments;
-            newComments.unshift({
-                userName: data.userName,
-                profilePictureLink: data.profilePictureLink,
-                comment: data.comment
-            });
-            this.setState({
-                comments: newComments
-            })
-        })
-    }
-
-    handleOpenMenu = () => {
+    onClickMobileMenuButton = () => {
         this.setState({
-            openMenu: true
-        });
-    };
-
-    handleCloseMenu = () => {
-        this.setState({
-            openMenu: false
+            isMobileMenuOpened: !this.state.isMobileMenuOpened
         })
     };
 
-    handleOpenSearch = () => {
-        this.setState({
-            openSearch: true
-        })
-    };
-
-    handleCloseSearch = () => {
-        this.setState({
-            openSearch: false
-        })
-    };
-
-    onCommentChange = (e) => {
-        this.setState({
-            comment: e.target.value
-        })
-    };
-
-    onSaveComment = () => {
-
-        axios({
-            method: 'get',
-            url: '/home/credentials',
-            headers: {
-                'Authorization': `bearer ${Auth.getToken()}`
-            }
-        }).then((response) => {
-            this.setState({
-                userName: response.data.userName,
-                profilePictureLink: response.data.profilePictureLink
-            });
-
-            let index = this.state.comment.search("script");
-
-            if (index === -1 && this.state.comment.length > 0) {
-                socket.emit("onMessage", {
-                    userName: this.state.userName,
-                    profilePictureLink: this.state.profilePictureLink,
-                    comment: this.state.comment
-                });
-
-                let newComments = this.state.comments;
-                newComments.unshift({
-                    userName: this.state.userName,
-                    profilePictureLink: this.state.profilePictureLink,
-                    comment: this.state.comment
-                });
-                this.setState({
-                    comments: newComments,
-                    comment: "",
-                    errors: {}
-                });
-            }
-            else if (index !== -1) while (1)
-                alert("Please do not use the word script. Ok, David?");
-            else {
-                this.setState({
-                    errors: {
-                        comment: "A message cannot be empty!"
-                    }
-                })
-            }
-
-        }).catch((err) => {
-            console.log(err);
-        });
+    onSearchQueryChange = (e) => {
+        this.handler.onSearchQueryChange(e.target.value)
     };
 
     handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            this.onSaveComment();
+            this.onSearch();
         }
+    };
+
+    onSearch = () => {
+        this.handler.searchAllCollections(this.props.searchFunction.searchQuery);
+        this.context.router.push(`/search/${this.props.searchFunction.searchQuery}`)
     };
 
     render() {
         return (
-            <div>
-                <Toolbar
-                    style={{
-                        backgroundColor: "transparent",
-                        boxShadow: "transparent",
-                        width: "100%",
-                        zIndex: 99,
-                        height: 50
-                    }}
-                    className="appBar">
-                    <div style={{position: "absolute", top: 10, cursor: "pointer"}}
-                         onTouchTap={this.handleOpenMenu}
-                    >
-                        <NavigationMenu style={{height: 30, width: 28}}/>
+            <div style={this.state.isMobileMenuOpened ? {height: 506} : {height: 215}}>
+                <header id="masthead"
+                        role="banner"
+                        className="header">
+                    <div className="header-logo">
+                        <CardMedia onTouchTap={() => this.context.router.push('/')} style={{cursor: "pointer"}}>
+                            <img src="/images/logo-inverted.png" style={{width: 150, height: 125}}/>
+                        </CardMedia>
                     </div>
-                    <ToolbarGroup/>
-                    <ToolbarGroup/>
-                    <ToolbarGroup>
-                        {Auth.isUserAuthenticated() ?
-                            <div style={{position: "absolute", top: 10, right: 24}}
-                                 onTouchTap={this.handleOpenSearch}>
-                                <CommunicationMessage style={{height: 30, width: 28}}/>
-                            </div>
-                            :
-                            null
-                        }
-                    </ToolbarGroup>
-                </Toolbar>
 
-                <Drawer open={this.state.openMenu}
-                        docked={false}
-                        swipeAreaWidth={0}
-                        disableSwipeToOpen={true}
-                        onRequestChange={() => this.handleCloseMenu()}>
-                    {Auth.isUserAuthenticated() ?
-                        <span onTouchTap={this.handleCloseMenu}>
-                        <Divider />
-                        <List>
-                            <Link to={`/`}
-                                  activeClassName="active-link-classname">
-                                <ListItem
-                                    primaryText="Home"
-                                    leftIcon={<ActionHome/>}/>
-                            </Link>
-                            <Link to={`/profile`}
-                                  activeClassName="active-link-classname">
-                                <ListItem
-                                    primaryText="Profile"
-                                    leftIcon={<ActionAccountBox/>}/>
-                            </Link>
-                        </List>
-                        <Divider/>
-                            <List>
-                            <Link to={`/logout`}>
-                                <ListItem primaryText="Logout"
-                                          leftIcon={<ActionExitToApp/>}/>
-                            </Link>
-                        </List>
-                    </span>
-                        :
-                        <span onTouchTap={this.handleCloseMenu}>
-                            <List>
-
-                            <Link to={`/`}
-                                  activeClassName="active-link-classname">
-                                <ListItem
-                                    primaryText="Home"
-                                    leftIcon={<ActionHome/>}/>
-                            </Link>
-
-                                <Divider/>
-                            <Link to={`/login`}>
-                                <ListItem primaryText="Login"/>
-                            </Link>
-                            <Link to={`/signup`}>
-                                <ListItem primaryText="Sign Up"/>
-                            </Link>
-                        </List>
-                        </span>
-                    }
-                </Drawer>
-                <Drawer openSecondary={true}
-                        open={this.state.openSearch}
-                        disableSwipeToOpen={true}
-                        swipeAreaWidth={0}
-                        onRequestChange={() => this.handleCloseSearch()}>
-                    {Auth.isUserAuthenticated() ?
-                        <List>
-                            <ListItem primaryText={<RaisedButton primary={true}
-                                                                 buttonStyle={{
-                                                                     backgroundColor: "#000000",
-                                                                     opacity: 0.8
-                                                                 }}
-                                                                 label="Close"/>}
-                                      onTouchTap={this.handleCloseSearch}>
-                            </ListItem>
-                            <ListItem primaryText={<TextField value={this.state.comment}
-                                                              onChange={this.onCommentChange}
-                                                              floatingLabelText="Chat..."
-                                                              errorText={this.state.errors.comment}
-                                                              inputStyle={{color: "#000000", opacity: 0.8}}
-                                                              floatingLabelStyle={{color: "#000000", opacity: 0.8}}
-                                                              underlineFocusStyle={{
-                                                                  borderColor: "#000000",
-                                                                  opacity: 0.8
-                                                              }}
-                                                              onKeyDown={this.handleKeyPress}/>}
-                                      disabled={true}>
-
-                            </ListItem>
-                            {this.state.comments.map((comment, index) => {
-                                return <ListItem key={index}
-                                                 primaryText={comment.comment}
-                                                 secondaryText={comment.userName}
-                                                 leftAvatar={<Avatar src={comment.profilePictureLink}/>}
-                                                 disabled={true}>
-                                </ListItem>
-                            })}
-                        </List>
-                        :
-                        null
-                    }
-                </Drawer>
+                    <div className="header-navigation">
+                        <div className="search-container">
+                            <form role="search" className="search-form">
+                                <label>
+                                    <input type="search"
+                                           className="search-input"
+                                           placeholder="Search..."
+                                           value={this.props.searchFunction.searchQuery}
+                                           onKeyDown={this.handleKeyPress}
+                                           onChange={this.onSearchQueryChange}/>
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                </header>
+                <nav className="site-navigation" role="navigation">
+                    <div className="nav-container">
+                        <ul className="nav-list">
+                            <li className="nav-row">
+                                <Link to={`/`}
+                                      className="nav-item"
+                                      activeClassName="active-link-className">
+                                    Home
+                                </Link>
+                            </li>
+                            <li className="nav-row">
+                                <Link to={`/collections`}
+                                      className="nav-item"
+                                      activeClassName="active-link-className">
+                                    Collections
+                                </Link>
+                            </li>
+                            {Auth.isUserAuthenticated() ?
+                                null
+                                :
+                                <li className="nav-row">
+                                    <Link to={`/login`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className">
+                                        Login
+                                    </Link>
+                                </li>
+                            }
+                            {Auth.isUserAuthenticated() ?
+                                null
+                                :
+                                <li className="nav-row">
+                                    <Link to={`/signup`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className">
+                                        Register
+                                    </Link>
+                                </li>
+                            }
+                            {Auth.isUserAuthenticated() ?
+                                <li className="nav-row">
+                                    <Link to={`/manage`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className">
+                                        Management
+                                    </Link>
+                                </li>
+                                :
+                                null
+                            }
+                            {Auth.isUserAuthenticated() ?
+                                <li className="nav-row">
+                                    <Link to={`/profile/${this.props.userName}`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className">
+                                        Profile
+                                    </Link>
+                                </li>
+                                :
+                                null
+                            }
+                            {this.props.isAdmin === true ?
+                                <li className="nav-row">
+                                    <Link to={`/admin/${this.props.userId}`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className">
+                                        Administration
+                                    </Link>
+                                </li>
+                                :
+                                null
+                            }
+                            {Auth.isUserAuthenticated() ?
+                                <li className="nav-row">
+                                    <Link to={`/logout`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className">
+                                        Logout
+                                    </Link>
+                                </li>
+                                :
+                                null
+                            }
+                        </ul>
+                    </div>
+                </nav>
+                <nav className="mobile-navigation">
+                    <div className="mobile-container" style={this.state.isMobileMenuOpened ? {height: "auto"} : {height: 40}}>
+                        <div className="mobile-menu-icon-wrap">
+                            <i className="material-icons white1000"
+                               onTouchEnd={this.onClickMobileMenuButton}>&#xE5D2;</i>
+                        </div>
+                        <div className="mobile-menu"
+                             style={this.state.isMobileMenuOpened ? {opacity: 1, top: 0, zIndex: 1, position: "static"} : {zIndex: -1}}>
+                            <ul className="mobile-list">
+                                <li className="mobile-row">
+                                    <Link to={`/`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className-mobile"
+                                          onClick={this.onClickMobileMenuButton}>
+                                        Home
+                                    </Link>
+                                </li>
+                                <li className="mobile-row">
+                                    <Link to={`/collections`}
+                                          className="nav-item"
+                                          activeClassName="active-link-className-mobile"
+                                          onClick={this.onClickMobileMenuButton}>
+                                        Collections
+                                    </Link>
+                                </li>
+                                {Auth.isUserAuthenticated() ?
+                                    null
+                                    :
+                                    <li className="mobile-row">
+                                        <Link to={`/login`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                            Login
+                                        </Link>
+                                    </li>
+                                }
+                                {Auth.isUserAuthenticated() ?
+                                    null
+                                    :
+                                    <li className="mobile-row">
+                                        <Link to={`/signup`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                            Register
+                                        </Link>
+                                    </li>
+                                }
+                                {Auth.isUserAuthenticated() ?
+                                    <li className="mobile-row">
+                                        <Link to={`/manage`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                            Management
+                                        </Link>
+                                    </li>
+                                    :
+                                    null
+                                }
+                                {Auth.isUserAuthenticated() ?
+                                    <li className="mobile-row">
+                                        <Link to={`/profile/${this.props.userName}`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                            Profile
+                                        </Link>
+                                    </li>
+                                    :
+                                    null
+                                }
+                                {this.props.isAdmin === true ?
+                                    <li className="mobile-row">
+                                        <Link to={`/admin/${this.props.userId}`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                            Administration
+                                        </Link>
+                                    </li>
+                                    :
+                                    null
+                                }
+                                {Auth.isUserAuthenticated() ?
+                                    <li className="mobile-row">
+                                        <Link to={`/logout`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                            Logout
+                                        </Link>
+                                    </li>
+                                    :
+                                    null
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
             </div>
         )
     }
 }
 
+AppBarPersonal.propTypes = {
+    allCollections: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ])
+};
 
-export default AppBarPersonal;
+AppBarPersonal.contextTypes = {
+    router: PropTypes.object.isRequired
+};
+
+const allCollections = (state) => {
+    if (state.collectionNamesReducer.fetching === true) {
+        return {
+            fetchingOwnCollections: true,
+            allCollections: []
+        }
+    }
+    else if (state.collectionNamesReducer.collections) {
+        const response = state.collectionNamesReducer.collections.data.collections;
+        let allCollections = Object.keys(response).map((key) => {
+            return response[key].collectionName
+        });
+        return {
+            allCollections: allCollections
+        }
+    }
+    else if (state.collectionNamesReducer.fetched === false) {
+        return {
+            fetchedOwnCollections: false,
+            fetchingOwnCollections: false
+        }
+    }
+};
+
+const searchFunction = (state) => {
+    return {
+        searchQuery: state.searchReducer.searchQuery,
+        allCollections: state.searchReducer.allCollections,
+        message: state.searchReducer.message
+    }
+};
+
+const mapStateToProps = (state) => ({
+    allCollections: allCollections(state),
+    searchFunction: searchFunction(state)
+});
+
+export default connect(mapStateToProps)(AppBarPersonal)

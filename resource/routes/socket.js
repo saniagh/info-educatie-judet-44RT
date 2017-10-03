@@ -1,36 +1,23 @@
-import axios from 'axios';
-import qs from 'qs';
-
 module.exports = function (socket) {
-    socket.on("resetPlayer", function () {
-        socket.emit("resetPlayer", () => {});
+    socket.on('send:comment', function () {
+        socket.broadcast.emit('send:comment');
     });
-    socket.on('userConnected', function () {
-        socket.broadcast.emit('userConnected');
+    socket.on('send:commentNews', function () {
+        socket.broadcast.emit('send:commentNews');
     });
-    socket.on('mustUpdatePositions', function () {
-        socket.broadcast.emit('mustUpdatePositions');
+    socket.on("updateCollectionsStore", function () {
+        socket.broadcast.emit("updateCollectionsStore");
     });
-    socket.on('onMessage', function (data) {
-        socket.broadcast.emit('onMessage', data)
+    socket.on("getCredentials", function () {
+        socket.broadcast.emit("getCredentials");
     });
-    socket.on('userDisconnected', function (data) {
-
-        axios({
-            method: 'post',
-            url: '/move/removePlayer',
-            headers: {
-                'Authorization': `bearer ${data.token}`,
-                'Content-type': 'application/x-www-form-urlencoded'
-            },
-            data: qs.stringify({
-                'positionInArray': data.positionInArray
-            })
-        }).then((response) => {
-            socket.broadcast.emit("userDisconnected", {playerPositions: response.data.playerPositions, markedTerritory: response.data.markedTerritory})
-        }).catch((err) => {
-            console.log(err);
-        });
-
+    socket.on("updateNewsStore", function() {
+        socket.broadcast.emit("updateNewsStore");
+    });
+    socket.on("onLike", function (data) {
+        socket.broadcast.emit("onLike", data);
+    });
+    socket.on("onUnlike", function (data) {
+        socket.broadcast.emit("onUnlike", data);
     })
 };
