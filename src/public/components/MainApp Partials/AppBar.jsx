@@ -50,13 +50,39 @@ class AppBarPersonal extends Component {
         this.handler = createHandler(this.props.dispatch);
 
         this.state = {
-            isMobileMenuOpened: false
+            isMobileMenuOpened: false,
+            isCollectionsDropDownVisible: false,
+            isSiteAdministrationDropDownVisible: false
         }
     }
 
     onClickMobileMenuButton = () => {
         this.setState({
             isMobileMenuOpened: !this.state.isMobileMenuOpened
+        })
+    };
+
+    onMouseEnterCollectionsButton = () => {
+        this.setState({
+            isCollectionsDropDownVisible: true
+        })
+    };
+
+    onMouseLeaveCollectionsButton = () => {
+        this.setState({
+            isCollectionsDropDownVisible: false
+        })
+    };
+
+    onMouseEnterSiteAdministrationButton = () => {
+        this.setState({
+            isSiteAdministrationDropDownVisible: true
+        })
+    };
+
+    onMouseLeaveSiteAdministrationButton = () => {
+        this.setState({
+            isSiteAdministrationDropDownVisible: false
         })
     };
 
@@ -112,12 +138,51 @@ class AppBarPersonal extends Component {
                                     Home
                                 </Link>
                             </li>
-                            <li className="nav-row">
+                            <li className="nav-row"
+                                onMouseEnter={this.onMouseEnterCollectionsButton}
+                                onMouseLeave={this.onMouseLeaveCollectionsButton}>
                                 <Link to={`/collections`}
                                       className="nav-item"
                                       activeClassName="active-link-className">
                                     Collections
                                 </Link>
+                                {this.state.isCollectionsDropDownVisible ?
+                                    <span>
+                                        {Auth.isUserAuthenticated() ?
+                                            <Link to={`/collections`}
+                                                  className="nav-item-drop-down"
+                                                  style={this.props.isAdmin === true ? {top: 53, left: 343} : {
+                                                      top: 53,
+                                                      left: 444
+                                                  }}
+                                                  activeClassName="active-link-className">
+                                                All Collections
+                                            </Link>
+                                            :
+                                            <Link to={`/collections`}
+                                                  className="nav-item-drop-down"
+                                                  style={{top: 53, left: 446}}
+                                                  activeClassName="active-link-className">
+                                                All Collections
+                                            </Link>
+                                        }
+
+                                        {Auth.isUserAuthenticated() ?
+                                            <Link to={`/manage`}
+                                                  className="nav-item-drop-down"
+                                                  style={this.props.isAdmin === true ? {
+                                                      top: 100,
+                                                      left: 343
+                                                  } : {top: 100, left: 444}}
+                                                  activeClassName="active-link-className">
+                                                My Collections
+                                            </Link>
+                                            :
+                                            null
+                                        }
+                                    </span>
+                                    :
+                                    null}
                             </li>
                             {Auth.isUserAuthenticated() ?
                                 null
@@ -143,17 +208,6 @@ class AppBarPersonal extends Component {
                             }
                             {Auth.isUserAuthenticated() ?
                                 <li className="nav-row">
-                                    <Link to={`/manage`}
-                                          className="nav-item"
-                                          activeClassName="active-link-className">
-                                        Management
-                                    </Link>
-                                </li>
-                                :
-                                null
-                            }
-                            {Auth.isUserAuthenticated() ?
-                                <li className="nav-row">
                                     <Link to={`/profile/${this.props.userName}`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
@@ -164,12 +218,44 @@ class AppBarPersonal extends Component {
                                 null
                             }
                             {this.props.isAdmin === true ?
-                                <li className="nav-row">
+                                <li className="nav-row"
+                                    onMouseEnter={this.onMouseEnterSiteAdministrationButton}
+                                    onMouseLeave={this.onMouseLeaveSiteAdministrationButton}>
                                     <Link to={`/admin/${this.props.userId}`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
-                                        Administration
+                                        Site Administration
                                     </Link>
+                                    {this.state.isSiteAdministrationDropDownVisible ?
+                                        <span>
+                                            <Link to={`/admin/${this.props.userId}/users`}
+                                                  className="nav-item-drop-down"
+                                                  style={{top: 53, left: 573, minWidth: 200}}
+                                                  activeClassName="active-link-className">
+                                                Users Management
+                                            </Link>
+                                            <Link to={`/collections`}
+                                                  className="nav-item-drop-down"
+                                                  style={{top: 100, left: 573, minWidth: 200}}
+                                                  activeClassName="active-link-className">
+                                                Manage all collections
+                                            </Link>
+                                            <Link to={`/news`}
+                                                  className="nav-item-drop-down"
+                                                  style={{top: 149, left: 573, minWidth: 200}}
+                                                  activeClassName="active-link-className">
+                                                Manage articles
+                                            </Link>
+                                            <Link to={`/admin/${this.props.userId}/logs`}
+                                                  className="nav-item-drop-down"
+                                                  style={{top: 199, left: 573, minWidth: 200}}
+                                                  activeClassName="active-link-className">
+                                                Logs
+                                            </Link>
+                                        </span>
+                                        :
+                                        null
+                                    }
                                 </li>
                                 :
                                 null
@@ -189,13 +275,19 @@ class AppBarPersonal extends Component {
                     </div>
                 </nav>
                 <nav className="mobile-navigation">
-                    <div className="mobile-container" style={this.state.isMobileMenuOpened ? {height: "auto"} : {height: 40}}>
+                    <div className="mobile-container"
+                         style={this.state.isMobileMenuOpened ? {height: "auto"} : {height: 40}}>
                         <div className="mobile-menu-icon-wrap">
                             <i className="material-icons white1000"
                                onTouchEnd={this.onClickMobileMenuButton}>&#xE5D2;</i>
                         </div>
                         <div className="mobile-menu"
-                             style={this.state.isMobileMenuOpened ? {opacity: 1, top: 0, zIndex: 1, position: "static"} : {zIndex: -1}}>
+                             style={this.state.isMobileMenuOpened ? {
+                                 opacity: 1,
+                                 top: 0,
+                                 zIndex: 1,
+                                 position: "static"
+                             } : {zIndex: -1}}>
                             <ul className="mobile-list">
                                 <li className="mobile-row">
                                     <Link to={`/`}
