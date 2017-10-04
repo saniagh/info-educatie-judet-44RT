@@ -52,13 +52,27 @@ class AppBarPersonal extends Component {
         this.state = {
             isMobileMenuOpened: false,
             isCollectionsDropDownVisible: false,
-            isSiteAdministrationDropDownVisible: false
+            isSiteAdministrationDropDownVisible: false,
+            isCollectionsDropDownVisibleMobile: false,
+            isSiteAdministrationDropDownVisibleMobile: false
         }
     }
 
     onClickMobileMenuButton = () => {
         this.setState({
             isMobileMenuOpened: !this.state.isMobileMenuOpened
+        })
+    };
+
+    onClickCollectionsButton = () => {
+        this.setState({
+            isCollectionsDropDownVisibleMobile: !this.state.isCollectionsDropDownVisibleMobile
+        })
+    };
+
+    onClickSiteAdministrationButton = () => {
+        this.setState({
+            isSiteAdministrationDropDownVisibleMobile: !this.state.isSiteAdministrationDropDownVisibleMobile
         })
     };
 
@@ -103,7 +117,7 @@ class AppBarPersonal extends Component {
 
     render() {
         return (
-            <div style={this.state.isMobileMenuOpened ? {height: 506} : {height: 215}}>
+            <div>
                 <header id="masthead"
                         role="banner"
                         className="header">
@@ -135,7 +149,16 @@ class AppBarPersonal extends Component {
                                 <Link to={`/`}
                                       className="nav-item"
                                       activeClassName="active-link-className">
-                                    Home
+                                    <span>
+                                        <i className="material-icons"
+                                           style={{
+                                               fontSize: 16,
+                                               position: "relative",
+                                               top: 3,
+                                               paddingRight: 3
+                                           }}>&#xE88A;</i>
+                                        Home
+                                    </span>
                                 </Link>
                             </li>
                             <li className="nav-row"
@@ -144,26 +167,55 @@ class AppBarPersonal extends Component {
                                 <Link to={`/collections`}
                                       className="nav-item"
                                       activeClassName="active-link-className">
-                                    Collections
+                                    <span>
+                                        <i className="material-icons"
+                                           style={{
+                                               fontSize: 16,
+                                               position: "relative",
+                                               top: 3,
+                                               paddingRight: 3
+                                           }}>&#xE3B6;</i>
+                                        Collections
+                                    </span>
                                 </Link>
                                 {this.state.isCollectionsDropDownVisible ?
                                     <span>
                                         {Auth.isUserAuthenticated() ?
                                             <Link to={`/collections`}
                                                   className="nav-item-drop-down"
-                                                  style={this.props.isAdmin === true ? {top: 53, left: 343} : {
+                                                  style={this.props.isAdmin === true ? {top: 53, left: 316} : {
                                                       top: 53,
-                                                      left: 444
+                                                      left: 425
                                                   }}
-                                                  activeClassName="active-link-className">
-                                                All Collections
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveCollectionsButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE411;</i>
+                                                    All Collections
+                                                </span>
                                             </Link>
                                             :
                                             <Link to={`/collections`}
                                                   className="nav-item-drop-down"
-                                                  style={{top: 53, left: 446}}
-                                                  activeClassName="active-link-className">
-                                                All Collections
+                                                  style={{top: 53, left: 426}}
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveCollectionsButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE411;</i>
+                                                    All Collections
+                                                </span>
                                             </Link>
                                         }
 
@@ -172,10 +224,20 @@ class AppBarPersonal extends Component {
                                                   className="nav-item-drop-down"
                                                   style={this.props.isAdmin === true ? {
                                                       top: 100,
-                                                      left: 343
-                                                  } : {top: 100, left: 444}}
-                                                  activeClassName="active-link-className">
-                                                My Collections
+                                                      left: 316
+                                                  } : {top: 100, left: 425}}
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveCollectionsButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE869;</i>
+                                                    My Collections
+                                                </span>
                                             </Link>
                                             :
                                             null
@@ -191,7 +253,16 @@ class AppBarPersonal extends Component {
                                     <Link to={`/login`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
-                                        Login
+                                        <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE895;</i>
+                                                    Login
+                                        </span>
                                     </Link>
                                 </li>
                             }
@@ -202,7 +273,16 @@ class AppBarPersonal extends Component {
                                     <Link to={`/signup`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
-                                        Register
+                                        <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE150;</i>
+                                                    Register
+                                        </span>
                                     </Link>
                                 </li>
                             }
@@ -211,7 +291,16 @@ class AppBarPersonal extends Component {
                                     <Link to={`/profile/${this.props.userName}`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
+                                        <span>
+                                        <i className="material-icons"
+                                           style={{
+                                               fontSize: 16,
+                                               position: "relative",
+                                               top: 2,
+                                               paddingRight: 3
+                                           }}>&#xE853;</i>
                                         Profile
+                                    </span>
                                     </Link>
                                 </li>
                                 :
@@ -224,33 +313,82 @@ class AppBarPersonal extends Component {
                                     <Link to={`/admin/${this.props.userId}`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
-                                        Site Administration
+                                        <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE8B8;</i>
+                                                    Site Administration
+                                        </span>
                                     </Link>
                                     {this.state.isSiteAdministrationDropDownVisible ?
                                         <span>
                                             <Link to={`/admin/${this.props.userId}/users`}
                                                   className="nav-item-drop-down"
-                                                  style={{top: 53, left: 573, minWidth: 200}}
-                                                  activeClassName="active-link-className">
-                                                Users Management
+                                                  style={{top: 53, left: 583, minWidth: 200}}
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveSiteAdministrationButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE851;</i>
+                                                    Manage Users
+                                                </span>
                                             </Link>
                                             <Link to={`/collections`}
                                                   className="nav-item-drop-down"
-                                                  style={{top: 100, left: 573, minWidth: 200}}
-                                                  activeClassName="active-link-className">
-                                                Manage all collections
+                                                  style={{top: 100, left: 583, minWidth: 200}}
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveSiteAdministrationButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE162;</i>
+                                                    Manage Collections
+                                                </span>
                                             </Link>
                                             <Link to={`/news`}
                                                   className="nav-item-drop-down"
-                                                  style={{top: 149, left: 573, minWidth: 200}}
-                                                  activeClassName="active-link-className">
-                                                Manage articles
+                                                  style={{top: 149, left: 583, minWidth: 200}}
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveSiteAdministrationButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 3,
+                                                               paddingRight: 3
+                                                           }}>&#xE85A;</i>
+                                                    Manage Articles
+                                                </span>
                                             </Link>
                                             <Link to={`/admin/${this.props.userId}/logs`}
                                                   className="nav-item-drop-down"
-                                                  style={{top: 199, left: 573, minWidth: 200}}
-                                                  activeClassName="active-link-className">
-                                                Logs
+                                                  style={{top: 199, left: 583, minWidth: 200}}
+                                                  activeClassName="active-link-className"
+                                                  onClick={this.onMouseLeaveSiteAdministrationButton}>
+                                                <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE873;</i>
+                                                    Logs
+                                                </span>
                                             </Link>
                                         </span>
                                         :
@@ -265,7 +403,16 @@ class AppBarPersonal extends Component {
                                     <Link to={`/logout`}
                                           className="nav-item"
                                           activeClassName="active-link-className">
-                                        Logout
+                                        <span>
+                                                        <i className="material-icons"
+                                                           style={{
+                                                               fontSize: 16,
+                                                               position: "relative",
+                                                               top: 2,
+                                                               paddingRight: 3
+                                                           }}>&#xE879;</i>
+                                                    Logout
+                                                </span>
                                     </Link>
                                 </li>
                                 :
@@ -275,8 +422,7 @@ class AppBarPersonal extends Component {
                     </div>
                 </nav>
                 <nav className="mobile-navigation">
-                    <div className="mobile-container"
-                         style={this.state.isMobileMenuOpened ? {height: "auto"} : {height: 40}}>
+                    <div className={this.state.isMobileMenuOpened ? "mobile-container open" : "mobile-container"}>
                         <div className="mobile-menu-icon-wrap">
                             <i className="material-icons white1000"
                                onTouchEnd={this.onClickMobileMenuButton}>&#xE5D2;</i>
@@ -294,17 +440,76 @@ class AppBarPersonal extends Component {
                                           className="nav-item"
                                           activeClassName="active-link-className-mobile"
                                           onClick={this.onClickMobileMenuButton}>
-                                        Home
+                                        <i className="material-icons"
+                                           style={{fontSize: 16, position: "relative", top: 3}}>&#xE88A;</i>
+                                        <span style={{position: "relative", left: 3}}>
+                                                Home
+                                            </span>
                                     </Link>
                                 </li>
                                 <li className="mobile-row">
-                                    <Link to={`/collections`}
-                                          className="nav-item"
-                                          activeClassName="active-link-className-mobile"
-                                          onClick={this.onClickMobileMenuButton}>
-                                        Collections
-                                    </Link>
+                                    <span style={{display: "flex", justifyContent: "space-between", flex: 1}}>
+                                        <Link to={`/collections`}
+                                              className="nav-item"
+                                              activeClassName="active-link-className-mobile"
+                                              onClick={this.onClickMobileMenuButton}>
+                                        <i className="material-icons"
+                                           style={{fontSize: 16, position: "relative", top: 3}}>&#xE3B6;</i>
+                                            <span style={{position: "relative", left: 3}}>
+                                                Collections
+                                            </span>
+                                        </Link>
+                                        {this.state.isCollectionsDropDownVisibleMobile ?
+                                            <i className={this.state.isCollectionsDropDownVisibleMobile ? "material-icons redish1000" : "material-icons"}
+                                               style={{position: "relative", top: 5, right: 30}}
+                                               onClick={this.onClickCollectionsButton}>&#xE313;</i>
+                                            :
+                                            <i className={this.state.isCollectionsDropDownVisibleMobile ? "material-icons redish1000" : "material-icons"}
+                                               style={{position: "relative", top: 5, right: 30}}
+                                               onClick={this.onClickCollectionsButton}>&#xE315;</i>
+                                        }
+                                        </span>
                                 </li>
+                                {this.state.isCollectionsDropDownVisibleMobile ?
+                                    <span>
+                                        <li className="mobile-row">
+                                            <Link to={`/collections`}
+                                                  className="nav-item"
+                                                  style={{padding: "5px 0 5px 0"}}
+                                                  activeClassName="active-link-className-mobile"
+                                                  onClick={() => {
+                                                      this.onClickMobileMenuButton();
+                                                      this.onClickCollectionsButton()
+                                                  }}>
+                                                <i className="material-icons"
+                                                   style={{padding: "5px 0 5px 60px", fontSize: 16}}>&#xE411;</i>
+                                            <span style={{position: "absolute", left: 112, bottom: 8}}>
+                                                All Collections
+                                            </span>
+                                            </Link>
+                                        </li>
+                                        {Auth.isUserAuthenticated() ?
+                                            <li className="mobile-row">
+                                                <Link to={`/manage`}
+                                                      className="nav-item"
+                                                      style={{padding: "5px 0 5px 0"}}
+                                                      activeClassName="active-link-className-mobile"
+                                                      onClick={() => {
+                                                          this.onClickMobileMenuButton()
+                                                      }}>
+                                                    <i className="material-icons"
+                                                       style={{padding: "5px 0 5px 60px", fontSize: 16}}>&#xE869;</i>
+                                                    <span style={{position: "absolute", left: 112, bottom: 8}}>
+                                                My Collections
+                                            </span>
+                                                </Link>
+                                            </li>
+                                            :
+                                            null
+                                        }
+                                    </span>
+                                    : null}
+
                                 {Auth.isUserAuthenticated() ?
                                     null
                                     :
@@ -313,7 +518,11 @@ class AppBarPersonal extends Component {
                                               className="nav-item"
                                               activeClassName="active-link-className-mobile"
                                               onClick={this.onClickMobileMenuButton}>
-                                            Login
+                                            <i className="material-icons"
+                                               style={{fontSize: 16, position: "relative", top: 3}}>&#xE895;</i>
+                                            <span style={{position: "relative", left: 3}}>
+                                                Login
+                                            </span>
                                         </Link>
                                     </li>
                                 }
@@ -325,29 +534,26 @@ class AppBarPersonal extends Component {
                                               className="nav-item"
                                               activeClassName="active-link-className-mobile"
                                               onClick={this.onClickMobileMenuButton}>
-                                            Register
+                                            <i className="material-icons"
+                                               style={{fontSize: 16, position: "relative", top: 3}}>&#xE150;</i>
+                                            <span style={{position: "relative", left: 3}}>
+                                                Register
+                                            </span>
                                         </Link>
                                     </li>
                                 }
-                                {Auth.isUserAuthenticated() ?
-                                    <li className="mobile-row">
-                                        <Link to={`/manage`}
-                                              className="nav-item"
-                                              activeClassName="active-link-className-mobile"
-                                              onClick={this.onClickMobileMenuButton}>
-                                            Management
-                                        </Link>
-                                    </li>
-                                    :
-                                    null
-                                }
+
                                 {Auth.isUserAuthenticated() ?
                                     <li className="mobile-row">
                                         <Link to={`/profile/${this.props.userName}`}
                                               className="nav-item"
                                               activeClassName="active-link-className-mobile"
                                               onClick={this.onClickMobileMenuButton}>
-                                            Profile
+                                            <i className="material-icons"
+                                               style={{fontSize: 16, position: "relative", top: 3}}>&#xE853;</i>
+                                            <span style={{position: "relative", left: 3}}>
+                                                Profile
+                                            </span>
                                         </Link>
                                     </li>
                                     :
@@ -355,13 +561,94 @@ class AppBarPersonal extends Component {
                                 }
                                 {this.props.isAdmin === true ?
                                     <li className="mobile-row">
-                                        <Link to={`/admin/${this.props.userId}`}
-                                              className="nav-item"
-                                              activeClassName="active-link-className-mobile"
-                                              onClick={this.onClickMobileMenuButton}>
-                                            Administration
+                                        <span style={{display: "flex", justifyContent: "space-between", flex: 1}}>
+                                            <Link to={`/admin/${this.props.userId}`}
+                                                  className="nav-item"
+                                                  activeClassName="active-link-className-mobile"
+                                                  onClick={this.onClickMobileMenuButton}>
+                                                <i className="material-icons"
+                                                   style={{fontSize: 16, position: "relative", top: 3}}>&#xE8B8;</i>
+                                            <span style={{position: "relative", left: 3}}>
+                                                Site Administration
+                                            </span>
                                         </Link>
+                                            {this.state.isSiteAdministrationDropDownVisibleMobile ?
+                                                <i className={this.state.isSiteAdministrationDropDownVisibleMobile ? "material-icons redish1000" : "material-icons"}
+                                                   style={{position: "relative", top: 5, right: 30}}
+                                                   onClick={this.onClickSiteAdministrationButton}>&#xE313;</i>
+                                                :
+                                                <i className={this.state.isSiteAdministrationDropDownVisibleMobile ? "material-icons redish1000" : "material-icons"}
+                                                   style={{position: "relative", top: 5, right: 30}}
+                                                   onClick={this.onClickSiteAdministrationButton}>&#xE315;</i>
+                                            }
+                                        </span>
                                     </li>
+                                    :
+                                    null
+                                }
+                                {this.props.isAdmin === true && this.state.isSiteAdministrationDropDownVisibleMobile ?
+                                    <span>
+                                        <li className="mobile-row">
+                                            <Link to={`/admin/${this.props.userId}/users`}
+                                                  className="nav-item"
+                                                  style={{padding: "5px 0 5px 0"}}
+                                                  activeClassName="active-link-className-mobile"
+                                                  onClick={() => {
+                                                      this.onClickSiteAdministrationButton();
+                                                  }}>
+                                                <i className="material-icons"
+                                                   style={{padding: "5px 0 5px 60px", fontSize: 16}}>&#xE851;</i>
+                                            <span style={{position: "absolute", left: 112, bottom: 8}}>
+                                                Manage Users
+                                            </span>
+                                            </Link>
+                                        </li>
+                                        <li className="mobile-row">
+                                            <Link to={`/collections`}
+                                                  className="nav-item"
+                                                  style={{padding: "5px 0 5px 0"}}
+                                                  activeClassName="active-link-className-mobile"
+                                                  onClick={() => {
+                                                      this.onClickSiteAdministrationButton();
+                                                  }}>
+                                                <i className="material-icons"
+                                                   style={{padding: "5px 0 5px 60px", fontSize: 16}}>&#xE162;</i>
+                                            <span style={{position: "absolute", left: 112, bottom: 8}}>
+                                                Manage Collections
+                                            </span>
+                                            </Link>
+                                        </li>
+                                        <li className="mobile-row">
+                                            <Link to={`/news`}
+                                                  className="nav-item"
+                                                  style={{padding: "5px 0 5px 0"}}
+                                                  activeClassName="active-link-className-mobile"
+                                                  onClick={() => {
+                                                      this.onClickSiteAdministrationButton();
+                                                  }}>
+                                                <i className="material-icons"
+                                                   style={{padding: "5px 0 5px 60px", fontSize: 16}}>&#xE85A;</i>
+                                            <span style={{position: "absolute", left: 112, bottom: 8}}>
+                                                Manage Articles
+                                            </span>
+                                            </Link>
+                                        </li>
+                                        <li className="mobile-row">
+                                            <Link to={`/admin/${this.props.userId}/logs`}
+                                                  className="nav-item"
+                                                  style={{padding: "5px 0 5px 0"}}
+                                                  activeClassName="active-link-className-mobile"
+                                                  onClick={() => {
+                                                      this.onClickSiteAdministrationButton();
+                                                  }}>
+                                                <i className="material-icons"
+                                                   style={{padding: "5px 0 5px 60px", fontSize: 16}}>&#xE873;</i>
+                                            <span style={{position: "absolute", left: 112, bottom: 8}}>
+                                                Logs
+                                            </span>
+                                            </Link>
+                                        </li>
+                                    </span>
                                     :
                                     null
                                 }
@@ -371,7 +658,11 @@ class AppBarPersonal extends Component {
                                               className="nav-item"
                                               activeClassName="active-link-className-mobile"
                                               onClick={this.onClickMobileMenuButton}>
-                                            Logout
+                                            <i className="material-icons"
+                                               style={{fontSize: 16, position: "relative", top: 3}}>&#xE879;</i>
+                                            <span style={{position: "relative", left: 3}}>
+                                                Logout
+                                            </span>
                                         </Link>
                                     </li>
                                     :
