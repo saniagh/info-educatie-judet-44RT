@@ -2,28 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
-import {} from 'material-ui';
 import * as searchActions from '../../actions/AppBar/searchActions.js';
-import {
-    Avatar,
-    ListItem,
-    Divider,
-    List,
-    AutoComplete,
-    Toolbar,
-    ToolbarGroup,
-    CardMedia,
-    Drawer
-} from 'material-ui';
-import ImageCollections from 'material-ui/svg-icons/image/collections';
-import ActionHome from 'material-ui/svg-icons/action/home';
-import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
-import AVLibraryBooks from 'material-ui/svg-icons/av/library-books';
-import ActionAnnouncement from 'material-ui/svg-icons/action/announcement';
-import ActionAccountCircle from 'material-ui/svg-icons/action/account-circle';
-import ActionPermContactCalendar from 'material-ui/svg-icons/action/perm-contact-calendar';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import {CardMedia} from 'material-ui';
 import Auth from '../../modules/Auth';
 
 let createHandler = function (dispatch) {
@@ -42,7 +22,7 @@ let createHandler = function (dispatch) {
     }
 };
 
-class AppBarPersonal extends Component {
+class Header extends Component {
 
     constructor(props, context) {
         super(props, context);
@@ -54,7 +34,14 @@ class AppBarPersonal extends Component {
             isCollectionsDropDownVisible: false,
             isSiteAdministrationDropDownVisible: false,
             isCollectionsDropDownVisibleMobile: false,
-            isSiteAdministrationDropDownVisibleMobile: false
+            isSiteAdministrationDropDownVisibleMobile: false,
+            userAgentIsMobile: false
+        }
+    }
+
+    componentDidMount() {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            this.setState({userAgentIsMobile: true})
         }
     }
 
@@ -424,16 +411,14 @@ class AppBarPersonal extends Component {
                 <nav className="mobile-navigation">
                     <div className={this.state.isMobileMenuOpened ? "mobile-container open" : "mobile-container"}>
                         <div className="mobile-menu-icon-wrap">
-                            <i className="material-icons white1000"
-                               onTouchEnd={this.onClickMobileMenuButton}>&#xE5D2;</i>
+                            <i className="material-icons white1000 md-24"
+                               style={{cursor: "pointer", textDecoration: "none"}}
+                               onTouchEnd={this.state.userAgentIsMobile ? this.onClickMobileMenuButton : null}
+                                onClick={this.state.userAgentIsMobile ? null : this.onClickMobileMenuButton}>&#xE5D2;</i>
                         </div>
                         <div className="mobile-menu"
                              style={this.state.isMobileMenuOpened ? {
-                                 opacity: 1,
-                                 top: 0,
-                                 zIndex: 1,
-                                 position: "static"
-                             } : {zIndex: -1}}>
+                                 opacity: 1} : {}}>
                             <ul className="mobile-list">
                                 <li className="mobile-row">
                                     <Link to={`/`}
@@ -461,11 +446,11 @@ class AppBarPersonal extends Component {
                                         </Link>
                                         {this.state.isCollectionsDropDownVisibleMobile ?
                                             <i className={this.state.isCollectionsDropDownVisibleMobile ? "material-icons redish1000" : "material-icons"}
-                                               style={{position: "relative", top: 5, right: 30}}
+                                               style={{position: "relative", top: 5, right: 30, cursor: "pointer"}}
                                                onClick={this.onClickCollectionsButton}>&#xE313;</i>
                                             :
                                             <i className={this.state.isCollectionsDropDownVisibleMobile ? "material-icons redish1000" : "material-icons"}
-                                               style={{position: "relative", top: 5, right: 30}}
+                                               style={{position: "relative", top: 5, right: 30, cursor: "pointer"}}
                                                onClick={this.onClickCollectionsButton}>&#xE315;</i>
                                         }
                                         </span>
@@ -677,14 +662,14 @@ class AppBarPersonal extends Component {
     }
 }
 
-AppBarPersonal.propTypes = {
+Header.propTypes = {
     allCollections: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object
     ])
 };
 
-AppBarPersonal.contextTypes = {
+Header.contextTypes = {
     router: PropTypes.object.isRequired
 };
 
@@ -725,4 +710,4 @@ const mapStateToProps = (state) => ({
     searchFunction: searchFunction(state)
 });
 
-export default connect(mapStateToProps)(AppBarPersonal)
+export default connect(mapStateToProps)(Header)

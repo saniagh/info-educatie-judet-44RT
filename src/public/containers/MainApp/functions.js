@@ -1,41 +1,46 @@
-// Scroll algorithm from a tutorial, modified to work with React by us
-function currentYPosition() {
-    // Firefox, Chrome, Opera, Safari
-    if (window.innerHeight + window.pageYOffset) return window.pageYOffset;
-    // Internet Explorer 6 - standards mode
-    if (document.documentElement && document.documentElement.scrollTop)
-        return document.documentElement.scrollTop;
-    // Internet Explorer 6, 7 and 8
-    if (document.body.scrollTop) return document.body.scrollTop;
-    return 0;
-}
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
 
-export function smoothScroll() {
-    let startY = currentYPosition();
-    let stopY = 0;
-    let distance = stopY > startY ? stopY - startY : startY - stopY;
-    if (distance < 100) {
-        scrollTo(0, stopY);
-        return;
-    }
-    let speed = Math.round(distance / 100);
-    if (speed >= 20) speed = 20;
-    let step = Math.round(distance / 25);
-    let leapY = stopY > startY ? startY + step : startY - step;
-    let timer = 0;
-    if (stopY > startY) {
-        for (let i = startY; i < stopY; i += step) {
-            setTimeout("window.scrollTo(0, " + leapY + ")", timer * speed);
-            leapY += step;
-            if (leapY > stopY) leapY = stopY;
-            timer++;
+export function smoothScroll(scrollTargetY, speed, easing) {
+    var scrollY = window.scrollY || document.documentElement.scrollTop,
+        scrollTargetY = scrollTargetY || 0,
+        speed = speed || 2000,
+        easing = easing || 'easeInOutQuint',
+        currentTime = 0;
+    let time = Math.max(.1, Math.min(Math.abs(scrollY - scrollTargetY) / speed, .8));
+    let easingEquations = {
+        easeOutSine: function (pos) {
+            return Math.sin(pos * (Math.PI / 2));
+        },
+        easeInOutSine: function (pos) {
+            return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+        },
+        easeInOutQuint: function (pos) {
+            if ((pos /= 0.5) < 1) {
+                return 0.5 * Math.pow(pos, 5);
+            }
+            return 0.5 * (Math.pow((pos - 2), 5) + 2);
         }
-        return;
+    };
+    function tick() {
+        currentTime += 1 / 60;
+
+        let p = currentTime / time;
+        let t = easingEquations[easing](p);
+
+        if (p < 1) {
+            requestAnimFrame(tick);
+
+            window.scrollTo(0, scrollY + ((scrollTargetY - scrollY) * t));
+        } else {
+            window.scrollTo(0, scrollTargetY);
+        }
     }
-    for (let i = startY; i > stopY; i -= step) {
-        setTimeout("window.scrollTo(0, " + leapY + ")", timer * speed);
-        leapY -= step;
-        if (leapY < stopY) leapY = stopY;
-        timer++;
-    }
+    tick();
 }

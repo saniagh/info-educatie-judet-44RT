@@ -1,40 +1,6 @@
 @import "./constants/fonts";
 @import "./constants/functions";
 
-body {
-  margin: 0;
-}
-
-//Force root document to have height 100% so that the parallax can be correctly rendered
-body, html, main {
-  @include widthAndHeight("auto", 100%);
-}
-
-.footer {
-  @include display(flex, 1, space-around);
-  @include widthAndHeight(100%, auto);
-  @include background-color(#000000);
-  opacity: 0.8;
-  @include padding(20px);
-  @include box-sizing(border-box);
-
-  ul {
-    @include font("", "", "", "", 20px, "", $Roboto, "");
-    list-style: none;
-    li {
-      @include padding(10px);
-      @include box-sizing(border-box);
-      a {
-        color: #ffffff;
-      }
-
-      :hover {
-        color: gray;
-      }
-    }
-  }
-}
-
 .sk-wave {
   width: 18.750em !important;
   height: 18.750em !important;

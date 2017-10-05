@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router';
 import {connect} from 'react-redux';
-import AppBarPersonal from '../../components/MainApp Partials/AppBar.jsx';
 import ScrollButton from './ScrollToTopButton.jsx'
+import Header from '../../components/MainApp Partials/Header.jsx';
+import Footer from '../../components/MainApp Partials/Footer.jsx';
 
 class MainApp extends Component {
     render() {
@@ -12,98 +12,29 @@ class MainApp extends Component {
             return (
 
                 <div>
-                    <AppBarPersonal
+                    <Header
                         profilePictureLink={this.props.profilePictureLink}
                         userId={this.props.userId}
                         userName={this.props.userName}
-                        isAdmin={this.props.admin}
-                    />
-                    <div>
-                        {this.props.children}
-                    </div>
+                        isAdmin={this.props.admin}/>
+                    {this.props.children}
                     <ScrollButton/>
-
-                    <div className="footer">
-                        <ul className="footer-left">
-                            <li>
-                                <Link to={`/`}>
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={`/collections`}>
-
-                                    Browse all collections
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={`/news`}>
-                                    See all recent news
-                                </Link>
-                            </li>
-                        </ul>
-                        <ul className="footer-right">
-                            <li>
-                                <Link to={`/contact`}>
-                                    Contact our team
-                                </Link>
-                            </li>
-                            <li>
-                                <a href={`https://github.com/saniagh/info-educatie-judet-44RT`}
-                                   target="_blank">
-                                    Github
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <Footer isAdmin={this.props.admin}
+                            userId={this.props.userId}/>
                 </div>
             )
         }
         else return (
             <div>
-                <AppBarPersonal
+                <Header
                     profilePictureLink={this.props.profilePictureLink}
                     userId={this.props.userId}
                     userName={this.props.userName}
-                    isAdmin={this.props.admin}
-                />
-
+                    isAdmin={this.props.admin}/>
                 {this.props.children}
                 <ScrollButton/>
-
-                <div className="footer">
-                    <ul className="footer-left">
-                        <li>
-                            <Link to={`/`}>
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={`/collections`}>
-
-                                Browse all collections
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={`/news`}>
-                                See all recent news
-                            </Link>
-                        </li>
-                    </ul>
-                    <ul className="footer-right">
-                        <li>
-                            <Link to={`/contact`}>
-                                Contact our team
-                            </Link>
-                        </li>
-                        <li>
-                            <a href={`https://github.com/saniagh/info-educatie-judet-44RT`}
-                               target="_blank">
-                                Github
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <Footer isAdmin={this.props.admin}
+                        userId={this.props.userId}/>
             </div>
         )
     }
